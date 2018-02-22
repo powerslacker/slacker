@@ -1,0 +1,45 @@
+{
+  "languageCode": "en-us",
+  "title": "Powerslacker",
+  "baseurl": "http://example.org/",
+  "theme": "slacker",
+  "pygmentsCodeFences": true,
+  "pygmentsStyle": "native",
+  "permalinks": {
+    "archives": "/:slug/"
+  },
+  "params": {
+    "name": "Powerslacker",
+    "description": "Perspectives for the Ambitiously Lazy",
+    "copyright": "Powerslacker",
+    "nav": [
+      {
+        "url": "/",
+        "icon": "home",
+        "text": "Home"
+      },
+      {
+        "url": "/archives/",
+        "icon": "calendar",
+        "text": "Archives"
+      }
+    ],
+    "social": [
+      {
+        "medium": "github",
+        "icon": "github",
+        "link": "https://github.com/powerslacker"
+      },
+      {
+        "medium": "youtube",
+        "icon": "youtube-play",
+        "link": "https://www.youtube.com/c/powerslacker"
+      },
+      {
+        "medium": "twitter",
+        "icon": "twitter",
+        "link": "https://twitter.com/thepowerslacker"
+      }
+    ]
+  }
+}
