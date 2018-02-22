@@ -1,0 +1,27 @@
+
+  {{ $img := .Param "featured_img" }}
+  <div class="card-box">
+        <a href='/{{ .Slug }}'>
+        <div 
+            class="card" 
+            data-background="image" data-src='/img/{{ $img }}'
+            style='
+                background-image: url("/img/{{  $img }}"); 
+                background-position: center center; 
+                background-size: cover;
+                min-height: 320px;
+            '>
+                <div class="header">
+                    <div class="category">
+                        {{ $tags := .Param "tags" }}
+                        <h6 class='label label-{{ index $tags 0 }}'>{{ index $tags 0 }}</h6>    
+                    </div>
+                </div>
+                
+                <div class="content">
+                    <div class="filter"></div>
+                    <h4 class="title">{{ .Title | truncate 50 }}</h4>
+                </div> 
+        </div>
+      </a>
+  </div>

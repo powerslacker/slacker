@@ -1,0 +1,225 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>RE: Moving From PHP to Go and Back Again - Powerslacker</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../css/main.css" />
+		<link rel="stylesheet" href="../css/cards.css" />
+	</head>
+	<body>
+		<input type="checkbox" id="header_toggle">
+<label for="header_toggle" class="header_toggle__label">
+  <i class="fa fa-bars"></i>
+</label>
+<div id="header">
+  
+  <div class="top">
+    
+    <div id="logo">
+      <span class="image avatar48">
+        <img src="../../img/lambda.svg" alt="" />
+      </span>
+      <h1 id="title" data-text="Powerslacker">Powerslacker</h1>
+      <p>Perspectives for the Ambitiously Lazy</p>
+    </div>
+    
+    <nav id="nav">
+      <ul>
+         
+          <li>
+  <a href="/" id="top-link">
+    <span class="icon fa-home">Home</span>
+  </a>
+</li>
+         
+          <li>
+  <a href="/archives/" id="top-link">
+    <span class="icon fa-calendar">Archives</span>
+  </a>
+</li>
+        
+      </ul>
+    </nav>
+  </div>
+  <div class="bottom">
+    
+    <ul class="icons">
+      
+        <li>
+          <a href="https://github.com/powerslacker" class="icon fa-github" alt="github"></a>
+        </li>
+      
+        <li>
+          <a href="https://www.youtube.com/c/powerslacker" class="icon fa-youtube-play" alt="youtube"></a>
+        </li>
+      
+        <li>
+          <a href="https://twitter.com/thepowerslacker" class="icon fa-twitter" alt="twitter"></a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+		<div id="main">
+			<section>
+				<div class="container post">
+					<div class="header">
+						<div class="details">
+							<span class="taglist">
+								 <span class="tag .golang"><a href="/tags/golang">golang</a></span>  <span class="tag .webdev"><a href="/tags/webdev">webdev</a></span>  <span class="tag .php"><a href="/tags/php">php</a></span> 
+							</span>
+							Thursday, Dec 14, 2017
+						</div>
+						<h1 class="title">RE: Moving From PHP to Go and Back Again</h1>
+						<img class="featured" src='../img/golang_vs_php.png' alt="">
+					</div>
+					<p><em>This post is a response to <a href="https://medium.com/@ivanjaros/moving-from-php-to-go-and-back-again-9ea1f57018c4">https://medium.com/@ivanjaros/moving-from-php-to-go-and-back-again-9ea1f57018c4</a></em></p>
+
+<p><strong>12/11/17, 11:51 PM</strong> - So, uh&hellip;this post is blowing up on <a href="https://news.ycombinator.com/news">Hacker News</a>. I haven&rsquo;t posted in months and just got several months worth of traffic in a few hours. I don&rsquo;t know if my ramblings are really more important than the MDN docs but special thanks to <a href="https://news.ycombinator.com/user?id=neoasterisk">neoasterisk</a> - whoever you are!</p>
+
+
+
+
+
+
+
+
+
+
+<div class="caption-wrapper">
+    <img class="caption" src="../img/hacker-news-1.png" title="This post is top 3 on hacker news. Not bad for a random rant I threw together!" alt="This post is top 3 on hacker news. Not bad for a random rant I threw together!">
+    <div class="caption-text">This post is top 3 on hacker news. Not bad for a random rant I threw together!</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="caption-wrapper">
+    <img class="caption" src="../img/site-stats.png" title="Hopefully the CDN can keep up!" alt="Hopefully the CDN can keep up!">
+    <div class="caption-text">Hopefully the CDN can keep up!</div>
+</div>
+
+<p><em><strong>NOTE</strong>: I believe PHP is a fantastic language for web development, and for years was the obvious choice. Things really have changed in the past decade, and these are my thoughts regarding the author&rsquo;s points - not an argument against PHP in general. There is a time and a place for PHP (as well as other scripting languages), and a time and a place for Golang. </em></p>
+
+<blockquote>
+<p>You see, there are some well known projects built with Go — like Kubernetes, Docker, basically all HashiCorp&rsquo;s products, Moby, Prometheus.. and this gives you the impression that Go is a great tool for building bigger applications. And the truth is the exact opposite. These companies/teams have picked Go most likely for the same reason Google has made it for itself. And that is — making low level language powerful enough to be as performant as C but as simple as Python, for example, and allowing large teams with different background(lower/higher level) to work together on single platform. The reasoning behind this is well known and you can simply google the reasons which I am not going to reiterate in here.</p>
+</blockquote>
+
+<p><strong>Go is a great fit for web development</strong>, specifically on larger projects. In addition to the companies listed Go is being used in production at UBER. It is the powerhouse behind their 2nd highest query per second service (<a href="https://eng.uber.com/go-geofence/">https://eng.uber.com/go-geofence/</a>) among many others. While UBER is a polyglot environment, they use Go heavily, as do many other companies. (<a href="https://github.com/golang/go/wiki/GoUsers">https://github.com/golang/go/wiki/GoUsers</a>) Some companies use Go for web development exclusively.</p>
+
+<p>The primary reasons for using Go on a big project are many-fold, but I&rsquo;ll focus on the most obvious one: <strong>you get considerably better performance both in terms of code and developer productivity.</strong> Go is a language that enforces strict styling, and obvious coding practices. It borrows slightly from Object Oriented Programming and Functional Programming, but relies most heavily on the procedural model of programming. While arguments can be made for the strengths and weaknesses of each model, the Go authors, who are veteran programmers, have made specific trade-offs in order to produce a language which is nearly as performant as C, while keeping developer productivity high. What this means is that teams composed of engineers of varying skill levels can work on the same codebase and (for the most part) can all understand each other&rsquo;s code.</p>
+
+<p><em>Movio found that it took their team <strong>six months</strong> to become productive using Scala, whereas it only took them <strong>two weeks</strong> to become productive using Go.</em> (<a href="https://movio.co/en/blog/migrate-Scala-to-Go/">https://movio.co/en/blog/migrate-Scala-to-Go/</a>)</p>
+
+<blockquote>
+<p>If you look at those bigger projects, the code base is a mess, due to the way Go forces you to work by splitting code into different “namespaces”. On itself, that is not a sin. But another point I want to make is that in Go, you absolutely, under no circumstances, should be even trying to reuse code or define an interface. Sooner or later, it will bite you in the ass. Go is not OOP in any shape or form, no matter what “they” try to tell you. Go is imperative language with procedural style of writing code. Yes, you have objects and you can attach methods to them, similarly to Ruby where everything is an object, but that&rsquo;s basically it. Never, ever, try to repeat yourself in Go. You will crash and burn. When it comes to Go, spaghetti code is what you want to write.</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+<div class="caption-wrapper">
+    <img class="caption" src="../img/confused-girl.gif" title="have I met your standards now warent? (https://news.ycombinator.com/item?id=15903503)" alt="have I met your standards now warent? (https://news.ycombinator.com/item?id=15903503)">
+    <div class="caption-text">have I met your standards now warent? (https://news.ycombinator.com/item?id=15903503)</div>
+</div>
+
+<p>This is just plain wrong. <strong>Go gives you many tools similar to what you would find in an OOP language, with most of the OOP cruft removed.</strong> <a href="https://golang.org/doc/effective_go.html#embedding">Embedding</a> is a light weight version of inheritance. Interfaces allow for dynamic types to be passed around such as you might find in the classical &ldquo;adapter&rdquo; or &ldquo;strategy&rdquo; design patterns. Structs can have private or public properties, namespaces can have private or public functionality. <em>The idea that you would want to write spaghetti code is ludicrous</em>. While it may take some getting used to, and a bit of extra forethought, it is entirely possible to have DRY code in Go.</p>
+
+<blockquote>
+<p>There is a reason why Go is lacking “real” frameworks. Sure, you have Go Kit, Micro, Gin and few others but they will never be able to come even close to Symfony, Laravel, RoR, Django or Flask. And that is because they are limited by the language itself. You cannot define interfaces on their own. It has no meaning. You have to define basic functionality that can be extended by the user. You can do this and have an interface and base struct but once the user extends the struct via composition all you binding methods will go out of the window and the user is left with having to re-implement everything anyway.</p>
+</blockquote>
+
+<div class="embed-wrapper">
+  <iframe 
+    src="https://www.youtube-nocookie.com/embed/5GpOfwbFRcs?rel=0&amp;amp;start=173" 
+    width="100%" 
+    height="100%" 
+    frameborder="1"  
+    allowfullscreen="allowfullscreen">
+  </iframe>
+</div>
+
+<p>Go lacks &ldquo;<em>real</em>&rdquo; frameworks because frameworks take away granular control in exchange for developer ease and terse code. Note that I didn&rsquo;t say developer productivity, I said ease. Most Go developers I have met have had their fill of frameworks that make things &ldquo;easy&rdquo;. These frameworks lure you in by promising you the world - which they give you - the catch being they are giving you &ldquo;their&rdquo; world, instead of one that works for your specific needs. I&rsquo;ve worked with RoR, and a variety of frameworks in the Node world - and I have never had a framework project where I didn&rsquo;t end up <a href="http://blog.breakthru.solutions/10-tips-web-developer-designer/">fighting the very system</a> that was supposed to make development &ldquo;easy&rdquo;.</p>
+
+<blockquote>
+<p>Go was meant to solve problems as efficiently as possible. And this collides with higher level languages, like PHP, Java, C#, Python or whatever you&rsquo;re using. These languages provide you with a lot of abstractions to make writing code easier and not having to think about IOs, packets, bits and bytes, gc and whatnot.</p>
+</blockquote>
+
+<p><strong>Just because you stop thinking about them doesn&rsquo;t make packets and IO go away!</strong> All you&rsquo;ve done by using PHP is removed or significantly diminished your ability to deal with the &ldquo;non-abstract&rdquo; version of these items. Transferring and manipulation of bytes and bits is a significant tool, especially when dealing with anything hardware or compression related. It might not matter if your app is a glorified todo list, but for building efficient web-based software it is virtually a must-have.</p>
+
+<blockquote>
+<p>Human factor has to come in play in here. Writing code is not about performance — unless you are in finance.</p>
+</blockquote>
+
+<p>Certainly, if you are trying to ship a proof-of-concept. <strong>However, if you made this claim at Google Search, YouTube, Reddit, or UBER you would find yourself in a room of smirking engineers.</strong> Code at major companies and even mid-sized companies needs to perform well, and if you want to see just how much more performance you&rsquo;ll get out of Go there are dozens of benchmark tests showing it to outperform every major &ldquo;web-language&rdquo; in common usage (<a href="https://www.toptal.com/back-end/server-side-io-performance-node-php-java-go">https://www.toptal.com/back-end/server-side-io-performance-node-php-java-go</a>).</p>
+
+<p><em><strong>NOTE</strong>: I haven&rsquo;t seen any comparisons for Erlang/OTP, but I did say common usage.</em></p>
+
+<blockquote>
+<p>Writing code has to be pleasant experience. Writing code is like painting or sculpting. You have to have a passion for it. You have to love it. Otherwise, what&rsquo;s the point? You&rsquo;d be better off working behind an assembly line for some car manufacturer.<span style="color: #424242; font-size: 16px;"> </span></p>
+</blockquote>
+
+<p><img src="../img/navy-job-adventure.gif" alt="" /></p>
+
+<p>Like they say in the military: &ldquo;<strong>It&rsquo;s not just an adventure,</strong> <strong>i</strong><strong>t&rsquo;s a job.</strong>&rdquo;   Software isn&rsquo;t just about warm fuzzies and pride in your work - its also about solving problems. Business problems tend to pay the best, and their problems typically are along the lines of:</p>
+
+<ul>
+<li>Make sure we don&rsquo;t get hacked</li>
+<li>We promised to deliver and fully test by [MM/DD/YY]</li>
+<li>Our customers want to buy more products but the server keeps failing under heavy load</li>
+<li>The performance of our app remains stagnant or is constantly diminishing while our hardware costs keep doubling</li>
+</ul>
+
+<p>These are hard issues to solve with PHP, so hard that Facebook hand crafted a <a href="https://hhvm.com/">SPECIALIZED VIRTUAL FREAKIN&rsquo; MACHINE</a> to deal with the performance issues inherent in PHP. Does that really seem like an &ldquo;easy&rdquo; solution?</p>
+
+<p><em><strong>NOTE</strong>: I understand that Facebook&rsquo;s decision to develop and use HVVM was a business decision which was probably far cheaper than switching their existing code base from PHP. But, if they had to start all over again today - I seriously doubt they would have gone all-in on PHP.</em></p>
+
+<p>Ok, I&rsquo;ve made all the points on why I disagree with this article. I honestly found nothing of value in it, other than it is in my opinion, <em>still better written than half the drivel being pushed via Medium these days</em>. Now I&rsquo;ll move on to part 2 of my rant where I&rsquo;ll pose a few questions for anyone considering using Go in their next web project: <strong>Would you rather?</strong></p>
+
+<ul>
+<li>A - Be able to write new code 50% faster</li>
+
+<li><p>B - Have 90% less errors in all new code you write</p></li>
+
+<li><p>A - Have a large ecosystem where you can pull all kinds of various snippets into your project, which may or may not conflict with your existing functionality?</p></li>
+
+<li><p>B - Have a large built in system which gives you only the code you need AND have a large ecosystem, but you are responsible for managing your dependencies?</p></li>
+
+<li><p>A - Have a controller that reads like plain English but takes 5 seconds to respond to requests?</p></li>
+
+<li><p>B - Have code that reads like code, but takes 0.100 seconds to respond to requests?</p></li>
+</ul>
+
+<p><strong>If you answered mostly B to the questions above you should try out Golang. Take more than 5 days before you give it an evaluation. You just might thank me for it.</strong></p>
+
+				</div>
+			</section>
+		</div>
+		<div id="footer">
+  
+  <ul class="copyright">
+    <li>&copy; Powerslacker</li>
+    <li>Design based on Prologue by
+      <a href="http://html5up.net">HTML5 UP</a>
+    </li>
+    <li>Powered by
+      <a href="https://gohugo.io/">Hugo</a>
+    </li>
+  </ul>
+
+</div>
+	</body>
+</html>

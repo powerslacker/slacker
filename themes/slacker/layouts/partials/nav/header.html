@@ -1,0 +1,35 @@
+<input type="checkbox" id="header_toggle">
+<label for="header_toggle" class="header_toggle__label">
+  <i class="fa fa-bars"></i>
+</label>
+<div id="header">
+  
+  <div class="top">
+    <!-- Logo -->
+    <div id="logo">
+      <span class="image avatar48">
+        <img src="../../img/lambda.svg" alt="" />
+      </span>
+      <h1 id="title" data-text="{{ .Site.Params.name }}">{{ .Site.Params.name }}</h1>
+      <p>{{ .Site.Params.description }}</p>
+    </div>
+    <!-- Nav -->
+    <nav id="nav">
+      <ul>
+        {{ range .Site.Params.nav }} 
+          {{ partial "nav/link.html" . }}
+        {{ end }}
+      </ul>
+    </nav>
+  </div>
+  <div class="bottom">
+    <!-- Social Icons -->
+    <ul class="icons">
+      {{ range .Site.Params.social }}
+        <li>
+          <a href="{{ .link }}" class="icon fa-{{ .icon }}" alt="{{ .medium }}"></a>
+        </li>
+      {{ end }}
+    </ul>
+  </div>
+</div>

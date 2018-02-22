@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>FIX: Can&#39;t connect to local MySQL server through socket &#39;/var/run/mysqld/mysqld.sock&#39; (2) - Powerslacker</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../css/main.css" />
+		<link rel="stylesheet" href="../css/cards.css" />
+	</head>
+	<body>
+		<input type="checkbox" id="header_toggle">
+<label for="header_toggle" class="header_toggle__label">
+  <i class="fa fa-bars"></i>
+</label>
+<div id="header">
+  
+  <div class="top">
+    
+    <div id="logo">
+      <span class="image avatar48">
+        <img src="../../img/lambda.svg" alt="" />
+      </span>
+      <h1 id="title" data-text="Powerslacker">Powerslacker</h1>
+      <p>Perspectives for the Ambitiously Lazy</p>
+    </div>
+    
+    <nav id="nav">
+      <ul>
+         
+          <li>
+  <a href="/" id="top-link">
+    <span class="icon fa-home">Home</span>
+  </a>
+</li>
+         
+          <li>
+  <a href="/archives/" id="top-link">
+    <span class="icon fa-calendar">Archives</span>
+  </a>
+</li>
+        
+      </ul>
+    </nav>
+  </div>
+  <div class="bottom">
+    
+    <ul class="icons">
+      
+        <li>
+          <a href="https://github.com/powerslacker" class="icon fa-github" alt="github"></a>
+        </li>
+      
+        <li>
+          <a href="https://www.youtube.com/c/powerslacker" class="icon fa-youtube-play" alt="youtube"></a>
+        </li>
+      
+        <li>
+          <a href="https://twitter.com/thepowerslacker" class="icon fa-twitter" alt="twitter"></a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+		<div id="main">
+			<section>
+				<div class="container post">
+					<div class="header">
+						<div class="details">
+							<span class="taglist">
+								 <span class="tag .sql"><a href="/tags/sql">sql</a></span>  <span class="tag .lamp"><a href="/tags/lamp">lamp</a></span>  <span class="tag .bugfix"><a href="/tags/bugfix">bugfix</a></span> 
+							</span>
+							Friday, Jul 28, 2017
+						</div>
+						<h1 class="title">FIX: Can&#39;t connect to local MySQL server through socket &#39;/var/run/mysqld/mysqld.sock&#39; (2)</h1>
+						<img class="featured" src='../img/mystery.jpg' alt="">
+					</div>
+					<p>Quick post today. This is more for my reference than anything else, but maybe some other soul on the web will need this info.</p>
+
+<p>I recently installed the LAMP stack on my Linux Mint distro. Getting mysql to start was a struggle. The main terminal error was:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">	Can&#39;t connect to local MySQL server through socket &#39;/var/run/mysqld/mysqld.sock&#39; (2). </code></pre></div>
+<p>I went through several Stack Overflow questions and none of the solutions were working out for me. This happens quite a bit, and it usually means something very basic is missing or messed up on your machine.</p>
+
+<p>SO recommended:</p>
+
+<pre><code>* Restarting the mysql server
+* Adding [mysqld] to the first line of my.cnf
+* Forcing a password reset of root user
+* ...and buried way down in the answers was change the bindings in my.cnf to 127.0.0.1
+</code></pre>
+
+<p>The last answer, changing the bindings is what worked for me. I had to dig through my error logs to find out that the db was failing to connect to some random port.</p>
+
+<p>Possibly a default port? If you know, send me a message!</p>
+
+<p>Anyways, I feel like a cretin for not spotting this in the first place. Too much MongoDB may be causing my SQL debugging skills atrophy.</p>
+
+				</div>
+			</section>
+		</div>
+		<div id="footer">
+  
+  <ul class="copyright">
+    <li>&copy; Powerslacker</li>
+    <li>Design based on Prologue by
+      <a href="http://html5up.net">HTML5 UP</a>
+    </li>
+    <li>Powered by
+      <a href="https://gohugo.io/">Hugo</a>
+    </li>
+  </ul>
+
+</div>
+	</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Quick and Easy Web Scraping Artoo.Js - Powerslacker</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../css/main.css" />
+		<link rel="stylesheet" href="../css/cards.css" />
+	</head>
+	<body>
+		<input type="checkbox" id="header_toggle">
+<label for="header_toggle" class="header_toggle__label">
+  <i class="fa fa-bars"></i>
+</label>
+<div id="header">
+  
+  <div class="top">
+    
+    <div id="logo">
+      <span class="image avatar48">
+        <img src="../../img/lambda.svg" alt="" />
+      </span>
+      <h1 id="title" data-text="Powerslacker">Powerslacker</h1>
+      <p>Perspectives for the Ambitiously Lazy</p>
+    </div>
+    
+    <nav id="nav">
+      <ul>
+         
+          <li>
+  <a href="/" id="top-link">
+    <span class="icon fa-home">Home</span>
+  </a>
+</li>
+         
+          <li>
+  <a href="/archives/" id="top-link">
+    <span class="icon fa-calendar">Archives</span>
+  </a>
+</li>
+        
+      </ul>
+    </nav>
+  </div>
+  <div class="bottom">
+    
+    <ul class="icons">
+      
+        <li>
+          <a href="https://github.com/powerslacker" class="icon fa-github" alt="github"></a>
+        </li>
+      
+        <li>
+          <a href="https://www.youtube.com/c/powerslacker" class="icon fa-youtube-play" alt="youtube"></a>
+        </li>
+      
+        <li>
+          <a href="https://twitter.com/thepowerslacker" class="icon fa-twitter" alt="twitter"></a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+		<div id="main">
+			<section>
+				<div class="container post">
+					<div class="header">
+						<div class="details">
+							<span class="taglist">
+								 <span class="tag .scraping"><a href="/tags/scraping">scraping</a></span> 
+							</span>
+							Thursday, Sep 29, 2016
+						</div>
+						<h1 class="title">Quick and Easy Web Scraping Artoo.Js</h1>
+						<img class="featured" src='../img/artoo.jpg' alt="">
+					</div>
+					
+
+<p>I recently discovered a neat tool which you can use to scrape data from websites with relative ease, called <a href="https://medialab.github.io/artoo/">Artoo.js</a>. Artoo is a javascript library built to test web scraping in the browser, before implementing them in a dedicated scraper such as <a href="http://medialab.github.io/sandcrawler/">Sandcrawler.js</a> or <a href="http://phantomjs.org/">Phantom.js</a> One of the great things about Artoo is that installation is dead-simple since its just a bookmarklet. You can go to the Artoo website and drag it to your bookmarks bar and you&rsquo;re ready to go. I wanted to get the phone numbers for various property management companies in my area. So, I went over to Yelp to give Artoo a shot. It took me all of about 2 minutes to get all the data using Artoo - here&rsquo;s how:</p>
+
+<h2 id="inspecting-the-yelp-page">Inspecting the Yelp Page</h2>
+
+<p>The first step in any good scrape is to know what you&rsquo;re scraping. On the Yelp Page, I right clicked the elements I wanted to scrape and opened the Google Chrome Inspector.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="caption-wrapper">
+    <img class="caption" src="/img/yelp-inspect.png" title="Right click on an element you&#39;d like to scrape, then hit inspect in the context menu." alt="Right click on an element you&#39;d like to scrape, then hit inspect in the context menu.">
+    <div class="caption-text">Right click on an element you&#39;d like to scrape, then hit inspect in the context menu.</div>
+</div>
+
+<p>It helps if you know a little HTML and CSS, because you need to locate the elements you want to scrape and their containing element. If that sounds confusing - don&rsquo;t worry  - its actually very simple. A webpage is made up of HTML elements, aka <strong>tags</strong>. These tags create a structure to the page, much like a skeleton gives structure to a body. Certain tags are contained within other tags. For easy reference, CSS <strong>classes</strong> and <strong>id&rsquo;s</strong> can pinpoint a tag without having to reference its exact location in the HTML - you can think of it like a nickname for a tag or group of tags. Here&rsquo;s an example of an html tag with a CSS class:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">  &lt;<span style="color:#6ab825;font-weight:bold">a</span> <span style="color:#bbb">href</span>=<span style="color:#ed9d13">&#34;http://www.google.com&#34;</span> <span style="color:#bbb">class</span>=<span style="color:#ed9d13">&#34;google-link&#34;</span>&gt;Click here to visit Google&lt;/<span style="color:#6ab825;font-weight:bold">a</span>&gt;</code></pre></div>
+<p>The tag above would create a link to Google with class of &ldquo;google-link&rdquo;. So, now that you&rsquo;re primed on tags, classes, and id&rsquo;s we can jump into the task - finding our scraping targets!</p>
+
+
+
+
+
+
+
+
+
+
+<div class="caption-wrapper">
+    <img class="caption" src="/img/yelp-inspect-2.png" title="We see here that the container for the data of each business has a class called &#39;biz-listing-large&#39;" alt="We see here that the container for the data of each business has a class called &#39;biz-listing-large&#39;">
+    <div class="caption-text">We see here that the container for the data of each business has a class called &#39;biz-listing-large&#39;</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="caption-wrapper">
+    <img class="caption" src="/img/yelp-inspect-3.png" title="Every business name is contained with a tag that has the class &#39;biz-name&#39;" alt="Every business name is contained with a tag that has the class &#39;biz-name&#39;">
+    <div class="caption-text">Every business name is contained with a tag that has the class &#39;biz-name&#39;</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="caption-wrapper">
+    <img class="caption" src="/img/yelp-inspect-4.png" title="Phone numbers have the class &#39;biz-phone&#39;" alt="Phone numbers have the class &#39;biz-phone&#39;">
+    <div class="caption-text">Phone numbers have the class &#39;biz-phone&#39;</div>
+</div>
+
+<h2 id="plugging-the-data-into-artoo">Plugging the Data into Artoo</h2>
+
+<p>On the Artoo website there is an example of how to get started with Artoo giving this javascript code:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">    artoo.scrape(<span style="color:#ed9d13">&#39;td.title:nth-child(3)&#39;</span>, {
+      title: {sel: <span style="color:#ed9d13">&#39;a&#39;</span>},
+      url: {sel: <span style="color:#ed9d13">&#39;a&#39;</span>, attr: <span style="color:#ed9d13">&#39;href&#39;</span>}
+    }, artoo.savePrettyJson);</code></pre></div>
+<p>I can&rsquo;t teach you javascript in this post but I can show you that with a little bit of editing you could apply this code anywhere you need a quick web scrape:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">    artoo.scrape(<span style="color:#ed9d13">&#39;.biz-listing-large&#39;</span>, {
+      name: {sel: <span style="color:#ed9d13">&#39;.biz-name&#39;</span>},
+      phone: {sel: <span style="color:#ed9d13">&#39;.biz-phone&#39;</span>}
+    }, artoo.savePrettyJson);</code></pre></div>
+<p>I&rsquo;ve changed the first line to <strong>biz-listing-large</strong> as I know that&rsquo;s the container tag for both <strong>biz-name</strong> and <strong>biz-phone</strong> tags. Then I set the second line to select <strong>biz-name</strong>, and the third line to <strong>biz-phone</strong>. Note the periods in front of the class names. Those are important! If you&rsquo;re trying to scrape a class name use a period before the class name, and if you&rsquo;re trying to scrape an id use the &ldquo;#&rdquo; sign - without the quotes. Now that I&rsquo;ve got my scraper code I click on my Artoo bookmarklet to start Artoo. Now I can see Artoo.js is running in the console. You can get to the console by clicking the console tab in the Google Chrome Inspector. I insert my code and press enter, which saves my scraped data. I have my Chrome browser set to ask me where to save data, but by default it saves it in your &ldquo;Downloads&rdquo; folder.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="caption-wrapper">
+    <img class="caption" src="/img/artoo-code.png" title="Here we see Artoo.js running in the console, and my inserted scraper code." alt="Here we see Artoo.js running in the console, and my inserted scraper code.">
+    <div class="caption-text">Here we see Artoo.js running in the console, and my inserted scraper code.</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="caption-wrapper">
+    <img class="caption" src="/img/artoo-data.png" title="The data I wanted from Yelp, neatly printed in JSON format." alt="The data I wanted from Yelp, neatly printed in JSON format.">
+    <div class="caption-text">The data I wanted from Yelp, neatly printed in JSON format.</div>
+</div>
+
+<p>This was a simple scrape, and Artoo.js is capable of a lot more than this. With a few more lines of javascript you could clean up the code before it saves so those pesky newline symbols aren&rsquo;t in your finished data. I personally just used <a href="https://www.sublimetext.com/">Sublime Text</a> to quickly find and replace all the newlines and white space. But, I am slacker after all ;)</p>
+
+				</div>
+			</section>
+		</div>
+		<div id="footer">
+  
+  <ul class="copyright">
+    <li>&copy; Powerslacker</li>
+    <li>Design based on Prologue by
+      <a href="http://html5up.net">HTML5 UP</a>
+    </li>
+    <li>Powered by
+      <a href="https://gohugo.io/">Hugo</a>
+    </li>
+  </ul>
+
+</div>
+	</body>
+</html>

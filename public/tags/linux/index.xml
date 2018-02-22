@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on Powerslacker</title>
+    <link>http://example.org/tags/linux/</link>
+    <description>Recent content in Linux on Powerslacker</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Powerslacker</copyright>
+    <lastBuildDate>Mon, 15 Jan 2018 19:47:40 -0700</lastBuildDate>
+    
+	<atom:link href="http://example.org/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>2 Years of Linux Mint</title>
+      <link>http://example.org/2-years-linux-mint/</link>
+      <pubDate>Mon, 15 Jan 2018 19:47:40 -0700</pubDate>
+      
+      <guid>http://example.org/2-years-linux-mint/</guid>
+      <description>I&amp;rsquo;ve been running Linux Mint as my daily driver for just over two years now. I want to lay out an honest review of my experiences using Linux as my main operating system (aka OS) so that interested persons can know what it&amp;rsquo;s like to switch from commercial operating systems, the pros and cons, and other tidbits about Linux as a desktop OS.
+My Background I&amp;rsquo;ve been using desktop computers daily for roughly eighteen years, with a handful of days off for vacations and such.</description>
+    </item>
+    
+  </channel>
+</rss>

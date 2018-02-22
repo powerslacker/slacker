@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bugfix on Powerslacker</title>
+    <link>http://example.org/tags/bugfix/</link>
+    <description>Recent content in Bugfix on Powerslacker</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Powerslacker</copyright>
+    <lastBuildDate>Fri, 28 Jul 2017 04:57:54 -0700</lastBuildDate>
+    
+	<atom:link href="http://example.org/tags/bugfix/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>FIX: Can&#39;t connect to local MySQL server through socket &#39;/var/run/mysqld/mysqld.sock&#39; (2)</title>
+      <link>http://example.org/fix-cant-connect-to-local-mysql-server-through-socket/</link>
+      <pubDate>Fri, 28 Jul 2017 04:57:54 -0700</pubDate>
+      
+      <guid>http://example.org/fix-cant-connect-to-local-mysql-server-through-socket/</guid>
+      <description>Quick post today. This is more for my reference than anything else, but maybe some other soul on the web will need this info.
+I recently installed the LAMP stack on my Linux Mint distro. Getting mysql to start was a struggle. The main terminal error was:
+Can&amp;#39;t connect to local MySQL server through socket &amp;#39;/var/run/mysqld/mysqld.sock&amp;#39; (2).  I went through several Stack Overflow questions and none of the solutions were working out for me.</description>
+    </item>
+    
+  </channel>
+</rss>

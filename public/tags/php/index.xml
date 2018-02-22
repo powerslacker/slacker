@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Php on Powerslacker</title>
+    <link>http://example.org/tags/php/</link>
+    <description>Recent content in Php on Powerslacker</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Powerslacker</copyright>
+    <lastBuildDate>Thu, 14 Dec 2017 04:48:54 -0700</lastBuildDate>
+    
+	<atom:link href="http://example.org/tags/php/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>RE: Moving From PHP to Go and Back Again</title>
+      <link>http://example.org/re-moving-from-php-to-go-and-back-again/</link>
+      <pubDate>Thu, 14 Dec 2017 04:48:54 -0700</pubDate>
+      
+      <guid>http://example.org/re-moving-from-php-to-go-and-back-again/</guid>
+      <description>This post is a response to https://medium.com/@ivanjaros/moving-from-php-to-go-and-back-again-9ea1f57018c4
+12/11/17, 11:51 PM - So, uh&amp;hellip;this post is blowing up on Hacker News. I haven&amp;rsquo;t posted in months and just got several months worth of traffic in a few hours. I don&amp;rsquo;t know if my ramblings are really more important than the MDN docs but special thanks to neoasterisk - whoever you are!
+This post is top 3 on hacker news. Not bad for a random rant I threw together!</description>
+    </item>
+    
+  </channel>
+</rss>

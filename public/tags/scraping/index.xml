@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Scraping on Powerslacker</title>
+    <link>http://example.org/tags/scraping/</link>
+    <description>Recent content in Scraping on Powerslacker</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Powerslacker</copyright>
+    <lastBuildDate>Thu, 29 Sep 2016 00:14:48 -0700</lastBuildDate>
+    
+	<atom:link href="http://example.org/tags/scraping/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Quick and Easy Web Scraping Artoo.Js</title>
+      <link>http://example.org/quick-and-easy-web-scraping-with-artoo-js/</link>
+      <pubDate>Thu, 29 Sep 2016 00:14:48 -0700</pubDate>
+      
+      <guid>http://example.org/quick-and-easy-web-scraping-with-artoo-js/</guid>
+      <description>I recently discovered a neat tool which you can use to scrape data from websites with relative ease, called Artoo.js. Artoo is a javascript library built to test web scraping in the browser, before implementing them in a dedicated scraper such as Sandcrawler.js or Phantom.js One of the great things about Artoo is that installation is dead-simple since its just a bookmarklet. You can go to the Artoo website and drag it to your bookmarks bar and you&amp;rsquo;re ready to go.</description>
+    </item>
+    
+  </channel>
+</rss>

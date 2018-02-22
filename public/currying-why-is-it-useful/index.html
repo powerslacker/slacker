@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Currying, What is it? Why is it Useful? - Powerslacker</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../css/main.css" />
+		<link rel="stylesheet" href="../css/cards.css" />
+	</head>
+	<body>
+		<input type="checkbox" id="header_toggle">
+<label for="header_toggle" class="header_toggle__label">
+  <i class="fa fa-bars"></i>
+</label>
+<div id="header">
+  
+  <div class="top">
+    
+    <div id="logo">
+      <span class="image avatar48">
+        <img src="../../img/lambda.svg" alt="" />
+      </span>
+      <h1 id="title" data-text="Powerslacker">Powerslacker</h1>
+      <p>Perspectives for the Ambitiously Lazy</p>
+    </div>
+    
+    <nav id="nav">
+      <ul>
+         
+          <li>
+  <a href="/" id="top-link">
+    <span class="icon fa-home">Home</span>
+  </a>
+</li>
+         
+          <li>
+  <a href="/archives/" id="top-link">
+    <span class="icon fa-calendar">Archives</span>
+  </a>
+</li>
+        
+      </ul>
+    </nav>
+  </div>
+  <div class="bottom">
+    
+    <ul class="icons">
+      
+        <li>
+          <a href="https://github.com/powerslacker" class="icon fa-github" alt="github"></a>
+        </li>
+      
+        <li>
+          <a href="https://www.youtube.com/c/powerslacker" class="icon fa-youtube-play" alt="youtube"></a>
+        </li>
+      
+        <li>
+          <a href="https://twitter.com/thepowerslacker" class="icon fa-twitter" alt="twitter"></a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+		<div id="main">
+			<section>
+				<div class="container post">
+					<div class="header">
+						<div class="details">
+							<span class="taglist">
+								 <span class="tag .javascript"><a href="/tags/javascript">javascript</a></span>  <span class="tag .fp"><a href="/tags/fp">fp</a></span>  <span class="tag .webdev"><a href="/tags/webdev">webdev</a></span> 
+							</span>
+							Wednesday, Jul 12, 2017
+						</div>
+						<h1 class="title">Currying, What is it? Why is it Useful?</h1>
+						<img class="featured" src='../img/thinking.png' alt="">
+					</div>
+					
+
+<p><strong>Currying</strong>. It can be a frightening word. Textbook examples of currying appear to be hieroglyphics to the untrained eye. It doesn&rsquo;t help that textbooks examples of currying use poorly named variables such as x, y, foo, and bar. I recently got a good grasp of the basics of currying and figured I&rsquo;d share my understanding. Currying can be considered part of the functional programming (FP, for short) paradigm. The goal of functional programming is to make code:</p>
+
+<ul>
+<li>Readable, by separating logic from data structures - making it easier to reason about</li>
+<li>&lsquo;Composable&rsquo;, by breaking code into small, reusable modules</li>
+<li>Higher quality, by avoiding state &amp; data mutation unless absolutely necessary</li>
+</ul>
+
+<h3 id="so-how-does-currying-fit-into-fp">So how does Currying fit into FP?</h3>
+
+<p>Currying in essence is an example of a higher-order function. Currying is taking a function that would normally take multiple arguments and transforming it into a series of functions that each take one or more of those arguments. Typically this will act as a chain of functions which can be used progressively or simply as a module for ease of use.</p>
+
+<p><img src="/img/but-why.webp" alt="" /></p>
+
+<h3 id="why-use-currying">Why use currying?</h3>
+
+<p><strong>Composability.</strong> By making functions that return functions, or chains of functions, it is possible to make code that is highly reusable and easy-to-read. Here is a simple example using Javascript:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#6ab825;font-weight:bold">let</span> hasElement = 
+  e =&gt; 
+    obj =&gt; 
+      obj.element == e
+    
+<span style="color:#6ab825;font-weight:bold">let</span> dragons = [
+  { name: <span style="color:#ed9d13">&#39;bob&#39;</span>, element: <span style="color:#ed9d13">&#39;lightning&#39;</span> },
+  { name: <span style="color:#ed9d13">&#39;jill&#39;</span>, element: <span style="color:#ed9d13">&#39;fire&#39;</span> },
+  { name: <span style="color:#ed9d13">&#39;dana&#39;</span>, element: <span style="color:#ed9d13">&#39;lightning&#39;</span> },
+]
+
+console.log(dragons.filter(hasElement(<span style="color:#ed9d13">&#39;lightning&#39;</span>)))</code></pre></div>
+<p>Let&rsquo;s break down what&rsquo;s happening in the code above.</p>
+
+<ul>
+<li>The code starts by declaring a function called <strong>hasElement</strong>.
+
+<ul>
+<li>It takes a single parameter, <strong>e</strong>, and from that returns an anonymous function.</li>
+<li>The anonymous function takes a single parameter, <strong>obj</strong>, and returns a Boolean based on the conditional check of <strong>obj.element == e</strong></li>
+</ul></li>
+<li>Next up,  there is a data structure (array) called <strong>dragons</strong>
+
+<ul>
+<li>Each dragon has the properties name and <strong>element</strong></li>
+<li>Since the structure is an array, array methods  can be used on it such as .filter, .map, and .reduce</li>
+</ul></li>
+<li>Finally, a console.log statement
+
+<ul>
+<li>Inside of it, <strong>.filter</strong> is applied to the <strong>dragons</strong> array</li>
+<li>The curried function <strong>hasElement</strong> is passed to the filter as the <strong>callback argument</strong>
+
+<ul>
+<li>A string <strong>lightning</strong> is passed as the argument to <strong>hasElement</strong></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>So what is really happening? If we look at <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">.filter in the MDN</a> we can see it takes a callback function as an argument. That callback will be executed on each element of the array. In the example above, we pass <strong>hasElement</strong> as the callback. <strong>hasElement</strong> returns an anonymous function, which takes an argument <strong>obj</strong>. <strong>.filter</strong> passes each dragon object in the array to the anonymous function returned from <strong>hasElement</strong>, one at a time. With each pass via .filter, the anonymous function executes with the dragon object being passed to it. In the code below we can see two traditional methods of using the callback.</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#6ab825;font-weight:bold">function</span> hasElement (obj, e) {
+  <span style="color:#6ab825;font-weight:bold">return</span> obj.element == e
+}
+
+<span style="color:#6ab825;font-weight:bold">let</span> dragons = [
+  { name: <span style="color:#ed9d13">&#39;bob&#39;</span>, element: <span style="color:#ed9d13">&#39;lightning&#39;</span> },
+  { name: <span style="color:#ed9d13">&#39;jill&#39;</span>, element: <span style="color:#ed9d13">&#39;fire&#39;</span> },
+  { name: <span style="color:#ed9d13">&#39;dana&#39;</span>, element: <span style="color:#ed9d13">&#39;lightning&#39;</span> },
+]
+
+<span style="color:#999;font-style:italic">// inline anonymous example
+</span><span style="color:#999;font-style:italic"></span>dragons.filter(obj =&gt; obj.element == <span style="color:#ed9d13">&#39;lightning&#39;</span>)
+
+<span style="color:#999;font-style:italic">// named callback example
+</span><span style="color:#999;font-style:italic"></span>dragons.filter(obj =&gt; hasElement(obj, <span style="color:#ed9d13">&#39;lightning&#39;</span>))</code></pre></div>
+<p>Now, it could be argued that <strong>hasElement</strong> is much simpler in the example above. Which is true! However, that simplicity comes at the cost of more boilerplate when it is used as a callback. What if someone wanted to use <strong>hasElement</strong> across an entire application? Or multiple applications? Or as part of a library? They would have to write the tedious boilerplate every single time. As the codebase becomes larger, the net detriment grows. More boilerplate means more chance for typos, and thus more bugs. It also means lower developer productivity. Even though this is a simple example, those anonymous functions do add up. With currying, <strong>hasElement</strong> becomes slightly more complex but removes unnecessary details from the core logic. As the codebase becomes larger, the net benefit grows. The code is more readable, easier to reason about, higher quality, and can be written faster. This article was inspired by <a href="https://www.youtube.com/watch?v=iZLP4qOwY8I">this video on currying</a> by MPJ, on his YouTube channel <a href="https://www.youtube.com/channel/UCO1cgjhGzsSYb1rsB4bFe4Q">funfunfunction</a>. The video goes into further depth, using a similar example to the one I used here. I highly recommend you check it out. <strong>If you enjoyed this article, please share it! If I got something wrong, please feel free to let me know </strong></p>
+
+				</div>
+			</section>
+		</div>
+		<div id="footer">
+  
+  <ul class="copyright">
+    <li>&copy; Powerslacker</li>
+    <li>Design based on Prologue by
+      <a href="http://html5up.net">HTML5 UP</a>
+    </li>
+    <li>Powered by
+      <a href="https://gohugo.io/">Hugo</a>
+    </li>
+  </ul>
+
+</div>
+	</body>
+</html>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Archives on Powerslacker</title>
+    <link>http://example.org/archives/</link>
+    <description>Recent content in Archives on Powerslacker</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Powerslacker</copyright>
+    <lastBuildDate>Mon, 15 Jan 2018 19:47:40 -0700</lastBuildDate>
+    
+	<atom:link href="http://example.org/archives/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>2 Years of Linux Mint</title>
+      <link>http://example.org/2-years-linux-mint/</link>
+      <pubDate>Mon, 15 Jan 2018 19:47:40 -0700</pubDate>
+      
+      <guid>http://example.org/2-years-linux-mint/</guid>
+      <description>I&amp;rsquo;ve been running Linux Mint as my daily driver for just over two years now. I want to lay out an honest review of my experiences using Linux as my main operating system (aka OS) so that interested persons can know what it&amp;rsquo;s like to switch from commercial operating systems, the pros and cons, and other tidbits about Linux as a desktop OS.
+My Background I&amp;rsquo;ve been using desktop computers daily for roughly eighteen years, with a handful of days off for vacations and such.</description>
+    </item>
+    
+    <item>
+      <title>RE: Moving From PHP to Go and Back Again</title>
+      <link>http://example.org/re-moving-from-php-to-go-and-back-again/</link>
+      <pubDate>Thu, 14 Dec 2017 04:48:54 -0700</pubDate>
+      
+      <guid>http://example.org/re-moving-from-php-to-go-and-back-again/</guid>
+      <description>This post is a response to https://medium.com/@ivanjaros/moving-from-php-to-go-and-back-again-9ea1f57018c4
+12/11/17, 11:51 PM - So, uh&amp;hellip;this post is blowing up on Hacker News. I haven&amp;rsquo;t posted in months and just got several months worth of traffic in a few hours. I don&amp;rsquo;t know if my ramblings are really more important than the MDN docs but special thanks to neoasterisk - whoever you are!
+This post is top 3 on hacker news. Not bad for a random rant I threw together!</description>
+    </item>
+    
+    <item>
+      <title>FIX: Can&#39;t connect to local MySQL server through socket &#39;/var/run/mysqld/mysqld.sock&#39; (2)</title>
+      <link>http://example.org/fix-cant-connect-to-local-mysql-server-through-socket/</link>
+      <pubDate>Fri, 28 Jul 2017 04:57:54 -0700</pubDate>
+      
+      <guid>http://example.org/fix-cant-connect-to-local-mysql-server-through-socket/</guid>
+      <description>Quick post today. This is more for my reference than anything else, but maybe some other soul on the web will need this info.
+I recently installed the LAMP stack on my Linux Mint distro. Getting mysql to start was a struggle. The main terminal error was:
+Can&amp;#39;t connect to local MySQL server through socket &amp;#39;/var/run/mysqld/mysqld.sock&amp;#39; (2).  I went through several Stack Overflow questions and none of the solutions were working out for me.</description>
+    </item>
+    
+    <item>
+      <title>Currying, What is it? Why is it Useful?</title>
+      <link>http://example.org/currying-why-is-it-useful/</link>
+      <pubDate>Wed, 12 Jul 2017 20:55:03 -0700</pubDate>
+      
+      <guid>http://example.org/currying-why-is-it-useful/</guid>
+      <description>Currying. It can be a frightening word. Textbook examples of currying appear to be hieroglyphics to the untrained eye. It doesn&amp;rsquo;t help that textbooks examples of currying use poorly named variables such as x, y, foo, and bar. I recently got a good grasp of the basics of currying and figured I&amp;rsquo;d share my understanding. Currying can be considered part of the functional programming (FP, for short) paradigm. The goal of functional programming is to make code:</description>
+    </item>
+    
+    <item>
+      <title>10 Things Web Developers Need to Know</title>
+      <link>http://example.org/10-things-web-developer-designer/</link>
+      <pubDate>Mon, 24 Oct 2016 20:12:04 -0700</pubDate>
+      
+      <guid>http://example.org/10-things-web-developer-designer/</guid>
+      <description>I just finished creating a new web application called Only One Percent Listings. It was a medium sized project and really pushed the limits of my web development skills. I learned a lot and I wanted to document my experience for myself and pass that knowledge along for all the freelancers and junior developers out there.
+Get Everything in Writing Developing a website or application with complex logic, solid front-end design, and thoroughly testing it is hard enough on its own.</description>
+    </item>
+    
+    <item>
+      <title>Quick and Easy Web Scraping Artoo.Js</title>
+      <link>http://example.org/quick-and-easy-web-scraping-with-artoo-js/</link>
+      <pubDate>Thu, 29 Sep 2016 00:14:48 -0700</pubDate>
+      
+      <guid>http://example.org/quick-and-easy-web-scraping-with-artoo-js/</guid>
+      <description>I recently discovered a neat tool which you can use to scrape data from websites with relative ease, called Artoo.js. Artoo is a javascript library built to test web scraping in the browser, before implementing them in a dedicated scraper such as Sandcrawler.js or Phantom.js One of the great things about Artoo is that installation is dead-simple since its just a bookmarklet. You can go to the Artoo website and drag it to your bookmarks bar and you&amp;rsquo;re ready to go.</description>
+    </item>
+    
+  </channel>
+</rss>

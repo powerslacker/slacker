@@ -1,0 +1,8 @@
+{{ range $name, $taxonomy := .Site.Taxonomies.tags }}
+  <li>
+    <a href="/tags/{{ $name }}" id="top-link">
+      <span class="icon">{{ $name }}</span>
+    </a>
+  </li>
+{{ end }}
+
