@@ -6,7 +6,8 @@
   "pygmentsCodeFences": true,
   "pygmentsStyle": "native",
   "permalinks": {
-    "archives": "/:slug/"
+    "archives": "/:slug/",
+    "videos":"/:slug/"
   },
   "params": {
     "name": "Powerslacker",
@@ -22,6 +23,11 @@
         "url": "/archives/",
         "icon": "calendar",
         "text": "Archives"
+      },
+      {
+        "url": "/videos/",
+        "icon": "play-circle",
+        "text": "Videos"
       }
     ],
     "social": [
