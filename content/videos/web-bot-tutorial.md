@@ -11,7 +11,9 @@ Just completed this tutorial on how to build a web bot that automatically posts 
 
 The goal of this guide is to teach you how to build web bots and web automation tools using Nightmare.js and avoid common pitfalls with proper planning, research, debugging techniques, and managing asynchronous code.
 
-## Video
+## Video Playlist
+
+{{< yt src="https://www.youtube.com/embed/videoseries?list=PLRcnnTsvnkLNVvDZ6foOFkPmCV7n6eGgL" >}}
 
 ## Resources 
 
