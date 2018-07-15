@@ -1,0 +1,250 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Converting from Wordpress to Hugo - Powerslacker</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../css/main.css" />
+		<link rel="stylesheet" href="../css/cards.css" />
+	</head>
+	<body>
+		<input type="checkbox" id="header_toggle">
+<label for="header_toggle" class="header_toggle__label">
+  <i class="fa fa-bars"></i>
+</label>
+<div id="header">
+  
+  <div class="top">
+    
+    <div id="logo">
+      <span class="image avatar48">
+        <img src="../../img/lambda.svg" alt="" />
+      </span>
+      <h1 id="title" data-text="Powerslacker">Powerslacker</h1>
+      <p>Perspectives for the Ambitiously Lazy</p>
+    </div>
+    
+    <nav id="nav">
+      <ul>
+         
+          <li>
+  <a href="/" id="top-link">
+    <span class="icon fa-home">Home</span>
+  </a>
+</li>
+         
+          <li>
+  <a href="/archives/" id="top-link">
+    <span class="icon fa-calendar">Archives</span>
+  </a>
+</li>
+         
+          <li>
+  <a href="/videos/" id="top-link">
+    <span class="icon fa-play-circle">Videos</span>
+  </a>
+</li>
+        
+      </ul>
+    </nav>
+  </div>
+  <div class="bottom">
+    
+    <ul class="icons">
+      
+        <li>
+          <a href="https://github.com/powerslacker" class="icon fa-github" alt="github"></a>
+        </li>
+      
+        <li>
+          <a href="https://www.youtube.com/c/powerslacker" class="icon fa-youtube-play" alt="youtube"></a>
+        </li>
+      
+        <li>
+          <a href="https://twitter.com/thepowerslacker" class="icon fa-twitter" alt="twitter"></a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+		<div id="main">
+			<section>
+				<div class="container post">
+					<div class="header">
+						<div class="details">
+							<span class="taglist">
+								 <span class="tag .webdev"><a href="/tags/webdev">webdev</a></span>  <span class="tag .hugo"><a href="/tags/hugo">hugo</a></span>  <span class="tag .wordpress"><a href="/tags/wordpress">wordpress</a></span> 
+							</span>
+							Saturday, Feb 24, 2018
+						</div>
+						<h1 class="title">Converting from Wordpress to Hugo</h1>
+						<img class="featured" src='../img/hugo-gopher.png' alt="">
+					</div>
+					
+
+<p>A few weeks ago, one of my posts <a href="/re-php-golang-back-agian">&ldquo;RE: PHP to Golang and Back Again&rdquo;</a> made it to the front page of Hacker News. It stayed at the third position on the front page for several hours, and was on the front page itself for no less than twelve hours! This was a major traffic boost for my blog, resulting in nearly <strong>thirty-thousand unique visitors in under two days</strong>. At one point, Google Analytics reported over one-thousand concurrent users.</p>
+
+<p>For the last two years, my blog has been hosted on a dirt-cheap server provided by namecheap, and powered by Wordpress. I wasn&rsquo;t sure my blog could handle the traffic from Hacker News, but it did quite well under the circumstances - and some kind folks on reddit told me that I still had plenty of room to grow using my current setup.</p>
+
+<p>However, even though my Wordpress hosting setup could technically handle more traffic - it might not handle such traffic gracefully. After analyzing logs and analytics - a decent proportion of the Hacker News traffic blitz was experiencing page load times upwards of seven seconds.</p>
+
+<p>I personally wouldn&rsquo;t be waiting after four seconds, and according to research by Google <a href="https://www.thinkwithgoogle.com/marketing-resources/data-measurement/mobile-page-speed-new-industry-benchmarks/">most mobile users will abandon a page after a measly three seconds</a>. So, I set out to make site-wide improvements that would keep page load times fast - even under heavy load.</p>
+
+<h2 id="dropping-the-database-for-fun-and-profit">Dropping the Database for Fun and Profit</h2>
+
+<p>When it comes to page load speed, there is an elephant in the room - databases. While incredibly useful, the cost of a a single database query in terms of page load or memory usage is unmatched by the majority of static resources or typical application logic.</p>
+
+<p>From my experience this is because each database query requires not only the cost of the query, but also communicating over a connection to the database! Even with optimizations such as indexing, it is unlikely that a database won&rsquo;t be the usual suspect when it comes to site performance issues.</p>
+
+<p>Hugo, a static site generator written in Golang, is a tool for creating static websites semi-programatically using the local file system as it&rsquo;s &ldquo;database&rdquo;.</p>
+
+<p>Since all assets are statically generated, all the computation costs of generating the site are handled upfront by the site&rsquo;s creator, and not by the end-user or server. Using a content-delivery network (CDN) and cloud storage - <strong>a static site could be scaled nearly infinitely at a very affordable rate!</strong></p>
+
+<h2 id="why-use-hugo">Why use Hugo?</h2>
+
+<p>I chose Hugo for a few reasons:</p>
+
+<ul>
+<li>Written in Golang and it&rsquo;s libre, so if I need a new feature - I can always buckle down and write it myself</li>
+<li>Uses Golang templates and the file system to minimize the need for raw html and configuration</li>
+<li>Plenty of premade themes to choose from and modify</li>
+<li>Amazingly well done documentation, including video tutorials</li>
+<li>Steady activity on Github</li>
+<li>Generated sites are static, so there are virtually no security issues✝</li>
+<li>I tried using Jekyll and I hated it</li>
+</ul>
+
+<p>✝ - <em>This wasn&rsquo;t initially one of my concerns, but looking at my Wordpress security stats - there have been over thirteen thousand malicious attacks blocked in the last two years.</em> <strong><em>That&rsquo;s an average of nearly eighteen malicious attempts on the site per day.</em></strong></p>
+
+<h3 id="transition-difficulties">Transition Difficulties</h3>
+
+<p>Hugo is free software, and has a relatively small user base when compared to Wordpress. As such, rough spots around the edges are to be expected.</p>
+
+<h4 id="hugo-has-no-css-html-preprocessor">Hugo has No CSS / HTML Preprocessor</h4>
+
+<p>I really enjoy working with Jade as an HTML preprocessor and SASS / Stylus for CSS. There is no built-in integration for these tools with Hugo. While it might be beyond the scope of the Hugo project, it feels like this would make building custom themes a whole lot easier. Perhaps I&rsquo;ll write my own integration, but for now I&rsquo;m editing raw HTML and CSS. I tried using Ace templates instead of the default Golang templates but they seemed a bit clunky for my use case.</p>
+
+<p>I ended up using Gulp to handle SASS compilation, which worked out beautifully. I got the idea from <a href="http://danbahrami.io/articles/building-a-production-website-with-hugo-and-gulp-js/">Building a Production Website with Hugo and GulpJS</a> by Dan Bahrami. I might try to extend my gulp setup to handle Jade in the future, but for now there is so little HTML that it seems like a waste of time.</p>
+
+<h4 id="importing-from-wordpress-is-a-manual-process">Importing From Wordpress is a Manual Process</h4>
+
+<p>I looked around for a bit and it turns out that there&rsquo;s no easy way to get all your Wordpress posts converted to Markdown. There are Wordpress plugins that claim to do it, but in practice they either just plain don&rsquo;t work or they almost work but skip over large portions of content leaving you with a jumbled mess that needs to be cleaned up.</p>
+
+<p>I ended up using an HTML to Markdown converter for most of the posts.</p>
+
+<h4 id="hugo-is-missing-the-little-extras">Hugo is Missing the Little Extras</h4>
+
+<p>Wordpress is slow. It has more leaks than the Iraqi navy. It occasionally breaks for no reason. It is a pain to write themes and plugins for it.</p>
+
+<p>Yet despite all its flaws, Wordpress is the number one blogging platform on Earth - and there&rsquo;s a good reason for it. It has an incredible ecosystem built up around it. Want some feature?  It&rsquo;s very likely someone already made a plugin for it.</p>
+
+<p><strong>You can move really quickly with Wordpress, because all the shortcodes, widgets, and plugins have already been developed.</strong></p>
+
+<p>Hugo&hellip;not so much. There are a few good shortcodes built in, but most of them lack the flexibility to be used right out of the box. If you decide to go with Hugo be prepared to put in some elbow grease.</p>
+
+<h2 id="sacrificing-javascript-for-simplicity">Sacrificing JavaScript for Simplicity</h2>
+
+<p>About halfway through creating my Hugo site theme, I decided to drop all JavaScript from the site except in the case of third-party embeds such as Youtube clips.</p>
+
+<p>My reasoning for this is that a blog should be like a book, with near-instant page loads, low clutter, and densely packed information. JavaScript just isn&rsquo;t necessary for a blog, and at this point CSS is advanced enough to cover most of the basic DOM manipulation tricks that JS is used for.</p>
+
+<p>This means that I can no longer use Google Analytics on my site. In fact, at this time there are no analytics on my site whatsoever.</p>
+
+<p>I&rsquo;ll be the first to admit I am addicted to the analytics &ndash; and it has certainly helped me plan out content strategy, build traffic, and understand the kinds of topics people are searching for. At the same time, I don&rsquo;t like the idea of a giant corporation tracking the online movement of anyone who views my content.</p>
+
+<p>I&rsquo;ll no longer be able to know how much traffic my site is really getting, or brag about it when I see a major spike&hellip;but I think my vanity can handle it. Plus, I might spend less time poring over analytics data and actually getting things done.</p>
+
+<h2 id="hosting-continuous-deployment-via-netlify">Hosting &amp; Continuous Deployment via Netlify</h2>
+
+<p>My initial plan was to upload the finished Hugo powered site on Google Cloud Platform, but after searching and testing a few different file layouts, I wasn&rsquo;t able to easily manage url/redirect rules. Call me vain, but I hate seeing .html extensions on a live website - especially my own.</p>
+
+<p>I considered using Apache on a shared hosting provider or digital ocean droplet, but that means I&rsquo;d be responsible for managing the configuration and software updates for that server. That&rsquo;s a lot of grunt work for a blog. Even if it&rsquo;s just a few hours a year, that&rsquo;s a few hours I could&rsquo;ve been writing new posts, making new videos, or working on side projects.</p>
+
+<p>My final consideration and the choice I ended up sticking with was Netlify. I came across Netlify rather serendipitously while browsing the Hugo docs.</p>
+
+<p><em>Well maybe it wasn&rsquo;t serendipity</em>&hellip;Netlify is a sponsor of Hugo, and their logo is prominently displayed in the Hugo site footer. Maybe years of ignoring ads have made me immune to branding, but I honestly didn&rsquo;t even notice the logo until I read one of the posts in the Hugo docs aptly named <a href="https://gohugo.io/hosting-and-deployment/hosting-on-netlify/">Host on Netlify</a>.</p>
+
+<p>That post got me rather excited, because Netlify acts as a CDN, includes HTTPS for custom domains, acts as a continuous deployment platform, has a slick admin interface, and a generous free tier. With nothing to lose and what appeared to be the holy grail of static site hosting at my fingertips, I gave Netlify a chance.</p>
+
+<p><strong>It took all of 10 minutes to get my site up and running.</strong> Performance felt incredibly snappy, the site got all A&rsquo;s on Pingdom, and all it takes to deploy changes is push to the master branch of my github repo.</p>
+
+<h2 id="load-testing-with-siege">Load Testing With Siege</h2>
+
+<p>When it comes to performance, I don&rsquo;t think it makes sense to just listen to random advice found on the internet. If something looks interesting, I test it out and let the data speak for itself. If the advice is good, the tests will prove it&hellip;or at least hint at the truth.</p>
+
+<p>In order to get some relevant data I decided to do some load testing, which is something I&rsquo;ve never done before. Typically, I&rsquo;ll just wait for load times to get hairy and then take action on hot spots such as SQL query performance or upgrade to a more powerful server. However, in the interest of verifying improved performance, both for myself and the world - I decided to try and get hard evidence for this experiment.</p>
+
+<p>I installed and configured <em>siege</em>, a terminal program for load testing on my desktop computer which should have plenty of hardware to run a solid load test. Then I followed the steps outlined in <a href="https://dotlayer.com/how-to-use-siege-to-load-test-your-wordpress-website/">this guide on load testing Wordpress sites with siege</a>. By the way, I think this guide would work for virtually any site - not just Wordpress.</p>
+
+<p>I decided to test a handful of URLs to simulate real traffic. According to Google Analytics, the most popular pages on my site are two articles, the home page, and the &lsquo;web&rsquo; category page. My siege URL list was setup to hit all those pages randomly, with 255 concurrent users (the max limit in siege without extra configuration).</p>
+
+<p>Running siege for half an hour these are the stats I got back:</p>
+
+<pre><code>Lifting the server siege...
+Transactions:		      146726 hits
+Availability:		       99.96 %
+Elapsed time:		     1799.92 secs
+Data transferred:	     6479.35 MB
+Response time:		        3.10 secs
+Transaction rate:	       81.52 trans/sec
+Throughput:		        3.60 MB/sec
+Concurrency:		      252.56
+Successful transactions:      146726
+Failed transactions:	          54
+Longest transaction:	      127.23
+Shortest transaction:	        0.08
+</code></pre>
+
+<p>After deploying my new Hugo site on Netlify, using the same config for siege, and the equivalent URLs on my Netlify deployment I got these stats:</p>
+
+<pre><code>Lifting the server siege...
+Transactions:		      133829 hits
+Availability:		      100.00 %
+Elapsed time:		     1799.30 secs
+Data transferred:	     6230.40 MB
+Response time:		        3.42 secs
+Transaction rate:	       74.38 trans/sec
+Throughput:		        3.46 MB/sec
+Concurrency:		      254.69
+Successful transactions:       67660
+Failed transactions:	           0
+Longest transaction:	       14.45
+Shortest transaction:	        0.35
+</code></pre>
+
+<p><strong>So what do these stats mean?</strong></p>
+
+<p>To be honest, I&rsquo;m not sure about the implications of everything siege reported. What I did gather was this:</p>
+
+<ul>
+<li>With just 255 concurrent users, some requests started to fail via the Wordpress blog</li>
+<li>Wordpress appears to have a slightly faster average response time</li>
+<li>When under pressure, the Wordpress blog slowed down dramatically, while the Netlify blog delivered far more consistently</li>
+</ul>
+
+<p>Something to note is that this is a controlled test of just 255 users. Configuring siege to do more than this turned out to be kind of tedious, so I opted to see what the standard maximum for siege could reveal.</p>
+
+<p>My final hypothesis after seeing these stats is that the Netlify blog will hold up under heavy load far more consistently and with greater overall reliability than the Wordpress blog, albeit at the cost of a slightly slower average response time overall.</p>
+
+<p>In plain English, the blog on Netlify should have a better rate of reliability and should maintain an average response time of under 4 seconds even when being bombarded, though under standard load will be a few hundred milliseconds slower than the Wordpress powered site.</p>
+
+<p>Only time will tell whether this hypothesis is correct. In any case, I think I&rsquo;ve learned a lot and found a simpler, more powerful work-flow for blogging.</p>
+
+				</div>
+			</section>
+		</div>
+		<div id="footer">
+  
+  <ul class="copyright">
+    <li>&copy; Powerslacker</li>
+    <li>Design based on Prologue by
+      <a href="http://html5up.net">HTML5 UP</a>
+    </li>
+    <li>Powered by
+      <a href="https://gohugo.io/">Hugo</a>
+    </li>
+  </ul>
+
+</div>
+	</body>
+</html>

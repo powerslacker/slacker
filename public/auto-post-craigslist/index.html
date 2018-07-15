@@ -1,0 +1,233 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Auto Post to Craigslist - Powerslacker</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../css/main.css" />
+		<link rel="stylesheet" href="../css/cards.css" />
+	</head>
+	<body>
+		<input type="checkbox" id="header_toggle">
+<label for="header_toggle" class="header_toggle__label">
+  <i class="fa fa-bars"></i>
+</label>
+<div id="header">
+  
+  <div class="top">
+    
+    <div id="logo">
+      <span class="image avatar48">
+        <img src="../../img/lambda.svg" alt="" />
+      </span>
+      <h1 id="title" data-text="Powerslacker">Powerslacker</h1>
+      <p>Perspectives for the Ambitiously Lazy</p>
+    </div>
+    
+    <nav id="nav">
+      <ul>
+         
+          <li>
+  <a href="/" id="top-link">
+    <span class="icon fa-home">Home</span>
+  </a>
+</li>
+         
+          <li>
+  <a href="/archives/" id="top-link">
+    <span class="icon fa-calendar">Archives</span>
+  </a>
+</li>
+         
+          <li>
+  <a href="/videos/" id="top-link">
+    <span class="icon fa-play-circle">Videos</span>
+  </a>
+</li>
+        
+      </ul>
+    </nav>
+  </div>
+  <div class="bottom">
+    
+    <ul class="icons">
+      
+        <li>
+          <a href="https://github.com/powerslacker" class="icon fa-github" alt="github"></a>
+        </li>
+      
+        <li>
+          <a href="https://www.youtube.com/c/powerslacker" class="icon fa-youtube-play" alt="youtube"></a>
+        </li>
+      
+        <li>
+          <a href="https://twitter.com/thepowerslacker" class="icon fa-twitter" alt="twitter"></a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+		<div id="main">
+			<section>
+				<div class="container post">
+					<div class="header">
+						<div class="details">
+							<span class="taglist">
+								 <span class="tag .scraping"><a href="/tags/scraping">scraping</a></span>  <span class="tag .javascript"><a href="/tags/javascript">javascript</a></span>  <span class="tag .tutorial"><a href="/tags/tutorial">tutorial</a></span> 
+							</span>
+							Thursday, Nov 3, 2016
+						</div>
+						<h1 class="title">Auto Post to Craigslist</h1>
+						<img class="featured" src='../img/nightmare-web-bot-playlist.jpg' alt="">
+					</div>
+					
+
+<p>Just completed this tutorial on how to build a web bot that automatically posts ads to craigslist using Nightmare.js</p>
+
+<p>The goal of this guide is to teach you how to build web bots and web automation tools using Nightmare.js and avoid common pitfalls with proper planning, research, debugging techniques, and managing asynchronous code.</p>
+
+<h2 id="video-playlist">Video Playlist</h2>
+
+<div class="embed-wrapper">
+  <iframe 
+    src="https://www.youtube.com/embed/videoseries?list=PLRcnnTsvnkLNVvDZ6foOFkPmCV7n6eGgL" 
+    width="100%" 
+    height="100%" 
+    frameborder="1"  
+    allowfullscreen="allowfullscreen">
+  </iframe>
+</div>
+
+<h2 id="resources">Resources</h2>
+
+<ul>
+<li><a href="https://github.com/segmentio/nightmare">nightmare.js</a></li>
+<li><a href="https://www.npmjs.com/package/pryjs">pry.js</a></li>
+<li><a href="https://www.npmjs.com/package/vo">vo.js</a></li>
+<li><a href="https://medialab.github.io/artoo/">artoo.js</a></li>
+</ul>
+
+<h2 id="code">Code</h2>
+
+<h3 id="main-js">main.js</h3>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#6ab825;font-weight:bold">var</span> Nightmare = require(<span style="color:#ed9d13">&#39;nightmare&#39;</span>),
+  nightmare = Nightmare();
+<span style="color:#6ab825;font-weight:bold">var</span> vo = require(<span style="color:#ed9d13">&#39;vo&#39;</span>);
+<span style="color:#6ab825;font-weight:bold">var</span> ads = require(<span style="color:#ed9d13">&#39;./ads.js&#39;</span>);
+<span style="color:#6ab825;font-weight:bold">var</span> post = require(<span style="color:#ed9d13">&#39;./post.js&#39;</span>);
+<span style="color:#6ab825;font-weight:bold">var</span> performLogin = require(<span style="color:#ed9d13">&#39;./performLogin.js&#39;</span>);
+<span style="color:#6ab825;font-weight:bold">var</span> loginCheck = require(<span style="color:#ed9d13">&#39;./loginCheck.js&#39;</span>);
+
+<span style="color:#6ab825;font-weight:bold">var</span> run = <span style="color:#6ab825;font-weight:bold">function</span> * (totalAds) {
+
+  <span style="color:#6ab825;font-weight:bold">var</span> loggedIn = <span style="color:#6ab825;font-weight:bold">yield</span> vo(loginCheck)();
+  <span style="color:#6ab825;font-weight:bold">switch</span>(loggedIn) {
+    <span style="color:#6ab825;font-weight:bold">case</span> <span style="color:#6ab825;font-weight:bold">true</span>:
+      console.log(<span style="color:#ed9d13">&#39;Logged in succesfully&#39;</span>);
+      nightmare.end(); 
+      vo(main)(totalAds);
+      <span style="color:#6ab825;font-weight:bold">break</span>;
+    <span style="color:#6ab825;font-weight:bold">case</span> <span style="color:#6ab825;font-weight:bold">false</span>: 
+      console.log(<span style="color:#ed9d13">&#39;Login check failed, trying to login&#39;</span>)
+      loggedIn = <span style="color:#6ab825;font-weight:bold">yield</span> vo(performLogin)();
+      nightmare.end(); 
+      loggedIn ? vo(main)(totalAds) : console.log(<span style="color:#ed9d13">&#39;Unable to log in. Please verify credentials and source code&#39;</span>)
+      <span style="color:#6ab825;font-weight:bold">break</span>;
+  }
+};
+
+<span style="color:#6ab825;font-weight:bold">var</span> main = <span style="color:#6ab825;font-weight:bold">function</span> * (totalAds) {
+  <span style="color:#6ab825;font-weight:bold">var</span> post = require(<span style="color:#ed9d13">&#39;./post.js&#39;</span>);
+  <span style="color:#6ab825;font-weight:bold">var</span> ads = require(<span style="color:#ed9d13">&#39;./ads.js&#39;</span>);
+  <span style="color:#6ab825;font-weight:bold">for</span> (<span style="color:#6ab825;font-weight:bold">var</span> i = <span style="color:#3677a9">0</span>; i &lt; totalAds; i++) {
+    console.log(<span style="color:#ed9d13">&#39;Attempting to post ad&#39;</span>, i);
+    <span style="color:#6ab825;font-weight:bold">yield</span> vo(post)(ads[i], i);
+    nightmare.end();
+  }
+  process.exit();
+};</code></pre></div>
+<h3 id="logincheck-js">loginCheck.js</h3>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#6ab825;font-weight:bold">var</span> Nightmare = require(<span style="color:#ed9d13">&#39;nightmare&#39;</span>),
+  nightmare = Nightmare({show:<span style="color:#6ab825;font-weight:bold">true</span>});
+
+module.exports = <span style="color:#6ab825;font-weight:bold">function</span> * (){
+	 <span style="color:#6ab825;font-weight:bold">yield</span> nightmare.<span style="color:#6ab825;font-weight:bold">goto</span>(<span style="color:#ed9d13">&#39;https://accounts.craigslist.org/login/home&#39;</span>)
+    .wait(<span style="color:#3677a9">2000</span>)
+    .title()
+    .end()
+    .then(<span style="color:#6ab825;font-weight:bold">function</span>(result){
+      loggedIn = (result === <span style="color:#ed9d13">&#39;craigslist account&#39;</span>);
+    })
+  <span style="color:#6ab825;font-weight:bold">return</span> loggedIn
+}</code></pre></div>
+<h3 id="performlogin-js">performLogin.js</h3>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#6ab825;font-weight:bold">var</span> Nightmare = require(<span style="color:#ed9d13">&#39;nightmare&#39;</span>),
+  nightmare = Nightmare({show:<span style="color:#6ab825;font-weight:bold">true</span>});
+
+module.exports = <span style="color:#6ab825;font-weight:bold">function</span>*(){
+  <span style="color:#6ab825;font-weight:bold">var</span> loggedIn;
+  console.log(<span style="color:#ed9d13">&#39;Attempting login...&#39;</span>)
+  nightmare.<span style="color:#6ab825;font-weight:bold">goto</span>(<span style="color:#ed9d13">&#39;https://accounts.craigslist.org/login/home&#39;</span>)
+    .wait(<span style="color:#3677a9">2000</span>)
+    .insert(<span style="color:#ed9d13">&#39;#inputEmailHandle&#39;</span>, <span style="color:#ed9d13">&#39;your-username&#39;</span>)
+    .insert(<span style="color:#ed9d13">&#39;#inputPassword&#39;</span>, <span style="color:#ed9d13">&#39;your-pass&#39;</span>)
+    .click(<span style="color:#ed9d13">&#39;.login-box .accountform-btn&#39;</span>)
+    .wait(<span style="color:#3677a9">2000</span>)
+    .title()
+    .end()
+    <span style="color:#6ab825;font-weight:bold">yield</span> nightmare.then(<span style="color:#6ab825;font-weight:bold">function</span>(result){
+      loggedIn = (result === <span style="color:#ed9d13">&#39;craigslist account&#39;</span>);
+    })
+    <span style="color:#6ab825;font-weight:bold">return</span> loggedIn
+}</code></pre></div>
+<h3 id="post-js">post.js</h3>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#6ab825;font-weight:bold">var</span> Nightmare = require(<span style="color:#ed9d13">&#39;nightmare&#39;</span>),
+  vo = require(<span style="color:#ed9d13">&#39;vo&#39;</span>),
+  nightmare = Nightmare({show:<span style="color:#6ab825;font-weight:bold">true</span>});
+require(<span style="color:#ed9d13">&#39;nightmare-upload&#39;</span>)(Nightmare);
+<span style="color:#6ab825;font-weight:bold">var</span> url = <span style="color:#ed9d13">&#39;http://&#39;</span> + process.argv[<span style="color:#3677a9">2</span>] + <span style="color:#ed9d13">&#39;.craigslist.org/&#39;</span>;
+
+module.exports = <span style="color:#6ab825;font-weight:bold">function</span> * (ad, track) {
+  console.log(<span style="color:#ed9d13">&#39;Processing ad&#39;</span>, track);
+  <span style="color:#6ab825;font-weight:bold">yield</span> nightmare.<span style="color:#6ab825;font-weight:bold">goto</span>(url)
+    .wait(<span style="color:#3677a9">2000</span>)
+    .click(<span style="color:#ed9d13">&#39;#postlks #post&#39;</span>)
+    .click(<span style="color:#ed9d13">&#39;input[value=so]&#39;</span>)
+    .click(<span style="color:#ed9d13">&#39;.pickbutton&#39;</span>)
+    .wait(<span style="color:#3677a9">1000</span>)
+    .click(<span style="color:#ed9d13">&#39;label:nth-child(5) input&#39;</span>)
+    .wait(<span style="color:#3677a9">1000</span>)
+    .click(<span style="color:#ed9d13">&#39;#contact_phone_ok&#39;</span>)
+    .click(<span style="color:#ed9d13">&#39;#contact_text_ok&#39;</span>)
+    .insert(<span style="color:#ed9d13">&#39;#contact_name&#39;</span>, ad.name)
+    .insert(<span style="color:#ed9d13">&#39;#contact_phone&#39;</span>, ad.phone)
+    .insert(<span style="color:#ed9d13">&#39;#PostingTitle&#39;</span>, ad.title)
+    .insert(<span style="color:#ed9d13">&#39;#GeographicArea&#39;</span>, ad.city)
+    .insert(<span style="color:#ed9d13">&#39;#postal_code&#39;</span>, ad.zip)
+    .insert(<span style="color:#ed9d13">&#39;#PostingBody&#39;</span>, ad.body)
+    .click(<span style="color:#ed9d13">&#39;#wantamap&#39;</span>)
+    .click(<span style="color:#ed9d13">&#39;.bigbutton&#39;</span>) <span style="color:#999;font-style:italic">// continue to image uplaoder
+</span><span style="color:#999;font-style:italic"></span>    .wait(<span style="color:#3677a9">1000</span>)
+    .click(<span style="color:#ed9d13">&#39;.bigbutton&#39;</span>) <span style="color:#999;font-style:italic">// done w images
+</span><span style="color:#999;font-style:italic"></span>    .wait(<span style="color:#3677a9">1000</span>)
+    .click(<span style="color:#ed9d13">&#39;.bigbutton&#39;</span>) <span style="color:#999;font-style:italic">// publish
+</span><span style="color:#999;font-style:italic"></span>    .wait(<span style="color:#3677a9">1000</span>)
+}</code></pre></div>
+				</div>
+			</section>
+		</div>
+		<div id="footer">
+  
+  <ul class="copyright">
+    <li>&copy; Powerslacker</li>
+    <li>Design based on Prologue by
+      <a href="http://html5up.net">HTML5 UP</a>
+    </li>
+    <li>Powered by
+      <a href="https://gohugo.io/">Hugo</a>
+    </li>
+  </ul>
+
+</div>
+	</body>
+</html>

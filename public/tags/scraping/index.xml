@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Powerslacker</copyright>
-    <lastBuildDate>Thu, 29 Sep 2016 00:14:48 -0700</lastBuildDate>
+    <lastBuildDate>Thu, 03 Nov 2016 19:46:47 -0700</lastBuildDate>
     
 	<atom:link href="http://example.org/tags/scraping/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Auto Post to Craigslist</title>
+      <link>http://example.org/auto-post-craigslist/</link>
+      <pubDate>Thu, 03 Nov 2016 19:46:47 -0700</pubDate>
+      
+      <guid>http://example.org/auto-post-craigslist/</guid>
+      <description>Just completed this tutorial on how to build a web bot that automatically posts ads to craigslist using Nightmare.js
+The goal of this guide is to teach you how to build web bots and web automation tools using Nightmare.js and avoid common pitfalls with proper planning, research, debugging techniques, and managing asynchronous code.
+Video Playlist   Resources  nightmare.js pry.js vo.js artoo.js  Code main.js var Nightmare = require(&amp;#39;nightmare&amp;#39;), nightmare = Nightmare(); var vo = require(&amp;#39;vo&amp;#39;); var ads = require(&amp;#39;.</description>
+    </item>
     
     <item>
       <title>Quick and Easy Web Scraping Artoo.Js</title>
@@ -19,6 +30,17 @@
       
       <guid>http://example.org/quick-and-easy-web-scraping-with-artoo-js/</guid>
       <description>I recently discovered a neat tool which you can use to scrape data from websites with relative ease, called Artoo.js. Artoo is a javascript library built to test web scraping in the browser, before implementing them in a dedicated scraper such as Sandcrawler.js or Phantom.js One of the great things about Artoo is that installation is dead-simple since its just a bookmarklet. You can go to the Artoo website and drag it to your bookmarks bar and you&amp;rsquo;re ready to go.</description>
+    </item>
+    
+    <item>
+      <title>Get Started with Nightmare.js</title>
+      <link>http://example.org/get-started-with-nightmarejs-craigslist-screen-scraping-tutorial/</link>
+      <pubDate>Sun, 07 Aug 2016 19:30:41 -0700</pubDate>
+      
+      <guid>http://example.org/get-started-with-nightmarejs-craigslist-screen-scraping-tutorial/</guid>
+      <description>In this tutorial you will learn to build a screen scraper using node.js, nightmare.js, and jQuery. This will scrape all the gigs posted on craigslist in the computers section for any city you choose. You can hook this up to a cron job and email yourself the results at regular intervals.
+Video   Code Github repo
+Dependencies sudo apt-get install node sudo apt-get install msmtp ca-certificates sudo apt-get install gnome-scheduler npm install --save jquery npm install --save nightmare -g  Configuring MSMTP http://www.</description>
     </item>
     
   </channel>

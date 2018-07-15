@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>FIX: Can&#39;t connect to local MySQL server through socket &#39;/var/run/mysqld/mysqld.sock&#39; (2) - Powerslacker</title>
+		<title>Get Started with Nightmare.js - Powerslacker</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" href="../css/main.css" />
@@ -73,32 +73,59 @@
 					<div class="header">
 						<div class="details">
 							<span class="taglist">
-								 <span class="tag .sql"><a href="/tags/sql">sql</a></span>  <span class="tag .lamp"><a href="/tags/lamp">lamp</a></span>  <span class="tag .bugfix"><a href="/tags/bugfix">bugfix</a></span> 
+								 <span class="tag .scraping"><a href="/tags/scraping">scraping</a></span>  <span class="tag .javascript"><a href="/tags/javascript">javascript</a></span>  <span class="tag .tutorial"><a href="/tags/tutorial">tutorial</a></span> 
 							</span>
-							Friday, Jul 28, 2017
+							Sunday, Aug 7, 2016
 						</div>
-						<h1 class="title">FIX: Can&#39;t connect to local MySQL server through socket &#39;/var/run/mysqld/mysqld.sock&#39; (2)</h1>
-						<img class="featured" src='../img/mystery.jpg' alt="">
+						<h1 class="title">Get Started with Nightmare.js</h1>
+						<img class="featured" src='../img/nightmare-js.png' alt="">
 					</div>
-					<p>Quick post today. This is more for my reference than anything else, but maybe some other soul on the web will need this info.</p>
+					
 
-<p>I recently installed the LAMP stack on my Linux Mint distro. Getting mysql to start was a struggle. The main terminal error was:</p>
-<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">	Can&#39;t connect to local MySQL server through socket &#39;/var/run/mysqld/mysqld.sock&#39; (2). </code></pre></div>
-<p>I went through several Stack Overflow questions and none of the solutions were working out for me. This happens quite a bit, and it usually means something very basic is missing or messed up on your machine.</p>
+<p>In this tutorial you will learn to build a screen scraper using node.js, nightmare.js, and jQuery. This will scrape all the gigs posted on craigslist in the computers section for any city you choose. You can hook this up to a cron job and email yourself the results at regular intervals.</p>
 
-<p>SO recommended:</p>
+<h2 id="video">Video</h2>
 
-<pre><code>* Restarting the mysql server
-* Adding [mysqld] to the first line of my.cnf
-* Forcing a password reset of root user
-* ...and buried way down in the answers was change the bindings in my.cnf to 127.0.0.1
+<div class="embed-wrapper">
+  <iframe 
+    src="https://www.youtube-nocookie.com/embed/lww3DlZseF4" 
+    width="100%" 
+    height="100%" 
+    frameborder="1"  
+    allowfullscreen="allowfullscreen">
+  </iframe>
+</div>
+
+<h2 id="code">Code</h2>
+
+<p><a href="https://github.com/powerslacker/nightmare-gigs">Github repo</a></p>
+
+<h2 id="dependencies">Dependencies</h2>
+
+<pre><code>sudo apt-get install node
+
+sudo apt-get install msmtp ca-certificates
+
+sudo apt-get install gnome-scheduler
+
+npm install --save jquery 
+
+npm install --save nightmare -g
 </code></pre>
 
-<p>The last answer, changing the bindings is what worked for me. I had to dig through my error logs to find out that the db was failing to connect to some random port.</p>
+<h2 id="configuring-msmtp">Configuring MSMTP</h2>
 
-<p>Possibly a default port? If you know, send me a message!</p>
+<p><a href="http://www.absolutelytech.com/2010/07/17/howto-configure-msmtp-to-work-with-gmail-on-linux/">http://www.absolutelytech.com/2010/07/17/howto-configure-msmtp-to-work-with-gmail-on-linux/</a></p>
 
-<p>Anyways, I feel like a cretin for not spotting this in the first place. Too much MongoDB may be causing my SQL debugging skills atrophy.</p>
+<h2 id="gnome-scheduler-job">Gnome Scheduler Job</h2>
+
+<pre><code>node gigs.js provo &gt; gigs-email.txt &amp;&amp; msmtp -t &lt; gigs-email.txt
+</code></pre>
+
+<p>NOTE: You will need to cd into the correct directory in the job unless you have the files stored in your home directory i.e.</p>
+
+<pre><code>cd [your_app_directory] &amp;&amp; node gigs.js provo &gt; gigs-email.txt &amp;&amp; msmtp -t &lt; gigs-email.txt
+</code></pre>
 
 				</div>
 			</section>

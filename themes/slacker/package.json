@@ -1,0 +1,25 @@
+{
+  "name": "slacker",
+  "version": "1.0.0",
+  "description": "Slacker is a modified verison of the Prologue theme from HTML5UP",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sethmacleod/prologue.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sethmacleod/prologue/issues"
+  },
+  "homepage": "https://github.com/sethmacleod/prologue#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.1.0",
+    "gulp-sass": "^3.1.0"
+  }
+}

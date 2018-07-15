@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Powerslacker</copyright>
-    <lastBuildDate>Thu, 14 Dec 2017 04:48:54 -0700</lastBuildDate>
+    <lastBuildDate>Sat, 24 Feb 2018 15:10:34 -0700</lastBuildDate>
     
 	<atom:link href="http://example.org/tags/webdev/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Converting from Wordpress to Hugo</title>
+      <link>http://example.org/converting-wordpress-hugo/</link>
+      <pubDate>Sat, 24 Feb 2018 15:10:34 -0700</pubDate>
+      
+      <guid>http://example.org/converting-wordpress-hugo/</guid>
+      <description>A few weeks ago, one of my posts &amp;ldquo;RE: PHP to Golang and Back Again&amp;rdquo; made it to the front page of Hacker News. It stayed at the third position on the front page for several hours, and was on the front page itself for no less than twelve hours! This was a major traffic boost for my blog, resulting in nearly thirty-thousand unique visitors in under two days. At one point, Google Analytics reported over one-thousand concurrent users.</description>
+    </item>
     
     <item>
       <title>RE: Moving From PHP to Go and Back Again</title>
@@ -30,6 +39,17 @@ This post is top 3 on hacker news. Not bad for a random rant I threw together!</
       
       <guid>http://example.org/currying-why-is-it-useful/</guid>
       <description>Currying. It can be a frightening word. Textbook examples of currying appear to be hieroglyphics to the untrained eye. It doesn&amp;rsquo;t help that textbooks examples of currying use poorly named variables such as x, y, foo, and bar. I recently got a good grasp of the basics of currying and figured I&amp;rsquo;d share my understanding. Currying can be considered part of the functional programming (FP, for short) paradigm. The goal of functional programming is to make code:</description>
+    </item>
+    
+    <item>
+      <title>Learn Javascript with a Simple Project: &#39;Rock Paper Sccisors&#39;</title>
+      <link>http://example.org/learn-javascript-simple-project-rock-paper-scissors/</link>
+      <pubDate>Tue, 29 Nov 2016 18:46:36 -0700</pubDate>
+      
+      <guid>http://example.org/learn-javascript-simple-project-rock-paper-scissors/</guid>
+      <description>So you wanna learn Javascript? The best way to learn to code is by coding! In this tutorial series I’ll be training you on how to build ‘Rock, Paper, Scissors’ with Javascript.
+You will learn the basic Javascript fundamentals so you can hit the ground running and build interesting projects of your own.
+This series is aimed at absolute beginners – people who are new to Javascript, and are looking for a quick, but thorough introduction to JS.</description>
     </item>
     
     <item>

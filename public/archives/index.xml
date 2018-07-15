@@ -7,10 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Powerslacker</copyright>
-    <lastBuildDate>Mon, 15 Jan 2018 19:47:40 -0700</lastBuildDate>
+    <lastBuildDate>Sun, 15 Jul 2018 14:00:00 -0700</lastBuildDate>
     
 	<atom:link href="http://example.org/archives/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Golang: A Synopsis</title>
+      <link>http://example.org/golang-synopsis/</link>
+      <pubDate>Sun, 15 Jul 2018 14:00:00 -0700</pubDate>
+      
+      <guid>http://example.org/golang-synopsis/</guid>
+      <description>This article is an attempt to coalesce the answers to many frequently asked questions on Golang I have seen floating around the net. I sense that many of the Go FAQ&amp;rsquo;s leave something to be desired in terms of the history of Go and it&amp;rsquo;s nature. I wanted to try my hand at a more robust introduction to Golang, that would give some context to the intention, history, and feel of the language and the community that has formed around it.</description>
+    </item>
+    
+    <item>
+      <title>Converting from Wordpress to Hugo</title>
+      <link>http://example.org/converting-wordpress-hugo/</link>
+      <pubDate>Sat, 24 Feb 2018 15:10:34 -0700</pubDate>
+      
+      <guid>http://example.org/converting-wordpress-hugo/</guid>
+      <description>A few weeks ago, one of my posts &amp;ldquo;RE: PHP to Golang and Back Again&amp;rdquo; made it to the front page of Hacker News. It stayed at the third position on the front page for several hours, and was on the front page itself for no less than twelve hours! This was a major traffic boost for my blog, resulting in nearly thirty-thousand unique visitors in under two days. At one point, Google Analytics reported over one-thousand concurrent users.</description>
+    </item>
     
     <item>
       <title>2 Years of Linux Mint</title>

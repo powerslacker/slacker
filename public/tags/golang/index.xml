@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Powerslacker</copyright>
-    <lastBuildDate>Thu, 14 Dec 2017 04:48:54 -0700</lastBuildDate>
+    <lastBuildDate>Sun, 15 Jul 2018 14:00:00 -0700</lastBuildDate>
     
 	<atom:link href="http://example.org/tags/golang/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Golang: A Synopsis</title>
+      <link>http://example.org/golang-synopsis/</link>
+      <pubDate>Sun, 15 Jul 2018 14:00:00 -0700</pubDate>
+      
+      <guid>http://example.org/golang-synopsis/</guid>
+      <description>This article is an attempt to coalesce the answers to many frequently asked questions on Golang I have seen floating around the net. I sense that many of the Go FAQ&amp;rsquo;s leave something to be desired in terms of the history of Go and it&amp;rsquo;s nature. I wanted to try my hand at a more robust introduction to Golang, that would give some context to the intention, history, and feel of the language and the community that has formed around it.</description>
+    </item>
     
     <item>
       <title>RE: Moving From PHP to Go and Back Again</title>

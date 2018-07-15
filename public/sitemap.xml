@@ -3,6 +3,16 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://example.org/golang-synopsis/</loc>
+    <lastmod>2018-07-15T14:00:00-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/converting-wordpress-hugo/</loc>
+    <lastmod>2018-02-24T15:10:34-07:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://example.org/2-years-linux-mint/</loc>
     <lastmod>2018-01-15T19:47:40-07:00</lastmod>
   </url>
@@ -23,6 +33,16 @@
   </url>
   
   <url>
+    <loc>http://example.org/learn-javascript-simple-project-rock-paper-scissors/</loc>
+    <lastmod>2016-11-29T18:46:36-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://example.org/auto-post-craigslist/</loc>
+    <lastmod>2016-11-03T19:46:47-07:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://example.org/10-things-web-developer-designer/</loc>
     <lastmod>2016-10-24T20:12:04-07:00</lastmod>
   </url>
@@ -33,8 +53,13 @@
   </url>
   
   <url>
+    <loc>http://example.org/get-started-with-nightmarejs-craigslist-screen-scraping-tutorial/</loc>
+    <lastmod>2016-08-07T19:30:41-07:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://example.org/archives/</loc>
-    <lastmod>2018-01-15T19:47:40-07:00</lastmod>
+    <lastmod>2018-07-15T14:00:00-07:00</lastmod>
   </url>
   
   <url>
@@ -56,7 +81,13 @@
   
   <url>
     <loc>http://example.org/tags/golang/</loc>
-    <lastmod>2017-12-14T04:48:54-07:00</lastmod>
+    <lastmod>2018-07-15T14:00:00-07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.org/tags/hugo/</loc>
+    <lastmod>2018-02-24T15:10:34-07:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -86,12 +117,12 @@
   
   <url>
     <loc>http://example.org/</loc>
-    <lastmod>2018-01-15T19:47:40-07:00</lastmod>
+    <lastmod>2018-07-15T14:00:00-07:00</lastmod>
   </url>
   
   <url>
     <loc>http://example.org/tags/scraping/</loc>
-    <lastmod>2016-09-29T00:14:48-07:00</lastmod>
+    <lastmod>2016-11-03T19:46:47-07:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -108,8 +139,25 @@
   </url>
   
   <url>
+    <loc>http://example.org/tags/tutorial/</loc>
+    <lastmod>2016-11-29T18:46:36-07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.org/videos/</loc>
+    <lastmod>2016-11-29T18:46:36-07:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://example.org/tags/webdev/</loc>
-    <lastmod>2017-12-14T04:48:54-07:00</lastmod>
+    <lastmod>2018-02-24T15:10:34-07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.org/tags/wordpress/</loc>
+    <lastmod>2018-02-24T15:10:34-07:00</lastmod>
     <priority>0</priority>
   </url>
   

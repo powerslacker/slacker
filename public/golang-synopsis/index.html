@@ -1,0 +1,419 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Golang: A Synopsis - Powerslacker</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../css/main.css" />
+		<link rel="stylesheet" href="../css/cards.css" />
+	</head>
+	<body>
+		<input type="checkbox" id="header_toggle">
+<label for="header_toggle" class="header_toggle__label">
+  <i class="fa fa-bars"></i>
+</label>
+<div id="header">
+  
+  <div class="top">
+    
+    <div id="logo">
+      <span class="image avatar48">
+        <img src="../../img/lambda.svg" alt="" />
+      </span>
+      <h1 id="title" data-text="Powerslacker">Powerslacker</h1>
+      <p>Perspectives for the Ambitiously Lazy</p>
+    </div>
+    
+    <nav id="nav">
+      <ul>
+         
+          <li>
+  <a href="/" id="top-link">
+    <span class="icon fa-home">Home</span>
+  </a>
+</li>
+         
+          <li>
+  <a href="/archives/" id="top-link">
+    <span class="icon fa-calendar">Archives</span>
+  </a>
+</li>
+         
+          <li>
+  <a href="/videos/" id="top-link">
+    <span class="icon fa-play-circle">Videos</span>
+  </a>
+</li>
+        
+      </ul>
+    </nav>
+  </div>
+  <div class="bottom">
+    
+    <ul class="icons">
+      
+        <li>
+          <a href="https://github.com/powerslacker" class="icon fa-github" alt="github"></a>
+        </li>
+      
+        <li>
+          <a href="https://www.youtube.com/c/powerslacker" class="icon fa-youtube-play" alt="youtube"></a>
+        </li>
+      
+        <li>
+          <a href="https://twitter.com/thepowerslacker" class="icon fa-twitter" alt="twitter"></a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+		<div id="main">
+			<section>
+				<div class="container post">
+					<div class="header">
+						<div class="details">
+							<span class="taglist">
+								 <span class="tag .golang"><a href="/tags/golang">golang</a></span> 
+							</span>
+							Sunday, Jul 15, 2018
+						</div>
+						<h1 class="title">Golang: A Synopsis</h1>
+						<img class="featured" src='../img/gopher-wizard.svg' alt="">
+					</div>
+					
+
+<p>This article is an attempt to coalesce the answers to many frequently asked questions on Golang I have seen floating around the net. I sense that many of the Go FAQ&rsquo;s leave something to be desired in terms of the history of Go and it&rsquo;s nature. I wanted to try my hand at a more robust introduction to Golang, that would give some context to the intention, history, and feel of the language and the community that has formed around it.</p>
+
+<h2 id="what-is-golang">What is Golang?</h2>
+
+<p>Golang, aka Go, is an open source programming language developed internally at Google. It is designed to make teams of programmers more productive while working on projects involving networked systems, multi-core computers, and the web.</p>
+
+<h2 id="who-created-golang">Who Created Golang?</h2>
+
+<p>Golang was created by  Robert Griesemer, Rob Pike, and Ken Thompson. The original three-man team developed the core language for release at Google. After Go&rsquo;s initial release to the public, the project has been an open-source endeavor and many hands have worked on the source code that makes up the Go programming language.</p>
+
+<h2 id="why-was-golang-created">Why was Golang Created?</h2>
+
+<p>Ken Thompson <a href="http://www.drdobbs.com/open-source/interview-with-ken-thompson/229502480">stated in an interview</a>:</p>
+
+<blockquote>
+<p>&hellip;The three of us got together and decided that we hated C++, it&rsquo;s too complex. Going back&hellip;if we&rsquo;d thought of it, we&rsquo;d have done an object-oriented version of C. But we were not evangelists of object orientation&hellip;we started off with the idea that all three of us had to be talked into every feature in the language, so there was no extraneous garbage put into the language for any reason.</p>
+</blockquote>
+
+<p>Go&rsquo;s inception was the result of a shared distaste for C++ and the desire to make a higher-level programming language akin to C without the cruft of many modern languages.</p>
+
+<p>The <a href="https://golang.org/doc/faq#creating_a_new_language">Go FAQ goes further</a> stating:</p>
+
+<blockquote>
+<p>Go was born out of frustration with existing languages and environments for systems programming. Programming had become too difficult and the choice of languages was partly to blame. One had to choose either efficient compilation, efficient execution, or ease of programming; all three were not available in the same mainstream language. Programmers who could were choosing ease over safety and efficiency by moving to dynamically typed languages such as Python and JavaScript rather than C++ or, to a lesser extent, Java.</p>
+</blockquote>
+
+<p>This gives Go the additional goal of being a reliable, type-safe, and developer-friendly systems programming language. The end goal of Go is to offer the performance, safety, and power of modern compiled languages while having the flexibility and simplicity of modern scripting languages.</p>
+
+<h2 id="is-go-a-scripting-language">Is Go a Scripting Language?</h2>
+
+<p>No. Not in the traditional sense. Go produces stand-alone, compiled binaries for specific platforms. It&rsquo;s also statically-typed, a feature that is rare in scripting languages. However, the tooling and build time associated with Go allows for Go programs to be developed and used similarly to those of scripting languages.</p>
+
+<p>For example, The <code>go run</code> command can build and execute small Go programs at speeds akin to interpreted languages, while maintaining the performance optimizations of a compiled language. This means Go is suitable as a replacement for scripting tasks that are &ldquo;one-shots&rdquo; such as file manipulation, but a poor choice for reusable extensions or plugins to other programs.</p>
+
+<h2 id="what-does-golang-look-like">What Does Golang Look Like?</h2>
+
+<p>Here is an example of printing the current time in Go:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#6ab825;font-weight:bold">package</span> main
+
+<span style="color:#6ab825;font-weight:bold">import</span> (
+	<span style="color:#ed9d13">&#34;fmt&#34;</span>
+	<span style="color:#ed9d13">&#34;time&#34;</span>
+)
+
+<span style="color:#6ab825;font-weight:bold">func</span> main() {
+	fmt.Println(<span style="color:#ed9d13">&#34;The time is&#34;</span>, time.Now())
+}</code></pre></div>
+<p>As seen above, Go programs have a package name, and every runnable Go program has a <code>main</code> function that acts as the entry point to the program. Code from existing packages and the standard library can be used via the <code>import</code> keyword. Go  code does not require semi-colons as a line-delimiter, and functions are declared as <code>func</code> for brevity. This is a simple example adopted from  <a href="https://tour.golang.org">A Tour of Go</a>, where more examples of Go code can be found.</p>
+
+<h2 id="what-makes-golang-different-than-other-programming-languages">What Makes Golang Different than Other Programming Languages?</h2>
+
+<p>Go is a highly-opinionated, statically-typed, compiled, concurrent, cross-platform language, with relatively simple features compared to most high-level programming languages. It has robust programming tools, automatic garbage collection, and a broad standard library. This primary differences this brings to Go are:</p>
+
+<ul>
+<li>quick build times</li>
+<li>slim binaries</li>
+<li>highly &ldquo;readable&rdquo; code</li>
+<li>fewer runtime errors when compared with most scripting languages</li>
+<li>less complexity and boilerplate when compared with most compiled languages</li>
+</ul>
+
+<h2 id="what-data-types-are-available-in-go">What Data Types are Available in Go?</h2>
+
+<p>Go has a slim list of basic built-in types:</p>
+
+<ul>
+<li><code>bool</code></li>
+
+<li><p><code>string</code></p></li>
+
+<li><p><code>int</code></p>
+
+<ul>
+<li><code>int8</code><br /></li>
+<li><code>int16</code></li>
+<li><code>int32</code>  (can be aliased as <code>rune</code>)</li>
+<li><code>int64</code></li>
+</ul></li>
+
+<li><p><code>uint</code></p>
+
+<ul>
+<li><code>uint8</code> (can be aliased as byte)</li>
+<li><code>uint16</code></li>
+<li><code>uint32</code></li>
+<li><code>uint64</code></li>
+<li><code>uintptr</code></li>
+</ul></li>
+
+<li><p><code>float32</code></p></li>
+
+<li><p><code>float64</code></p></li>
+
+<li><p><code>complex64</code></p></li>
+
+<li><p><code>complex128</code></p></li>
+</ul>
+
+<p>Additionally, Go has higher-level types such as:</p>
+
+<ul>
+<li><code>struct</code> for structured data</li>
+<li><code>interface</code> for type abstraction</li>
+<li><code>chan</code> for channels - a concurrency primitive</li>
+<li><code>array</code> for defined collections</li>
+<li><code>slice</code>, for dynamic collections</li>
+<li><code>map</code>, for dynamic, key-indexed collections</li>
+</ul>
+
+<p>Virtually all types are a <em>reference</em> by default &ndash; meaning they do not refer to a specific memory address. Alternatively, a programmer can declare a variable as a <em>pointer</em> by prefixing it&rsquo;s type with the asterisk symbol (i.e <code>var foo *int</code>) meaning that the variable does point to a specific address in memory.</p>
+
+<p>The types listed above can be mixed and matched by users to extend the language and create their own types. New types created by users can have their own methods, private / public fields, fulfill interfaces, and be embedded into other user-defined types.</p>
+
+<p>In this regard, Go&rsquo;s type system is similar to mainstream object-oriented languages, but with greater simplicity. The simplicity of the type system can be considered both a blessing and a curse. Many programming tasks become less burdensome due to reduced boilerplate. On the other hand, some common tasks are made tedious due to the lack of generics.</p>
+
+<h2 id="why-is-go-so-fast">Why is Go so Fast?</h2>
+
+<p>Go is fast. Nearly as fast as some of the top compiled languages. A few reasons why:</p>
+
+<ul>
+<li>Efficient usage of memory</li>
+<li>Compiled into machine bytecode &ndash; by nature it&rsquo;s hard to achieve the same results by adding the overhead of a virtual machine or runtime environment.</li>
+<li>Clever cache utilization</li>
+<li>Dead code elimination and function inlining</li>
+</ul>
+
+<p>Dave Cheney wrote an excellent article titled &ldquo;<a href="https://dave.cheney.net/2014/06/07/five-things-that-make-go-fast">Five Things That Make Go Fast</a>&rdquo; covering all these and more in greater detail.</p>
+
+<h2 id="why-is-golang-popular">Why is Golang Popular?</h2>
+
+<p>Golang has broken the top 20 on the TIOBE Index, and as of the writing of this article rests at #18. What began as an experiment less than a decade ago has become a major player in the programming world. How did this happen - and why did Go become popular so quickly?</p>
+
+<h3 id="go-makes-hacker-news">Go Makes Hacker News</h3>
+
+<p>On August 30, 2012, <a href="https://groups.google.com/forum/#!topic/golang-nuts/hC0aJ8IASi4/discussion">Hampton Catlin posted the following on the golang-nuts Google Group</a>:</p>
+
+<blockquote>
+<p>100% of our production system is now running Go as 95% of our</p>
+
+<p>application (C being the other bits). Not side bits, but our critical</p>
+
+<p>path.</p>
+
+<p>We&rsquo;re running around 800 million requests a month</p>
+
+<p>through our various public-facing sites run on more than</p>
+
+<p>500 servers on AWS.</p>
+
+<p>Sites we power that are in pure-Go&hellip;</p>
+
+<p><a href="http://m.macys.com/">http://m.macys.com</a></p>
+
+<p><a href="http://m.1800flowers.com/">http://m.1800flowers.com</a></p>
+
+<p>&hellip;and a lot more.</p>
+
+<p>We are running this on our production servers, but we</p>
+
+<p>also have a local development env that our customers run</p>
+
+<p>and that is compiled in all three major operating systems.</p>
+
+<p>We have a binary executable available for Linux, Mac OSX,</p>
+
+<p>Since 1.0, Go has been ridiculously stable for us and</p>
+
+<p>the decision to switch has been one of the better decisions</p>
+
+<p>we&rsquo;ve made as a business.</p>
+
+<p>The power and speed of a compiled language, with the</p>
+
+<p>flexibility and agility that we&rsquo;ve come to expect in a</p>
+
+<p>modern language.</p>
+</blockquote>
+
+<p>Catlin&rsquo;s review of the Go programming language is nothing short of glowing. The post was linked to on Hacker News the same day and quickly made its way to the front page. This was one of the first reports of major systems outside of Google having good results with Go in a production environment.</p>
+
+<h3 id="early-adopter-s-report-success-with-golang">Early Adopter&rsquo;s Report Success With Golang</h3>
+
+<p>In 2013, Dylan Stamat posted an article titled <a href="https://blog.iron.io/how-we-went-from-30-servers-to-2-go/">&ldquo;How We Went from 30 Servers to 2: Go&rdquo;</a>. In the article, Stamat describes the transformation in server load during the switch of IronWorker from Ruby to Go:</p>
+
+<blockquote>
+<p>Our sustained CPU usage on our servers was approximately 50-60%.  When it increased a bit, we’d add more servers to keep it around 50%. This was fine as long as we didn’t mind paying for a lot of servers (we did mind). The bigger problem was dealing with big traffic spikes. When a big spike in traffic came in, it created a domino effect that would take take down our entire cluster.</p>
+
+<p>After we rolled out our Go version, we reduced our server count to two and we really only had two for redundancy. They were barely utilized, it was <strong>almost as if nothing was running on them</strong>. Our CPU utilization was less than 5% and the entire process started up with only a few hundred KB’s of memory (on startup) vs our Rails apps which were ~50MB (on startup). Compare that even to JVM memory usage! It was night and day.</p>
+</blockquote>
+
+<h3 id="docker-replaces-python-with-go">Docker Replaces Python with Go</h3>
+
+<p>On March 13, 2014 Docker released version 0.9, where Go replaced Python as the container execution environment. In November 2014, Docker became supported on AWS EC2 instances quickly making it synonymous with containers in the web development industry.</p>
+
+<p>Docker and AWS, being one of the main platforms for new web products and deployments brought the additional credibility that Go needed to gain headway. Google Trends results show Golang gaining roughly a 25% increase in search traffic in early 2015, followed by major gains each year following.</p>
+
+<h3 id="golang-finds-a-niche">Golang Finds a Niche</h3>
+
+<p>It seems that the hype around Golang has been the result of early adopters reporting that the language worked for them in production - that they took a risk betting on a Google experiment and the payoffs were big. Programmers, being a pragmatic bunch, share the stories of a new language with major benefits &ndash; and they want the same results those early adopters found. The Go programming language, oddly enough, has found a niche with web developers working on cloud software &ndash; not the C++ developers the creators originally aimed for.</p>
+
+<p>Rob Pike saw Go was gaining popularity in the web development community, and in 2012 wrote this about <a href="https://commandcenter.blogspot.com/2012/06/less-is-exponentially-more.html">the shift of Python and Ruby to developers to Go</a>:</p>
+
+<blockquote>
+<p>Python and Ruby programmers come to Go because they don&rsquo;t
+have to surrender much expressiveness, but gain
+performance and get to play with concurrency.</p>
+
+<p>C++ programmers don&rsquo;t come to Go because they have fought
+hard to gain exquisite control of their programming
+domain, and don&rsquo;t want to surrender any of it. To them,
+software isn&rsquo;t just about getting the job done, it&rsquo;s
+about doing it a certain way.</p>
+
+<p>The issue, then, is that Go&rsquo;s success would contradict
+their world view.</p>
+
+<p>And we should have realized that from the beginning.
+People who are excited about C++11&rsquo;s new features are not
+going to care about a language that has so much less.<br />
+Even if, in the end, it offers so much more.</p>
+</blockquote>
+
+<h2 id="what-is-go-good-at">What is Go Good at?</h2>
+
+<h3 id="performance">Performance</h3>
+
+<p>Go regularly outperforms Java, PHP, Python, Perl, Ruby, Bash, and NodeJS in benchmark tests. There are some examples of Java outperforming Go in certain benchmarks, primarily in those that favor Java&rsquo;s Garbage Collector.</p>
+
+<p>In addition to performance benchmarks, Go has a strong body of anecdotal evidence demonstrating that it does exceptionally well when it comes to concurrent processing such as web servers under heavy load or distributed workloads.</p>
+
+<h3 id="networked-applications">Networked Applications</h3>
+
+<p>Go has built in functionality for a wide variety of networking tasks including easy to use implementations for TCP, HTTP, and UDP servers. Most common functionality for networking is also baked-in so dealing with IP addresses, MAC addresses, ports, DNS, etc. are relatively simple. This makes Go a great language for pushing data around, working with IoT devices, or developing powerful and fast web applications.</p>
+
+<h3 id="simplicity-readability">Simplicity &amp; Readability</h3>
+
+<p>Rob Pike stated in his 2012 article &ldquo;<a href="https://commandcenter.blogspot.com/2012/06/less-is-exponentially-more.html">Less is exponentially more</a>&rdquo; :</p>
+
+<blockquote>
+<p>There&rsquo;s an unrelated aspect of Go&rsquo;s design I&rsquo;d like to touch upon: Go was designed to help write big programs, written and maintained by big teams.</p>
+
+<p>There&rsquo;s this idea about &ldquo;programming in the large&rdquo; and somehow C++ and Java own that domain. I believe that&rsquo;s just a historical accident, or perhaps an industrial accident. But the widely held belief is that it has something to do with object-oriented design.</p>
+
+<p>I don&rsquo;t buy that at all. Big software needs methodology to be sure, but not nearly as much as it needs strong dependency management and clean interface abstraction and superb documentation tools, none of which is served well by C++ (although Java does noticeably better).</p>
+</blockquote>
+
+<p>Go is a very basic language. There are a handful of data types, abstractions, and a relatively compact standard library. In this simplicity lies one of Go&rsquo;s greatest strengths. A relatively skilled programmer, who is familiar with programming in any C-based language can get up and running with Go in a matter of days, can be competent in a few weeks, and be skilled in a few months. There&rsquo;s not a lot of fancy tricks, syntactic sugar, or magic.</p>
+
+<p>On top of the clarity provided by a small, strict language &ndash; <code>gofmt</code> the formatting tool that is shipped with Go, is the default and the standard.  This means that holy wars over formatting in Golang are few and far between.</p>
+
+<p>All things considered, Go code written by a Senior Developer, a Junior Developer, or even a layman can be worked on by virtually any other Go practioner. This is a major victory for industry and open source projects. With Go, there are fewer bits of code that can only be understood by those who have studied the higher mysteries. A Go program can be read and understood by almost any programmer given enough time. Compare this with Java/C++, where one must understand the language, the OOP philosophy, and the abstraction philosophy of a program&rsquo;s authors in order to understand a program of even moderate complexity.</p>
+
+<h2 id="what-is-go-bad-at">What is Go Bad at?</h2>
+
+<h3 id="gui-development">GUI Development</h3>
+
+<p>Go was not created for GUI development, and very little effort has been used to push it towards that direction. This may be due to Go&rsquo;s aim to be cross-platform, while GUI development can be a highly OS specific activity. Some Go developers have made bindings to various GUI toolkits such as Nuklear / OpenGL, but there isn&rsquo;t any standard and the bindings tend to be reliant on external dependences. Nearly a decade of Golang and the most cross-compatible graphics layer available is HTML + CSS.</p>
+
+<h3 id="very-simple-programs">Very Simple Programs</h3>
+
+<p>While usable as a replacement for scripting languages, Golang can be a heavyweight solution when compared to Ruby, Perl, Javascript, Bash, or Python for scripts. If all you need to do is filter a dynamic list, fill in some text based on user input, or rename a few files - Go might be overkill.</p>
+
+<h3 id="absolutely-critical-performance">Absolutely Critical Performance</h3>
+
+<p>Go is fast, but it still loses to C++/C in the vast majority of cases. It can get close, but automatic garbage collection cannot beat manual memory management. If you are planning on developing a pacemaker or launching rockets into space - don&rsquo;t use Go.</p>
+
+<h2 id="what-production-systems-use-go">What Production Systems use Go?</h2>
+
+<ul>
+<li>Docker &ndash; software application containers</li>
+<li>Heroku &ndash; cloud deployment</li>
+<li>Cloudflare &ndash; content delivery network</li>
+<li>Medium &ndash; blog engine</li>
+<li>Iron.io &ndash; containerized background jobs / batch processing</li>
+<li>Moovweb &ndash; mobile presentation layer for enterprise websites</li>
+</ul>
+
+<h2 id="how-to-get-started-with-golang">How to Get Started with Golang</h2>
+
+<p>Getting started with Golang can be a daunting task. Its still a young programming language, so good online resources for learning it are relatively sparse. Luckily it is a simple language and if you are familiar with any C-based language, you will probably pick up Go quickly. I&rsquo;ve included some resources that should help beginners get the ball rolling:</p>
+
+<h3 id="basics">Basics</h3>
+
+<ul>
+<li><a href="https://golang.org/doc/install">Installation</a></li>
+<li><a href="https://tour.golang.org">A Tour of Go</a></li>
+<li><a href="https://gobyexample.com/">Go by Example</a></li>
+</ul>
+
+<h3 id="repl">REPL</h3>
+
+<p>Well, sort-of. As close to a REPL as you can get with a compiled language.</p>
+
+<ul>
+<li><a href="https://play.golang.org/">The Go Playground</a></li>
+<li><a href="https://go-sandbox.com/">Go Sandbox</a></li>
+</ul>
+
+<h3 id="tutorials-articles">Tutorials &amp; Articles</h3>
+
+<ul>
+<li><a href="http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/">50 Shades of Go: Traps, Gotchas, and Common Mistakes for New Golang Devs</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLSak_q1UXfPqOSPQ9Y_1pwQW57g3tRz1m">Fresno City College - Google&rsquo;s Go Language</a></li>
+<li><a href="https://brianketelsen.com/web-assembly-and-go-a-look-to-the-future/">Web Assembly and Go: A look to the future</a></li>
+<li><a href="https://astaxie.gitbooks.io/build-web-application-with-golang/content/en/">Building Web Applications  with Go</a></li>
+<li><a href="https://nathanleclaire.com/blog/2014/12/29/shelled-out-commands-in-golang/">Shelled Out Commands In Golang</a></li>
+<li><a href="https://medium.com/@zach_4342/dependency-injection-in-golang-e587c69478a8">Dependency Injection in Golang</a></li>
+<li><a href="https://hackthology.com/object-oriented-inheritance-in-go.html">Object Oriented Inheritance in Go</a></li>
+<li><a href="https://ipfs.io/ipfs/QmfYeDhGH9bZzihBUDEQbCbTc5k5FZKURMUoUvfmc27BwL/index.html">Network Programming with Go</a></li>
+<li><a href="https://medium.freecodecamp.org/million-websockets-and-go-cc58418460bb">A Million WebSockets and Go</a></li>
+<li><a href="https://awalterschulze.github.io/blog/post/monads-for-goprogrammers/">Monads for Go Programmers</a></li>
+<li><a href="http://go-database-sql.org/">Go Database / SQL Tutorial</a></li>
+<li><a href="https://medium.com/learning-the-go-programming-language/bit-hacking-with-go-e0acee258827">Bit Hacking with Go</a></li>
+<li><a href="https://gophercises.com/">Gophercises</a></li>
+<li><a href="https://appliedgo.net/">Applied Go</a></li>
+</ul>
+
+				</div>
+			</section>
+		</div>
+		<div id="footer">
+  
+  <ul class="copyright">
+    <li>&copy; Powerslacker</li>
+    <li>Design based on Prologue by
+      <a href="http://html5up.net">HTML5 UP</a>
+    </li>
+    <li>Powered by
+      <a href="https://gohugo.io/">Hugo</a>
+    </li>
+  </ul>
+
+</div>
+	</body>
+</html>
