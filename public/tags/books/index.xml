@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Books on Powerslacker</title>
+    <link>http://example.org/tags/books/</link>
+    <description>Recent content in Books on Powerslacker</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Powerslacker</copyright>
+    <lastBuildDate>Mon, 20 Aug 2018 14:00:00 -0700</lastBuildDate>
+    
+	<atom:link href="http://example.org/tags/books/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Key Takeaways: The Pragmatic Programmer</title>
+      <link>http://example.org/pragmatic-programmer/</link>
+      <pubDate>Mon, 20 Aug 2018 14:00:00 -0700</pubDate>
+      
+      <guid>http://example.org/pragmatic-programmer/</guid>
+      <description>I first read The Pragmatic Programmer in 2017, after seeing it pop up in numerous online discussions as a must-read book for every programmer looking to hone their craft. I immediately saw what the hype was about. Now, nearly two years later I have begun perusing its pages once more, and it seems all the more relevant. Things that I missed in my first pass stand out to me, and I&amp;rsquo;ve lost count of how many tips mentioned in this book that I had to learn the hard way.</description>
+    </item>
+    
+  </channel>
+</rss>
