@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Powerslacker</copyright>
-    <lastBuildDate>Sun, 15 Jul 2018 14:00:00 -0700</lastBuildDate>
+    <lastBuildDate>Sat, 08 Sep 2018 11:50:00 -0700</lastBuildDate>
     
 	<atom:link href="http://example.org/tags/golang/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Interfaces Are Useless</title>
+      <link>http://example.org/interfaces-are-useless/</link>
+      <pubDate>Sat, 08 Sep 2018 11:50:00 -0700</pubDate>
+      
+      <guid>http://example.org/interfaces-are-useless/</guid>
+      <description>When I first started using Go, one of the most confusing aspects was the interface type. I tried reading the source code of common interface definitions. I tried reading several tutorials. For a long time, I thought that interfaces were pointless, useless, and confusing.
+The purpose of this article is to demonstrate that the interface type &amp;ndash; although useless &amp;ndash; is far from pointless and only slightly confusing. The interface through it&amp;rsquo;s uselessness, can be a powerful tool in the Go programmer&amp;rsquo;s arsenal.</description>
+    </item>
     
     <item>
       <title>Golang: A Synopsis</title>

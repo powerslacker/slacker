@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Interfaces Are Useless - Powerslacker</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../css/main.css" />
+		<link rel="stylesheet" href="../css/cards.css" />
+	</head>
+	<body>
+		<input type="checkbox" id="header_toggle">
+<label for="header_toggle" class="header_toggle__label">
+  <i class="fa fa-bars"></i>
+</label>
+<div id="header">
+  
+  <div class="top">
+    
+    <div id="logo">
+      <span class="image avatar48">
+        <img src="../../img/lambda.svg" alt="" />
+      </span>
+      <h1 id="title" data-text="Powerslacker">Powerslacker</h1>
+      <p>Perspectives for the Ambitiously Lazy</p>
+    </div>
+    
+    <nav id="nav">
+      <ul>
+         
+          <li>
+  <a href="/" id="top-link">
+    <span class="icon fa-home">Home</span>
+  </a>
+</li>
+         
+          <li>
+  <a href="/archives/" id="top-link">
+    <span class="icon fa-calendar">Archives</span>
+  </a>
+</li>
+         
+          <li>
+  <a href="/videos/" id="top-link">
+    <span class="icon fa-play-circle">Videos</span>
+  </a>
+</li>
+        
+      </ul>
+    </nav>
+  </div>
+  <div class="bottom">
+    
+    <ul class="icons">
+      
+        <li>
+          <a href="https://github.com/powerslacker" class="icon fa-github" alt="github"></a>
+        </li>
+      
+        <li>
+          <a href="https://www.youtube.com/c/powerslacker" class="icon fa-youtube-play" alt="youtube"></a>
+        </li>
+      
+        <li>
+          <a href="https://twitter.com/thepowerslacker" class="icon fa-twitter" alt="twitter"></a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+		<div id="main">
+			<section>
+				<div class="container post">
+					<div class="header">
+						<div class="details">
+							<span class="taglist">
+								 <span class="tag .golang"><a href="/tags/golang">golang</a></span> 
+							</span>
+							Saturday, Sep 8, 2018
+						</div>
+						<h1 class="title">Interfaces Are Useless</h1>
+						<img class="featured" src='../img/interface_useless_go.png' alt="">
+					</div>
+					
+
+<p>When I first started using Go, one of the most confusing aspects was the <code>interface</code> type. I tried reading the source code of common <code>interface</code> definitions. I tried reading several tutorials. For a long time, I thought that interfaces were pointless, useless, and confusing.</p>
+
+<p>The purpose of this article is to demonstrate that the <code>interface</code> type &ndash; although useless &ndash; is far from pointless and only slightly confusing. The <code>interface</code> through it&rsquo;s uselessness, can be a powerful tool in the Go programmer&rsquo;s arsenal.</p>
+
+<h2 id="a-type-without-a-cause">A Type Without a Cause</h2>
+
+<p>Interfaces in Go are a type defined by a set of methods. This makes it an abstract data type.</p>
+
+<p>That might sound mysterious - but an abstract type is simple to reason about when compared to its opposing form - the concrete data type.</p>
+
+<p>For example, a <code>struct</code> is a concrete data type. A <code>struct</code> is defined by its relationship to the fields it contains. The internal data structure is fully defined, which is useful for functions and procedures that mutate or utilize those fields.</p>
+
+<p>Contrasting the <code>struct</code>, an <code>interface</code> offers no access to internal data. The <code>interface</code> is secretive. It does not kiss and tell. The only thing an <code>interface</code> defines is what you can do with it. A group of methods, with no guarantee that anything useful has occurred when they are called.</p>
+
+<p>By itself, an <code>interface</code> is a useless contract. A type that does absolutely nothing.</p>
+
+<h2 id="usefulness-through-uselessness">Usefulness Through Uselessness</h2>
+
+<p>Interestingly enough, an <code>interface</code>, despite being quite useless on its own - is a power tool once combined with an implementation or two. The beautiful thing about using an abstract type is that several implementations can fit a single abstraction. This is quite useful as a generic type.</p>
+
+<p>Why would a programmer want a generic type? Well there are a few common use cases:</p>
+
+<h3 id="simplified-mocks">Simplified Mocks</h3>
+
+<p>Test Driven Development (TDD for short) has become more common as DevOps practices spread through the software community. Integration testing can quickly become painful when using defined types. Let&rsquo;s take a look at a function that fetches users from a database:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#6ab825;font-weight:bold">func</span> GetUser(id <span style="color:#6ab825;font-weight:bold">string</span>, db *sql.DB) (u User, err <span style="color:#6ab825;font-weight:bold">error</span>) {
+    query := <span style="color:#ed9d13">`SELECT first_name, last_name, email FROM users WHERE id = ? LIMIT 1`</span>
+    err := db.QueryRow(query, id).Scan(&amp;u.FirstName, &amp;u.LastName, &amp;u.Email)
+    <span style="color:#6ab825;font-weight:bold">return</span>
+}</code></pre></div>
+<p>The function above is simple enough to understand, but would be a pain point in an integration test. The function requires a <code>*sql.DB</code> to be passed in. When running tests, this means that the test setup will need an actual connection to a database. Tests can&rsquo;t use the production database because that would be a Bad Thing™.</p>
+
+<p>So the tests would need a special database just for them, and the configuration for such a database would need to be loaded during the tests.</p>
+
+<p>With the test code affecting an actual database, there must be brittle setup and tear down code so that the database is in a known state whenever the tests are run. Test data will need to be inserted and removed which takes extra time for each test run.</p>
+
+<p>Of course, if the implementation changes then all that configuration, setup, and tear down code will need to be modified. <strong>Seems bad.</strong></p>
+
+<p>Alternatively, the <code>GetUser</code> functionality could be defined via an <code>interface</code>, like so:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#6ab825;font-weight:bold">type</span> UserService <span style="color:#6ab825;font-weight:bold">interface</span> {
+    Get(id <span style="color:#6ab825;font-weight:bold">string</span>) (User, <span style="color:#6ab825;font-weight:bold">error</span>)
+    <span style="color:#999;font-style:italic">// ...some more methods
+</span><span style="color:#999;font-style:italic"></span>}</code></pre></div>
+<p>Which means a programmer could do nifty tricks to help with testing:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#6ab825;font-weight:bold">type</span> (
+    UserModel <span style="color:#6ab825;font-weight:bold">struct</span> {
+   		db *sql.DB
+	}
+    
+    UserMock <span style="color:#6ab825;font-weight:bold">struct</span> {
+        db <span style="color:#6ab825;font-weight:bold">map</span>[<span style="color:#6ab825;font-weight:bold">string</span>]User
+    }
+)
+
+<span style="color:#6ab825;font-weight:bold">var</span> (
+    UserNotFound = errors.New(<span style="color:#ed9d13">&#34;user_not_found&#34;</span>)
+)
+
+<span style="color:#6ab825;font-weight:bold">func</span> (m UserModel) Get(id <span style="color:#6ab825;font-weight:bold">string</span>) (u User, err <span style="color:#6ab825;font-weight:bold">error</span>) {
+    <span style="color:#999;font-style:italic">// same functionality as GetUser
+</span><span style="color:#999;font-style:italic"></span>    query := <span style="color:#ed9d13">`SELECT first_name, last_name, email FROM users WHERE id = ? LIMIT 1`</span>
+    err := m.db.QueryRow(query, id).Scan(&amp;u.FirstName, &amp;u.LastName, &amp;u.Email)
+    <span style="color:#6ab825;font-weight:bold">if</span> err == sql.ErrNoRows {
+        err = UserNotFound
+    }
+    <span style="color:#6ab825;font-weight:bold">return</span> 
+}
+
+
+<span style="color:#6ab825;font-weight:bold">func</span> (m UserMock) Get(id <span style="color:#6ab825;font-weight:bold">string</span>) (u User, err <span style="color:#6ab825;font-weight:bold">error</span>) {
+    <span style="color:#999;font-style:italic">// whats this? a simple mock!
+</span><span style="color:#999;font-style:italic"></span>    u, ok := m.db[id]
+    <span style="color:#6ab825;font-weight:bold">if</span> ok {
+        <span style="color:#6ab825;font-weight:bold">return</span>
+    }
+    err = UserNotFound
+}</code></pre></div>
+<p>With the <code>interface</code> definition, any <code>UserService</code> can be replaced with any other. This means that an integration test can swap out the <code>UserModel</code> for the <code>UserMock</code> and forget about the database dependency all together. Looking at the <code>UserMock</code> this same process can be used for creating <code>Users</code> by inserting them into the <code>map</code> defined as <code>db</code>, which would make generating test data a breeze.</p>
+
+<h3 id="dynamic-type-handling">Dynamic Type Handling</h3>
+
+<p>Data isn&rsquo;t always as clean or defined as one might like. Let&rsquo;s examine some arbitrary JSON:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#6ab825;font-weight:bold">&#34;topic&#34;</span>: <span style="color:#ed9d13">&#34;users&#34;</span>,
+    <span style="color:#6ab825;font-weight:bold">&#34;message&#34;</span>: <span style="color:#ed9d13">&#34;new user created&#34;</span>,
+    <span style="color:#6ab825;font-weight:bold">&#34;data&#34;</span>: {
+        <span style="color:#6ab825;font-weight:bold">&#34;firstName&#34;</span>: <span style="color:#ed9d13">&#34;first&#34;</span>,
+        <span style="color:#6ab825;font-weight:bold">&#34;lastName&#34;</span>: <span style="color:#ed9d13">&#34;last&#34;</span>,
+        <span style="color:#6ab825;font-weight:bold">&#34;email&#34;</span>: <span style="color:#ed9d13">&#34;firstlast@domain.ext&#34;</span>
+    }
+}</code></pre></div><div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#6ab825;font-weight:bold">&#34;topic&#34;</span>: <span style="color:#ed9d13">&#34;posts&#34;</span>,
+    <span style="color:#6ab825;font-weight:bold">&#34;message&#34;</span>: <span style="color:#ed9d13">&#34;new post created&#34;</span>,
+    <span style="color:#6ab825;font-weight:bold">&#34;data&#34;</span>: {
+        <span style="color:#6ab825;font-weight:bold">&#34;title&#34;</span>: <span style="color:#ed9d13">&#34;Interfaces Are Useless&#34;</span>,
+        <span style="color:#6ab825;font-weight:bold">&#34;userId&#34;</span>: <span style="color:#3677a9">1</span>
+    }
+}</code></pre></div>
+<p>The examples above are virtually the same &ndash; except for the contents of the <code>data</code> field contained within them. What needs to be done with these bits of JSON might vary based on the <code>topic</code> field. Using a concrete data type for each implementation of this JSON could get messy fast. Depending on the use case, a more flexible implementation might something look like this:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#6ab825;font-weight:bold">type</span> (
+    Event <span style="color:#6ab825;font-weight:bold">interface</span> {
+    	Handle() <span style="color:#6ab825;font-weight:bold">error</span>
+	}
+    
+    NewUser <span style="color:#6ab825;font-weight:bold">struct</span> {
+        firstName <span style="color:#6ab825;font-weight:bold">string</span>
+        lastName <span style="color:#6ab825;font-weight:bold">string</span>
+        email <span style="color:#6ab825;font-weight:bold">string</span>
+    }
+    
+    NewPost <span style="color:#6ab825;font-weight:bold">struct</span> {
+        title <span style="color:#6ab825;font-weight:bold">string</span>
+       	userID <span style="color:#6ab825;font-weight:bold">int</span>
+    }
+)
+
+<span style="color:#6ab825;font-weight:bold">func</span> ParseEvent(r io.ReadCloser) (Event, <span style="color:#6ab825;font-weight:bold">error</span>) {
+    <span style="color:#999;font-style:italic">// decode json from r -- typically an http.Request body
+</span><span style="color:#999;font-style:italic"></span>    <span style="color:#999;font-style:italic">// return an event based on decoded json
+</span><span style="color:#999;font-style:italic"></span>}
+
+<span style="color:#6ab825;font-weight:bold">func</span> (e NewUser) Handle() <span style="color:#6ab825;font-weight:bold">error</span> {
+    <span style="color:#999;font-style:italic">// do something
+</span><span style="color:#999;font-style:italic"></span>}
+
+
+<span style="color:#6ab825;font-weight:bold">func</span> (e NewPost) Handle() <span style="color:#6ab825;font-weight:bold">error</span> {
+    <span style="color:#999;font-style:italic">// do something else
+</span><span style="color:#999;font-style:italic"></span>}</code></pre></div>
+<p>By using an interface the handling for each <code>Event</code> type is self-contained. This kind of implementation could also be achieved procedurally with a series of <code>if</code> or <code>switch</code> statements. However, if that code ever needs to be reused then the entirety of the logic flow needs to be duplicated. Using abstract types means that you can use one of several concrete types &ndash; which pushes a lot of boilerplate type checking from high-level business logic into a single reusable function call to <code>ParseEvent</code>.</p>
+
+<h3 id="but-wait-there-s-more">But Wait &ndash; There&rsquo;s More!</h3>
+
+<p>There are numerous other use cases for the <code>interface</code> type, the limit is the creativity of the Go community. The Go standard library holds many interesting examples such as <code>io.ReadCloser</code>.</p>
+
+<h2 id="useful-tips-for-a-useless-type">Useful Tips For A Useless Type</h2>
+
+<h3 id="interfaces-aren-t-classes">Interfaces Aren&rsquo;t Classes</h3>
+
+<p>Despite looking like classes and most usage examples being virtually line for line rip-offs from Object Oriented literature &ndash; interfaces are not classes. <a href="https://groups.google.com/forum/#!msg/golang-nuts/mg-8_jMyasY/lo-kDuEd540J">Rob Pike stated the following on golang-nuts</a>:</p>
+
+<blockquote>
+<p>It&rsquo;s a hoary example to use geometry as an example of abstract computations, but there&rsquo;s an important detail here. It&rsquo;s always bothered me in OO languages that we can make Circle, Square, etc. subclasses of Shape (say), but that&rsquo;s the one design decision we get to make. What if we want to align those things along other axes (so to speak), like topological genus or plant genus, if you&rsquo;re a landscaper? You might lose your way or dig yourself into a hole with multiple inheritance.</p>
+
+<p>In Go, that&rsquo;s a non-issue: Circle can satisfy independent interfaces for TopologicalGenus or GrassGenus as well as Area or Perimeter or Symmetry or whatever. Moreover, you don&rsquo;t have to work them all out ahead of time; the whole design can evolve without invalidating early decisions.</p>
+
+<p>This point is critical to interfaces in Go, but people coming from an OO background don&rsquo;t seem to get it. By stopping at one interface for shapes, the author misses a chance to say something vital.</p>
+
+<p>Go&rsquo;s interfaces aren&rsquo;t a variant on Java or C# interfaces, they&rsquo;re much more. They are a key to large-scale programming and adaptable, evolutionary design.</p>
+</blockquote>
+
+<h3 id="follow-the-unix-philosophy">Follow the UNIX Philosophy</h3>
+
+<p><a href="https://dave.cheney.net/2016/08/20/solid-go-design">According to Dave Cheney, Go programs should follow the UNIX Philosophy</a>:</p>
+
+<blockquote>
+<p>&hellip;small, sharp tools which combine to solve larger tasks, oftentimes tasks which were not envisioned by the original authors.</p>
+</blockquote>
+
+<p>Small interfaces can be reused in several places, even forming new <code>interface</code> definitions. Consider <code>io.ReadWriter</code>, which is an <code>interface</code> made of only interfaces:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#6ab825;font-weight:bold">type</span> ReadWriter <span style="color:#6ab825;font-weight:bold">interface</span> {
+	Reader
+	Writer
+}
+
+<span style="color:#6ab825;font-weight:bold">type</span> Reader <span style="color:#6ab825;font-weight:bold">interface</span> {
+	Read(p []<span style="color:#6ab825;font-weight:bold">byte</span>) (n <span style="color:#6ab825;font-weight:bold">int</span>, err <span style="color:#6ab825;font-weight:bold">error</span>)
+}
+
+<span style="color:#6ab825;font-weight:bold">type</span> Writer <span style="color:#6ab825;font-weight:bold">interface</span> {
+	Write(p []<span style="color:#6ab825;font-weight:bold">byte</span>) (n <span style="color:#6ab825;font-weight:bold">int</span>, err <span style="color:#6ab825;font-weight:bold">error</span>)
+}</code></pre></div>
+<h2 id="more-useless-information-on-interfaces">More Useless Information on Interfaces</h2>
+
+<p><a href="http://golangtutorials.blogspot.com/2011/06/interfaces-in-go.html">Interfaces in Go</a></p>
+
+<p><a href="https://blog.chewxy.com/2018/03/18/golang-interfaces/">How to Use Go Interfaces</a></p>
+
+<p><a href="https://www.youtube.com/watch?v=PAAkCSZUG1c&amp;t=5m17s">The Bigger the Interface, the Weaker the Abstraction (YouTube)</a></p>
+
+				</div>
+			</section>
+		</div>
+		<div id="footer">
+  
+  <ul class="copyright">
+    <li>&copy; Powerslacker</li>
+    <li>Design based on Prologue by
+      <a href="http://html5up.net">HTML5 UP</a>
+    </li>
+    <li>Powered by
+      <a href="https://gohugo.io/">Hugo</a>
+    </li>
+  </ul>
+
+</div>
+	</body>
+</html>
