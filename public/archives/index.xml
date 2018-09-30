@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Powerslacker</copyright>
-    <lastBuildDate>Sat, 08 Sep 2018 11:50:00 -0700</lastBuildDate>
+    <lastBuildDate>Fri, 28 Sep 2018 14:00:00 -0700</lastBuildDate>
     
 	<atom:link href="http://example.org/archives/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL Query Performance Optimization</title>
+      <link>http://example.org/mysql-query-performance-optimization/</link>
+      <pubDate>Fri, 28 Sep 2018 14:00:00 -0700</pubDate>
+      
+      <guid>http://example.org/mysql-query-performance-optimization/</guid>
+      <description>Its true that MySQL has performance limitations. However, for the majority of applications, MySQL&amp;rsquo;s performance limitations never get reached. Unless tables have several hundred million rows, or the application is using MySQL for an unintended purpose (full-text search, heavy analytics, etc.) then any performance issues faced are probably self-imposed via poor indexing, architecture, query composition, or application logic.
+Don&amp;rsquo;t kick yourself for making any of these mistakes, as I&amp;rsquo;ve never met a developer who wasn&amp;rsquo;t guilty of at least one of them.</description>
+    </item>
     
     <item>
       <title>Interfaces Are Useless</title>
