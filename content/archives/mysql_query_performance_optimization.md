@@ -3,7 +3,7 @@ title: "MySQL Query Performance Optimization"
 date: 2018-09-28T14:00:00-07:00
 draft: false
 featured_img: "mysql.png"
-tags: ["mysql", "sql", "databases"]
+tags: ["sql", "databases"]
 slug: "mysql-query-performance-optimization"
 ---
 

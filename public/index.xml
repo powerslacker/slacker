@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Read My Stuff on Powerslacker</title>
+    <title>Recent Posts on Powerslacker</title>
     <link>http://example.org/</link>
-    <description>Recent content in Read My Stuff on Powerslacker</description>
+    <description>Recent content in Recent Posts on Powerslacker</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Powerslacker</copyright>

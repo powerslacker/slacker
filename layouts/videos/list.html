@@ -15,9 +15,13 @@
 								{{ .Content }}
 							<h1><span>{{.Title}}</span></h1>	
               <div class="post-list">
-                {{ range .Pages }}
-                    {{ partial "card.html" . }}
-                {{ end }}
+								<ul>
+									{{ range .Pages }}
+									<li>
+										{{ partial "post_link.html" . }}
+									</li> 
+									{{ end }}
+								</ul>
               </div>
             </div>
         </section>

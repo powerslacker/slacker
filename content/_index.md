@@ -1,19 +1,7 @@
 ---
-title: "Read My Stuff"
+title: "Recent Posts"
 ---
 
-### hello there,
+## Hello there,
+I'm a software engineer specializing in backend web development. That means I make stuff for the Internet. On occasion, I'm even paid to do so. I started this site because I can't seem to keep my reddit comments under a thousand words.
 
-I'm a backend engineer for the web. That means I make stuff for the internet, and on occasion people pay me to do so. I started this site because I can't seem to keep my reddit comments under a thousand words.
-
-#### Why should I care? 
-
-You shouldn't. You have better things to do with your life. When was the last time you exercised?
-
-#### What Do You Post About?
-
-Whatever I feel like. Mostly programming.
-
-#### Can I go now?
-
-That was always allowed.

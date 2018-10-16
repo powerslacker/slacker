@@ -137,12 +137,6 @@
   </url>
   
   <url>
-    <loc>http://example.org/tags/mysql/</loc>
-    <lastmod>2018-09-28T14:00:00-07:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://example.org/tags/php/</loc>
     <lastmod>2017-12-14T04:48:54-07:00</lastmod>
     <priority>0</priority>
