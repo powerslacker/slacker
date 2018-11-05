@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Testing on Powerslacker</title>
+    <link>http://example.org/tags/testing/</link>
+    <description>Recent content in Testing on Powerslacker</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Powerslacker</copyright>
+    <lastBuildDate>Sun, 04 Nov 2018 04:57:54 -0700</lastBuildDate>
+    
+	<atom:link href="http://example.org/tags/testing/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>The Hidden Costs of Neglecting Testing</title>
+      <link>http://example.org/hidden-cost-neglecting-testing/</link>
+      <pubDate>Sun, 04 Nov 2018 04:57:54 -0700</pubDate>
+      
+      <guid>http://example.org/hidden-cost-neglecting-testing/</guid>
+      <description>Programmers invariably agree: testing is a good thing. There have been studies that show that the earlier a bug is caught and repaired, the cheaper it is to fix in terms of both time and money. There are languages with testing baked in, there are testing frameworks, and even a testing movement whose apostles are borderline fanatics. Programming leaders espouse the virtues of testing and of having dedicated testers for software.</description>
+    </item>
+    
+  </channel>
+</rss>

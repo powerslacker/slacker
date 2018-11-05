@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Powerslacker</copyright>
-    <lastBuildDate>Fri, 28 Sep 2018 14:00:00 -0700</lastBuildDate>
+    <lastBuildDate>Sun, 04 Nov 2018 04:57:54 -0700</lastBuildDate>
     
 	<atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>The Hidden Costs of Neglecting Testing</title>
+      <link>http://example.org/hidden-cost-neglecting-testing/</link>
+      <pubDate>Sun, 04 Nov 2018 04:57:54 -0700</pubDate>
+      
+      <guid>http://example.org/hidden-cost-neglecting-testing/</guid>
+      <description>Programmers invariably agree: testing is a good thing. There have been studies that show that the earlier a bug is caught and repaired, the cheaper it is to fix in terms of both time and money. There are languages with testing baked in, there are testing frameworks, and even a testing movement whose apostles are borderline fanatics. Programming leaders espouse the virtues of testing and of having dedicated testers for software.</description>
+    </item>
     
     <item>
       <title>MySQL Query Performance Optimization</title>

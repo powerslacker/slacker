@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>The Hidden Costs of Neglecting Testing - Powerslacker</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../css/main.css" />
+		<link rel="stylesheet" href="../css/cards.css" />
+	</head>
+	<body>
+		<input type="checkbox" id="header_toggle">
+<label for="header_toggle" class="header_toggle__label">
+  <i class="fa fa-bars"></i>
+</label>
+<div id="header">
+  
+  <div class="top">
+    
+    <div id="logo">
+      <span class="image avatar48">
+        <img src="../../img/lambda.svg" alt="" />
+      </span>
+      <h1 id="title" data-text="Powerslacker">Powerslacker</h1>
+      <p>Perspectives for the Ambitiously Lazy</p>
+    </div>
+    
+    <nav id="nav">
+      <ul>
+         
+          <li>
+  <a href="/" id="top-link">
+    <span class="icon fa-home">Home</span>
+  </a>
+</li>
+         
+          <li>
+  <a href="/archives/" id="top-link">
+    <span class="icon fa-calendar">Archives</span>
+  </a>
+</li>
+         
+          <li>
+  <a href="/videos/" id="top-link">
+    <span class="icon fa-play-circle">Videos</span>
+  </a>
+</li>
+        
+      </ul>
+    </nav>
+  </div>
+  <div class="bottom">
+    
+    <ul class="icons">
+      
+        <li>
+          <a href="https://github.com/powerslacker" class="icon fa-github" alt="github"></a>
+        </li>
+      
+        <li>
+          <a href="https://www.youtube.com/c/powerslacker" class="icon fa-youtube-play" alt="youtube"></a>
+        </li>
+      
+        <li>
+          <a href="https://twitter.com/thepowerslacker" class="icon fa-twitter" alt="twitter"></a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+		<div id="main">
+			<section>
+				<div class="container post">
+					<div class="header">
+						<div class="details">
+							<span class="taglist">
+								 <span class="tag .testing"><a href="/tags/testing">testing</a></span>  <span class="tag .engineering"><a href="/tags/engineering">engineering</a></span> 
+							</span>
+							Sunday, Nov 4, 2018
+						</div>
+						<h1 class="title">The Hidden Costs of Neglecting Testing</h1>
+						<img class="featured" src='../img/test-in-production.jpeg' alt="">
+					</div>
+					
+
+<p>Programmers invariably agree: testing is a good thing. There have been studies that show that the earlier a bug is caught and repaired, the cheaper it is to fix in terms of both time and money. There are languages with testing baked in, there are testing frameworks, and even a testing movement whose apostles are borderline fanatics. Programming leaders espouse the virtues of testing and of having dedicated testers for software. Testing has never been easier, and its merits have never been so widely known.</p>
+
+
+
+
+
+
+
+
+
+
+<div class="caption-wrapper">
+    <img class="caption" src="../img/faith-militant.jpeg" title="TDD Militants Confronting A Non-Believer" alt="TDD Militants Confronting A Non-Believer">
+    <div class="caption-text">TDD Militants Confronting A Non-Believer</div>
+</div>
+
+<p>So why do some software companies reject testing? If a product isn&rsquo;t thoroughly tested &ndash; isn&rsquo;t the company that released the software the one who suffers the most?</p>
+
+<p>Joel Spolsky of Stack  Overflow fame, covered this exact topic in 2000, in an essay titled <a href="https://www.joelonsoftware.com/2000/04/30/top-five-wrong-reasons-you-dont-have-testers/">Top Five (Wrong) Reasons You Don&rsquo;t Have Testers</a>. He wrote:</p>
+
+<blockquote>
+<p>No matter how hard it is to find testers, they are still cheaper than programmers. A lot cheaper.  And if you don’t hire testers, you’re going to have programmers doing testing. And if you think it’s bad when you have testers churning out, just wait till you see how expensive it is to replace that star programmer, at $100,000 a year, who got sick of being told to “spend a few weeks on testing before we release” and moved on to a more professional company. You could hire three testers for a year just to cover the recruiter’s fee on the replacement programmer.</p>
+
+<p>Skimping on testers is such an outrageous false economy that I’m simply blown away that more people don’t recognize it.</p>
+</blockquote>
+
+<p>What blows my mind is that its been nearly 19 years since Joel wrote those words, and most of the industry still thinks that testing is a luxury. Startups, who have the most to lose by neglecting testing &ndash; tend to put the least effort into producing a well-tested product. I&rsquo;ve heard the logic: startups need to be fast and scrappy, and we&rsquo;ve got to beat the other guys to the punch, and blah, blah, blah&hellip;</p>
+
+<p>Here&rsquo;s the bottom line: neglecting QA is shooting your company in the foot. I&rsquo;m going to spend the rest of this article focusing on the hidden costs of neglecting testing.</p>
+
+<h2 id="programmer-time-is-a-precious-commodity">Programmer Time is a Precious Commodity</h2>
+
+<p>Joel&rsquo;s quote covers the idea that programmers stuck doing testing might lost their inner fire and move on. The idea of losing a programmer, especially a valuable programmer who has amassed a wealth of knowledge specific to a particular company&rsquo;s software should be setting off alarm bells for managers and founders. Hiring programmers is not a cheap endeavor.</p>
+
+<p>But, there is also an opportunity cost to using programmers as testers. A programmer who is testing is - by nature - not programming.</p>
+
+<p>Let&rsquo;s break this down into some &lsquo;hard&rsquo; numbers. According to the Stack Overflow Devloper Survey (2018), <a href="https://insights.stackoverflow.com/survey/2018/#salary">the average programmer salary in US is somewhere between $80K-$100K</a> depending on their job type.</p>
+
+<p>CNN business claims that <a href="https://money.cnn.com/2013/02/28/smallbusiness/salary-benefits/">employees cost employers about 18%-26% of their salary</a> as overhead (things like payroll tax, insurance, equipment and rent).</p>
+
+<p>I&rsquo;ll assume best case scenario, our imaginary &lsquo;average&rsquo; programmer will make exactly $80k/year with 18% overhead costs, and takes exactly 3 weeks of vacation per year which includes all national holidays, sick days, and major life events.</p>
+
+<p>So our base compensation is:<code>80000 * 1.18 = 94000</code>, we have 49 work weeks when vacation is subtracted and each work week is 40 hours, so <code>49 * 40 = 1960</code> business hours. This translates to an hourly rate of about<code>94400 / 1960 = 48.16</code>. That means for each hour a programmer spends testing, the cost to the company is ~$48.</p>
+
+<p>That&rsquo;s the actual cost that you can see with back of the napkin math. However, if there are bug fixes or features that would land a new customer, that aren&rsquo;t being completed because programmers are stuck doing testing &ndash; we can only imagine the value that one extra programmer would bring to the table. I&rsquo;ve seen  million-dollar deals slip away from companies due to missed deadlines. The moral of the story is that programmers should be working on the tasks that are the highest and best use of their time, because its very expensive to misuse programmer time.</p>
+
+<h2 id="old-bugs-die-hard">Old Bugs Die Hard</h2>
+
+<p>Software is an odd medium. It is more malleable than any physical structure, so most software can be released several times. This is different than say, an automobile, where a major defect could mean disaster. With software, problems can usually be fixed, and its virtually unheard of for a software company to recall a program because it <a href="https://en.wikipedia.org/wiki/Ford_Pinto">explodes in certain conditions</a>.</p>
+
+<p>However, maintaining software can be costly. The IBM System Science Institute found that <a href="https://en.wikipedia.org/wiki/Ford_Pinto">even in modern software, bugs found in production systems are about 6x as expensive to fix as bugs found in testing</a>.</p>
+
+<p>The reasons for these old bugs being a real pain to squash are varied, but it mostly comes down to the following:</p>
+
+<ul>
+<li>A bug that was just written is easier to find. The programmer who wrote it will remember most of the context surrounding the new code, hop in and modify it. Over time, programmers forget code, go on vacation, or jump to new projects. The original author of a bug may not be available to fix it, or might not remember writing it.</li>
+<li>Old bugs are like termites. They gnaw their way into the structure of the code they inhabit.  Since all code serves as a foundation for new code, removing lines is inherently risky and great care needs to be taken to extract and replace it. Fixing bugs is often like a high-stakes game of Jenga.</li>
+</ul>
+
+<p>A bug in the design stage can be fixed in under a minute just by striking out some text. During implementation, its just a bit longer, and requires a programmer to ask a few more pointed questions. During testing, more communication and documentation is involved, so fixes take slightly longer. By the time production code has been deployed, most programmers and testers have moved on to new tasks, and bugs in code linger &ndash; sometimes over several versions. The time it takes to find, document, replicate, debug and fix an entrenched feral bug can range anywhere from several hours to several months.</p>
+
+<p>I&rsquo;ve worked on a multi-month bug, and I can tell you that <a href="https://www.youtube.com/watch?v=L2zqTYgcpfg">fixing planes in the sky</a> is an expensive way to write software. Six programmers working at roughly 50% of their capacity took two months to implement a working bug fix. That translates to a full month of work. If we use our &lsquo;average&rsquo; programmer calculations, that&rsquo;s just under $50K, without including the opportunity cost. If that problem had been spotted and dealt with during the initial testing phase &ndash; it could have been corrected in a few days by a single programmer.</p>
+
+<p>Hopefully, it is obvious that neglecting testing is a short sighted and incredibly expensive move. There are more hidden costs, but this is already a lengthy article. I&rsquo;ll  come back to this topic when I have more time and energy. Hopefully, its already got you thinking about improving software quality at your company.</p>
+
+				</div>
+			</section>
+		</div>
+		<div id="footer">
+  
+  <ul class="copyright">
+    <li>&copy; Powerslacker</li>
+    <li>Design based on Prologue by
+      <a href="http://html5up.net">HTML5 UP</a>
+    </li>
+    <li>Powered by
+      <a href="https://gohugo.io/">Hugo</a>
+    </li>
+  </ul>
+
+</div>
+	</body>
+</html>
