@@ -18,4 +18,5 @@ fields:
   name: slug
   label: slug
 pages:
+- content/archives/estimates.md
 - content/archives/great-one-to-one-meetings.md
