@@ -56,9 +56,13 @@ var (
 func Setup(cfg foo.Config) {
    	db = appcfg.Database(cfg)
 }
+
+func Do() error {
+	return db.Ping()
+}
 ```
 
-Now, this `Config` isn't necessarily a bad thing. Like all engineering decisions, there are tradeoffs.
+Now, this `Config` isn't necessarily a bad thing. Like all engineering decisions, there are tradeoffs. In the example above, any package can call a function in `bar.Do` after it has been setup without having to consider what `bar.Do` is dependent on. Below, I cover some more detailed issues with this pattern.
 
 ### Pros
 
