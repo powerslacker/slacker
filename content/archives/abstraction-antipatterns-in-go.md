@@ -97,4 +97,19 @@ It’s always a red-flag when two patterns are mixed together for no apparent re
 This is the **Interface Chain on Doom**. Here’s an example of one that’s loosely based on a package from the aforementioned application:  
 ![Interface Chain of Doom](/uploads/interface-chain-of-doom.svg "Interface Chain of Doom")
 
-While each implementation of this pattern is slightly different, the problem is apparent in all of them: it is virtually impossible to tell what is actually happening under the hood. Almost every interface in the application is an `interface`, an abstract type.
+While each implementation of this pattern is slightly different, the problem is apparent in all of them: it is virtually impossible to tell what is actually happening under the hood. 
+
+There is no way to know what actually occurs in this application through visual inspection of the code. The majority of interfaces return interfaces via their methods. To top it all off -- any component may be dependent on the configuration `interface` that is sourced via the environment. There are potentially unlimited paths through any one chain of functionality that starts from one of these factories. 
+
+However, in this application, **the design above is used to handle two cases**: a mock, and a ‘real-world’ implementation. Files upon files of boilerplate and indirection -- just to swap between the real deal implementation and a test suite.
+
+### Pros
+
+* Test coverage goes through the roof, it's simple to write passing tests for all of the mock code.
+* Very easy to swap in new implementations of virtually anything. Since everything is an interface, anything can be swapped out with a minor code change.
+
+### Cons
+
+* Determining where anything actually occurs is a nightmare. Every attempt at debugging results in digging through large swaths of the codebase while trying to keep mental context of the many moving parts.
+* Breaks tooling. Modern editors make heavy use of code hints which make Software Engineers more productive. Since virtually everything in this codebase is an interface -- it’s on the individual debugging the code to track down the actual implementation.
+* This code is not human friendly. It’s important to recognize that engineers are human too. Humans get hungover, sick, sad, hungry, and wake up on the wrong side of the bed. Trying to debug or extend this code in any of those states is going to be a no-good, very bad day.
