@@ -412,3 +412,23 @@ func (m UserMock) Get(id string) (u User, err error) {
 The nice part of an approach like this is that there should always be a trail of breadcrumbs to follow. Wherever a function needing a `UserService` from the code above is called, the exact implementation used can be found with ease. This means debugging is easier than using a dynamic approach. Very human-friendly.
 
 Tearing out SQL queries and replacing them with MongoDB queries will be significantly more tedious using this approach. Realistically, that’s a rare requirement. Time saved NOT dealing with a dynamic web of interfaces and factories should pay the time cost of a database replacement several times over.
+
+## Conclusion: How to Prevent Abstraction Antipatterns
+
+The **How to Fix It** sections above are remarkably similar, so this seems like an opportunity to extract a simple system to prevent abstraction antipatterns from cropping up in Go code. The main reason for putting a system in place is to prevent technical debt from crippling applications.
+
+The following questions are `true/false` and can be used as a checklist and can act as a guide for code review:
+
+* Does the code return only concrete types?
+* Is the ratio of concrete types to abstract types at least 1:1?
+* Could a mid-level engineer debug or extend this code even with a migraine?
+* Are all abstractions well-documented and clear in their purpose and usage?
+* Do abstractions effectively defend the application from runtime errors?
+
+### Scoring
+
+The most dangerous part of a highly abstract system is that a lot of knowledge about the system is implied -- meaning contained in an engineer's head. A high score means that losing key engineers could lead to major delays when fixes or changes are needed. To score, tally each question answered `false` above, then consult the following score ranges.
+
+* **4-5:** Black box. Losing a key engineer could turn this into legacy code. Documentation and refactoring should be prioritized over non-critical features / bugs.
+* **2-3:** Dangerous. Losing the program author(s) could cause major problems. Create a long-term refactoring roadmap for over-abstraction hot spots and make progress during normal sprint work.
+* **<2:** Generally safe. Document any issues with abstractions and continue with normal development.
