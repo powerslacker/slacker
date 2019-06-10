@@ -14,13 +14,52 @@ As software systems grow in total users, traffic, and integration partners, ther
 However, even software greats have stated that too much abstraction can land engineers in hot water:
 
 > When you go too far up, abstraction-wise, you run out of oxygen. Sometimes smart thinkers just don’t know when to stop, and they create these absurd, all-encompassing, high-level pictures of the universe that are all good and fine, but don’t actually mean anything at all.
-
-_--Joel Spolsky,_ [_Don’t Let Architecture Astronauts Scare You_](https://www.joelonsoftware.com/2001/04/21/dont-let-architecture-astronauts-scare-you/)
+>
+> _--Joel Spolsky,_ [_Don’t Let Architecture Astronauts Scare You_](https://www.joelonsoftware.com/2001/04/21/dont-let-architecture-astronauts-scare-you/)
 
 Many abstractions are quite useful, some...not so much. The less useful ones can be called **Abstraction Antipatterns.** By discussing the pros and cons of these patterns, interested readers will be able to spot and avoid won’t make the same kinds of mistakes. At the end of this article is a checklist that takes the principles found in these examples and turns them into an actionable test that anyone can apply to their Go code to spot these antipatterns before they take root.
 
 ## Magical Configuration
 
 > Explicit is better than implicit.
+>
+> _--Tim Peters,_ [_The Zen of Python_](https://www.python.org/dev/peps/pep-0020/)
 
-_--Tim Peters,_ [_The Zen of Python_](https://www.python.org/dev/peps/pep-0020/)
+Virtually every non-trivial package uses configuration. Repeating code violates the **DRY principle** (_“Don’t Repeat Yourself_”) . Naturally, it follows that it must be a good idea to make a configuration pattern that is reusable everywhere. Here’s an example that shows high levels of abstraction and flexibility:
+
+```go
+type Config interface {
+    Value(key interface{}) interface{}
+}
+```
+
+If this looks familiar, don’t be surprised. It’s basically a `context.Context.`
+
+The applications being refactored have all of their dependencies use and accept this interface. Once the `Config` is passed into a package -- each dependency is setup in its own specific way. Each dependency has predefined environment variable keys that get loaded into the `Config`via a signature of `func (foo.Config) foo.Config`.  Each package in this codebase is "setup" via this opaque configuration.  Once all the packages have been setup, any other package can call a function in one its dependencies package and voila -- it all magically works! Assuming all the environment variables have been sourced correctly.
+
+Here's a contrived example for a bit more clarity:
+
+```go
+package bar
+   
+import (
+	"github.com/jmoiron/sqlx"
+    "github.com/some-namespace/foo" // not a real package!
+    "github.com/some-namespace/appcfg" // not a real package!
+)
+   
+var (
+	db *sqlx.DB
+)
+   
+   
+func Setup(cfg foo.Config) {
+   	db = appcfg.Database(cfg)
+}
+```
+
+Now, this `Config` isn't necessarily a bad thing. Like all engineering decisions, there are tradeoffs.
+
+### Pros
+
+* Thoroughly abstracted, no external package knows how this **Magical Configuration** works -- only that it works. A package external to `foo.Config` asdfasd
