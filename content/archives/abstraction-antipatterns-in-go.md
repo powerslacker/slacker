@@ -35,7 +35,7 @@ type Config interface {
 
 If this looks familiar, don’t be surprised. It’s basically a `context.Context.`
 
-The applications being refactored have all of their dependencies use and accept this interface. Once the `Config` is passed into a package -- each dependency is setup in its own specific way. Each dependency has predefined environment variable keys that get loaded into the `Config`via a signature of `func (foo.Config) foo.Config`.  Each package in this codebase is "setup" via this opaque configuration.  Once all the packages have been setup, any other package can call a function in one its dependencies package and voila -- it all magically works! Assuming all the environment variables have been sourced correctly.
+The application being refactored has all of its dependencies use and accept this interface. Once the `Config` is passed into a package -- each dependency is setup in its own specific way. Each dependency has predefined environment variable keys that get loaded into the `Config`via a signature of `func (foo.Config) foo.Config`. Once all packages in this application have been setup, any other package can call a function in one its dependencies package and voila -- it all magically works! Assuming all the configuration has been sourced correctly.
 
 Here's a contrived example for a bit more clarity:
 
@@ -78,3 +78,9 @@ Now, this `Config` isn't necessarily a bad thing. Like all engineering decisions
 * Configuration does not belong to the application -- it is shared custody between the application and its dependencies. There’s no knowing whether modifying an environment variable key will have cascading effects with other applications using the `foo` library.
 * Adding new keys is painful, since the interface obfuscates how things work under the hood -- instead of just using the standard library.
 * Loss of type safety. Since configuration is an `interface`, there is no check at compile-time verifying the correct type of configuration was used. Only a runtime error will reveal the issue.
+
+### How to Fix It
+
+Instead of using an interface, configuration can be loaded into a concrete type such as a `struct`. Configuration can be read from environment variables into a `struct` in one pass, as specific concrete types. This can be handled via a single package and provide centralized access from a single package. This makes configuration easy to track down,  access, and repair. 
+
+Code reusability will probably be lessened, at least initially. As time goes on, configuration can be injected into dependent packages, so code reuse could recover or even improve.
