@@ -113,3 +113,17 @@ However, in this application, **the design above is used to handle two cases**: 
 * Determining where anything actually occurs is a nightmare. Every attempt at debugging results in digging through large swaths of the codebase while trying to keep mental context of the many moving parts.
 * Breaks tooling. Modern editors make heavy use of code hints which make Software Engineers more productive. Since virtually everything in this codebase is an interface -- it’s on the individual debugging the code to track down the actual implementation.
 * This code is not human friendly. It’s important to recognize that engineers are human too. Humans get hungover, sick, sad, hungry, and wake up on the wrong side of the bed. Trying to debug or extend this code in any of those states is going to be a no-good, very bad day.
+
+### How to Fix It
+
+Follow this popular Go practice:
+
+> Accept interfaces return structs.
+>
+> _--Jack Lindamood,_ [_Preemptive Interface Anti-Pattern in Go_](https://medium.com/@cep21/preemptive-interface-anti-pattern-in-go-54c18ac0668a)
+
+**_NOTE_**_: Though the quote above claims interfaces should return structs, any concrete type serves the same purpose._
+
+Even though `io.Reader` is accepted by many functions in the standard library -- there aren’t any that return an `io.Reader`, at least not directly. This prevents passing some formless contract from function to function. Instead, concrete implementations of such as `bytes.Buffer` can be used as an `io.Reader.`
+
+Additionally, architecture should be as complex as it needs to be -- but no more. If there are only two implementations, an `if statement` works just as well as a factory. If booleans aren’t in fashion, accept an `interface`, or a function signature, just be sure to pass around explicit implementations instead of abstract types.
