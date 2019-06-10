@@ -17,7 +17,7 @@ However, even software greats have stated that too much abstraction can land eng
 >
 > _--Joel Spolsky,_ [_Don’t Let Architecture Astronauts Scare You_](https://www.joelonsoftware.com/2001/04/21/dont-let-architecture-astronauts-scare-you/)
 
-Many abstractions are quite useful, some...not so much. The less useful ones can be called **Abstraction Antipatterns.** By discussing the pros and cons of these patterns, interested readers will be able to spot and avoid won’t make the same kinds of mistakes. At the end of this article is a checklist that takes the principles found in these examples and turns them into an actionable test that anyone can apply to their Go code to spot these antipatterns before they take root.
+Many abstractions are quite useful, some...not so much. The less useful ones can be called **Abstraction Antipatterns.** By discussing the pros and cons of these patterns, interested readers will be able to spot and avoid making the same kinds of mistakes. At the end of this article is a checklist that takes the principles found in these examples and turns them into an actionable test that anyone can apply to their Go code to spot these antipatterns before they take root.
 
 ## Magical Configuration
 
@@ -73,19 +73,20 @@ Now, this `Config` isn't necessarily a bad thing. Like all engineering decisions
 
 * Finding the actual key of an environment variable is not an easy task. This interface is so abstract that it takes minutes of detective work to find where configuration actually occurs. In the example above, you can't directly answer the following questions without digging into the code for a specific project:
   * Which package initially set the database within the `Config`
-  * Did any package overwrite the initial setting for the database? 
-  * What key is used to access the database via the method `Config.Value`? 
+  * Did any package overwrite the initial setting for the database?
+  * What key is used to access the database via the method `Config.Value`?
 * Configuration does not belong to the application -- it is shared custody between the application and its dependencies. There’s no knowing whether modifying an environment variable key will have cascading effects with other applications using the `foo` library.
 * Adding new keys is painful, since the interface obfuscates how things work under the hood -- instead of just using the standard library.
 * Loss of type safety. Since configuration is an `interface`, there is no check at compile-time verifying the correct type of configuration was used. Only a runtime error will reveal the issue.
 
 ### How to Fix It
 
-Instead of using an interface, configuration can be loaded into a concrete type such as a `struct`. Configuration can be read from environment variables into a `struct` in one pass, as specific concrete types. This can be handled via a single package and provide centralized access from a single package. This makes configuration easy to track down,  access, and repair. 
+Instead of using an interface, configuration can be loaded into a concrete type such as a `struct`. Configuration can be read from environment variables into a `struct` in one pass, as specific concrete types. This can be handled via a single package and provide centralized access from a single package. This makes configuration easy to track down,  access, and repair.
 
 Code reusability will probably be lessened, at least initially. As time goes on, configuration can be injected into dependent packages, so code reuse could recover or even improve.
 
-##   
+## 
+
 The Interface Chain of Doom
 
 > Everyone knows that debugging is twice as hard as writing a program in the first place. So if you're as clever as you can be when you write it, how will you ever debug it?
@@ -97,9 +98,9 @@ It’s always a red-flag when two patterns are mixed together for no apparent re
 This is the **Interface Chain on Doom**. Here’s an example of one that’s loosely based on a package from the aforementioned application:  
 ![Interface Chain of Doom](/uploads/interface-chain-of-doom.svg "Interface Chain of Doom")
 
-While each implementation of this pattern is slightly different, the problem is apparent in all of them: it is virtually impossible to tell what is actually happening under the hood. 
+While each implementation of this pattern is slightly different, the problem is apparent in all of them: it is virtually impossible to tell what is actually happening under the hood.
 
-There is no way to know what actually occurs in this application through visual inspection of the code. The majority of interfaces return interfaces via their methods. To top it all off -- any component may be dependent on the configuration `interface` that is sourced via the environment. There are potentially unlimited paths through any one chain of functionality that starts from one of these factories. 
+There is no way to know what actually occurs in this application through visual inspection of the code. The majority of interfaces return interfaces via their methods. To top it all off -- any component may be dependent on the configuration `interface` that is sourced via the environment. There are potentially unlimited paths through any one chain of functionality that starts from one of these factories.
 
 However, in this application, **the design above is used to handle two cases**: a mock, and a ‘real-world’ implementation. Files upon files of boilerplate and indirection -- just to swap between the real deal implementation and a test suite.
 
@@ -127,3 +128,287 @@ Follow this popular Go practice:
 Even though `io.Reader` is accepted by many functions in the standard library -- there aren’t any that return an `io.Reader`, at least not directly. This prevents passing some formless contract from function to function. Instead, concrete implementations of such as `bytes.Buffer` can be used as an `io.Reader.`
 
 Additionally, architecture should be as complex as it needs to be -- but no more. If there are only two implementations, an `if statement` works just as well as a factory. If booleans aren’t in fashion, accept an `interface`, or a function signature, just be sure to pass around explicit implementations instead of abstract types.
+
+## 
+
+The Vogon Registry
+
+> Wherever there is modularity there is the potential for misunderstanding: Hiding information implies a need to check communication.
+>
+> _--Alan J. Perlis, Epigrams on Programming_
+
+> _...You wanted a banana but what you got was a gorilla holding the banana and the entire jungle..._
+>
+> _-- Joe Armstrong, Coders At Work_
+
+For those who never read, or don’t remember _The Hitchhiker's Guide to the Galaxy_, Vogons are described as:
+
+> _...one of the most unpleasant races in the galaxy—not actually evil, but bad-tempered, bureaucratic, officious and callous...authors of the third worst poetry in the universe..._
+
+The **Vogon Registry** is a pattern that loads several objects, interfaces, or processes into a centralized structure so that they can be fetched using a key, such as a string. There is a data structure in Go that can easily replace it -- the `map`. The cleverness of the **Vogon Registry** is that it hides a map, an array, or both, under several layers of abstraction and bureaucracy.
+
+Here’s an example based loosely on an actual implementation:
+
+```go
+// Package vogon is used to manage access to poems. Since this
+
+// library doesn't actually use poems, its irrelevant what poems actually
+
+// represent. The only thing that does matter is that this library
+
+// obfuscates and limits access to poems.
+
+package vogon
+
+import "fmt"
+
+// Poem is the base struct for Vogon poetry.
+
+type Poem struct {
+
+    words string
+
+}
+
+// SetWords overwrites the poem's content.
+
+func (p *Poem) SetWords(new string) {
+
+    p.words = new
+
+}
+
+// Context holds poem transactions due for processing.
+
+type Context struct {
+
+    manager Manager
+
+    poems   map\[string\]*Poem
+
+}
+
+// NewContext returns a new database transaction context.
+
+func NewContext(m Manager) *Context {
+
+    return &Context{
+
+        manager: m,
+
+        poems:   map\[string\]*Poem{},
+
+    }
+
+}
+
+// Factory interface for Poem factories.
+
+type Factory interface {
+
+    // Poems returns the list of Poem implementations the factory can generate.
+
+    Poems() \[\]string
+
+    // NewPoem returns an interface which could be cast into a specific Poem
+
+    // type by the caller.
+
+    NewPoem(ctx *Context, name string) (interface{}, error)
+
+}
+
+// FactoryFunc function to generate Poem implementations.
+
+type FactoryFunc func(ctx *Context, source string) (interface{}, error)
+
+// Manager interface for Poem managers.
+
+type Manager interface {
+
+    // Create returns a new data access object.
+
+    CreatePoem(ctx *Context, name string) (interface{}, error)
+
+    // RegisterFactory registers the given factory with the Poem names it can
+
+    // generate.
+
+    RegisterFactory(f Factory)
+
+}
+
+// DefaultManager is an implementation of the Manager interface.
+
+type DefaultManager struct {
+
+    Factories map\[string\]Factory
+
+}
+
+// CreatePoem returns a new poem object.
+
+func (m *DefaultManager) CreatePoem(ctx *Context, name string) (interface{}, error) {
+
+    factory, ok := m.Factories\[name\]
+
+    if !ok {
+
+        return nil, fmt.Errorf("no poem factory found for: %s", name)
+
+    }
+
+    return factory.NewPoem(ctx, name)
+
+}
+
+// RegisterFactory registers the given factory with the Poem names it can
+
+// generate.
+
+func (m *DefaultManager) RegisterFactory(f Factory) {
+
+    for _, name := range f.Poems() {
+
+        m.Factories\[name\] = f
+
+    }
+
+}
+
+// NewDefaultManager returns an initialized default Manager implementation.
+
+func NewDefaultManager() *DefaultManager {
+
+    return &DefaultManager{
+
+        Factories: make(map\[string\]Factory),
+
+    }
+
+}
+
+// TransactionFunc definition of a function wrapped in a transaction context.
+
+type TransactionFunc func(ctx *Context) error
+
+// Process wraps given TransactionFunc and provides context based on manager.
+
+func Process(m Manager, f TransactionFunc) (err error) {
+
+    // normally this would do something useful by wrapping the given
+
+    // function in some other operation such as writing to a disk or database
+
+    // but since this is example code there's no need
+
+    ctx := NewContext(m)
+
+    return f(ctx)
+
+}
+```
+
+In order to make use of the `vogon` package, the client must:
+
+* Provide an implementation that meets the Factory type
+* Provide an implementation that meets the FactoryFunc type for each Poem they wish to access. Note that the FactoryFunc type doesn’t actually return a Poem, but instead an interface{} which is allegedly a Poem.
+* Tie the Factory implementation to all the various FactoryFunc implementations so that it can be registered via the Manager type
+* Provide an implementation that meets the Manager interface, use the DefaultManager, or wrap the DefaultManager
+* Register the Factory implementation via the RegisterFactory method on a Manager.
+* Provide one or more TransactionFunc that actually do some task related to a Poem
+* Tie all the above together whenever access to a Poem is needed
+
+The `vogon` package successfully hides the implementation of one of the most basic data structures. Going through a codebase that uses `vogon` would require stepping through a spiderweb of interfaces, factories, and runtime configured maps.
+
+#### But this isn’t real!
+
+No, `vogon` isn’t real -- but it’s based on real code being refactored. Jon Bodner used a very similar pattern in his satirical Go web framework [Fall](https://github.com/evil-go/fall/blob/master/fall.go), so this isn’t even the first instance of this pattern recorded in the wild.
+
+### Pros
+
+* Powerful abstraction. If there was a database operating under the hood virtually none of that implementation would leak.
+* Highly modular. Whatever a **Vogon Registry** actually does can be swapped out with ease.
+* Excellent for code reuse. Every dependency is dynamically tucked into place at runtime. Whatever it is used for, it does a great job of limiting access to resources, which makes client code consistent with the DRY principle.
+
+### Cons
+
+* Breaks compile time tooling. Since virtually every part of a **Vogon Registry** is dynamic, there is almost no way to verify that it is being used properly by the compiler.
+* Rigid structure. Adding anything new requires going through a great deal of code bureaucracy. There are many interfaces and types that need implementations, registrations, and proper licensing before anything can happen. If an engineer forgets to implement any one of these details the application slaps them with a runtime error.
+* Obfuscates important details. The kind of things that engineers want to limit access to are typically critical elements of a production application, such as: a database, an AWS S3 bucket, a hard disk. However, in the quest to protect a critical asset, this is the “nuclear option”. Whatever happens inside this package is going to require complex mental modeling, graph paper, and a lot of patience to track down.
+
+### How to Fix It
+
+If there is truly need for dynamic access to all kinds of functions, `map[string]func() error` would be preferable.
+
+Instead, each business object can expose an interface implementation dedicated to a specific type of access. These differing implementations can be passed around via their interface, allowing for dependencies to be managed when an object is instantiated. See the example below:
+
+```go  
+type (
+	// This interface doesn't need to be specified in the same package.
+    // Client code can define its own interface based on the
+    // functions they require.
+    UserService interface {
+
+        Get(id string) (User, error)
+
+        // ...some more methods
+
+    }
+
+    UserModel struct {
+
+   		db *sql.DB
+
+    }
+
+    
+
+    UserMock struct {
+
+        db map\[string\]User
+
+    }
+
+)
+
+var (
+
+    UserNotFound = errors.New("user_not_found")
+
+)
+
+func (m UserModel) Get(id string) (u User, err error) {
+
+    query := \`SELECT first_name, last_name, email FROM users WHERE id = ? LIMIT 1\`
+
+    err := m.db.QueryRow(query, id).Scan(&u.FirstName, &u.LastName, &u.Email)
+
+    if err == sql.ErrNoRows {
+
+        err = UserNotFound
+
+    }
+
+    return 
+
+}
+
+func (m UserMock) Get(id string) (u User, err error) {
+
+    u, ok := m.db\[id\]
+
+    if ok {
+
+        return
+
+    }
+
+    err = UserNotFound
+
+}
+```
+
+The nice part of an approach like this is that there should always be a trail of breadcrumbs to follow. Wherever a function needing a `UserService` from the code above is called, the exact implementation used can be found with ease. This means debugging is easier than using a dynamic approach. Very human-friendly.
+
+Tearing out SQL queries and replacing them with MongoDB queries will be significantly more tedious using this approach. Realistically, that’s a rare requirement. Time saved NOT dealing with a dynamic web of interfaces and factories should pay the time cost of a database replacement several times over.
