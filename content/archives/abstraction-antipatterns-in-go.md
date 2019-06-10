@@ -25,7 +25,7 @@ Many abstractions are quite useful, some...not so much. The less useful ones can
 >
 > _--Tim Peters,_ [_The Zen of Python_](https://www.python.org/dev/peps/pep-0020/)
 
-Virtually every non-trivial package uses configuration. Repeating code violates the **DRY principle** (_“Don’t Repeat Yourself_”) . Naturally, it follows that it must be a good idea to make a configuration pattern that is reusable everywhere. Here’s an example that shows high levels of abstraction and flexibility:
+Virtually every non-trivial package uses configuration. Repeating code violates the **DRY principle** (_Don’t Repeat Yourself_). Naturally, it follows that it must be a good idea to make a configuration pattern that is reusable everywhere. Here’s an example that shows high levels of abstraction and flexibility:
 
 ```go
 type Config interface {
