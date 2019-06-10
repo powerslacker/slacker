@@ -84,3 +84,17 @@ Now, this `Config` isn't necessarily a bad thing. Like all engineering decisions
 Instead of using an interface, configuration can be loaded into a concrete type such as a `struct`. Configuration can be read from environment variables into a `struct` in one pass, as specific concrete types. This can be handled via a single package and provide centralized access from a single package. This makes configuration easy to track down,  access, and repair. 
 
 Code reusability will probably be lessened, at least initially. As time goes on, configuration can be injected into dependent packages, so code reuse could recover or even improve.
+
+##   
+The Interface Chain of Doom
+
+> Everyone knows that debugging is twice as hard as writing a program in the first place. So if you're as clever as you can be when you write it, how will you ever debug it?
+>
+> _--Brian Kernighan, Elements of Programming Style_
+
+It’s always a red-flag when two patterns are mixed together for no apparent reason. For example, the application being targeted for refactoring, combines packages with a factory pattern that return various `interface` types. After a factory creates an interface, the alarm bells really go off. The interface chain doesn’t stop -- like the Energizer bunny, it keeps going, and going. The example below illustrates this antipattern.
+
+This is the **Interface Chain on Doom**. Here’s an example of one that’s loosely based on a package from the aforementioned application:  
+![Interface Chain of Doom](/uploads/interface-chain-of-doom.svg "Interface Chain of Doom")
+
+While each implementation of this pattern is slightly different, the problem is apparent in all of them: it is virtually impossible to tell what is actually happening under the hood. Almost every interface in the application is an `interface`, an abstract type.
