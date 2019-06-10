@@ -62,4 +62,15 @@ Now, this `Config` isn't necessarily a bad thing. Like all engineering decisions
 
 ### Pros
 
-* Thoroughly abstracted, no external package knows how this **Magical Configuration** works -- only that it works. A package external to `foo.Config` asdfasd
+* Thoroughly abstracted. No external package knows how this **Magical Configuration** works -- only that it works. A package external to `foo.Config` doesn't know what data is stored in it, or how the internals of that storage are implemented.
+* Configuration is highly reusable for multiple projects -- meaning environment variable keys are de-facto standardized.
+
+### Cons
+
+* Finding the actual key of an environment variable is not an easy task. This interface is so abstract that it takes minutes of detective work to find where configuration actually occurs. In the example above, you can't directly answer the following questions without digging into the code for a specific project:
+  * Which package initially set the database within the `Config`
+  * Did any package overwrite the initial setting for the database? 
+  * What key is used to access the database via the method `Config.Value`? 
+* Configuration does not belong to the application -- it is shared custody between the application and its dependencies. There’s no knowing whether modifying an environment variable key will have cascading effects with other applications using the `foo` library.
+* Adding new keys is painful, since the interface obfuscates how things work under the hood -- instead of just using the standard library.
+* Loss of type safety. Since configuration is an `interface`, there is no check at compile-time verifying the correct type of configuration was used. Only a runtime error will reveal the issue.
