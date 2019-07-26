@@ -4,12 +4,12 @@ draft = true
 featured_img = ""
 slug = "abstraction-antipatterns-go"
 tags = ["design-patterns", "golang"]
-title = "Abstraction Antipatterns in Go"
+title = "Design Antipatterns in Go"
 
 +++
 As software systems grow in total users, traffic, and integration partners, there is a continuous need to maintain and expand the system's ability to scale. One of the big challenges in scaling a software project is keeping the project's codebases well-maintained. Poorly factored code provides a fertile breeding ground for bugs, performance issues, decreases an engineering team's ability to deliver new features, and slows down the onboarding of new hires. 
 
-During a recent project I worked on, my team and I spent the a few weeks identifying key areas to refactor in one of our internal services. We found the same type of issue cropping up again and again — abstraction. Or rather, _over-abstraction_.
+During a recent project I worked on, my team and I spent a few weeks identifying key areas to refactor in one of our internal services. We found the same type of issue cropping up again and again — abstraction. Or rather, _over-abstraction_.
 
 **Over-abstraction** is when code has unnecessary abstractions, the result of which is a decrease in code quality and an increase in cyclomatic complexity. 
 
@@ -21,9 +21,9 @@ However, even software greats have stated that too much abstraction can land eng
 >
 > _—Joel Spolsky,_ [_Don’t Let Architecture Astronauts Scare You_](https://www.joelonsoftware.com/2001/04/21/dont-let-architecture-astronauts-scare-you/)
 
-Many abstractions are quite useful, some...not so much. The less useful ones can be called **Abstraction Antipatterns.** By discussing the pros and cons of these patterns, interested readers will be able to spot and avoid making the same kinds of mistakes. 
+Many abstractions are quite useful, some...not so much. The less useful ones can be called **Abstraction Antipatterns.** By discussing the pros and cons of these patterns, hopefully, you can spot these antipatterns in your own code and avoid making the same kinds of mistakes. 
 
-At the end of this article is a checklist that takes the principles found in these examples and turns them into an actionable test that anyone can apply to their Go code to spot these antipatterns before they take root.
+At the end of this article is a list of principles that can prevent the mistakes shown in these examples and turn them into an actionable tests that anyone can apply when reviewing Go code.
 
 ## Magical Configuration
 
@@ -31,7 +31,9 @@ At the end of this article is a checklist that takes the principles found in the
 >
 > _—Tim Peters,_ [_The Zen of Python_](https://www.python.org/dev/peps/pep-0020/)
 
-Virtually every non-trivial package uses configuration. Repeating code violates the **DRY principle** (_Don’t Repeat Yourself_). Naturally, it follows that it must be a good idea to make a configuration pattern that is reusable everywhere. Here’s an example that shows high levels of abstraction and flexibility:
+Repeating code violates the **DRY principle** (_Don’t Repeat Yourself_). Naturally, it follows that it must be a good idea to make code that is highly reusable. 
+
+Virtually every non-trivial package uses configuration. Since DRY is a good thing, and configuration is a necessity, it makes sense to make a reusable configuration object. Here’s an example of a very flexible Configuration pattern:
 
 ```go
 type Config interface {
@@ -39,9 +41,9 @@ type Config interface {
 }
 ```
 
-If this looks familiar, don’t be surprised. It’s basically a `context.Context.`
+If this looks familiar, don’t be surprised. It’s the same pattern as `context.Context.`
 
-The application being refactored has all of its dependencies use and accept this interface. Once the `Config` is passed into a package -- each dependency is setup in its own specific way. Each dependency has predefined environment variable keys that get loaded into the `Config`via a signature of `func (foo.Config) foo.Config`. Once all packages in this application have been setup, any other package can call a function in one its dependencies package and voila -- it all magically works! Assuming all the configuration has been sourced correctly.
+The application my team was refactoring has all of its dependencies use and accept this interface. Once the `Config` is passed into a package -- each dependency is setup in its own specific way. Each dependency has predefined keys that get loaded into the `Config` via a signature of `func (foo.Config) foo.Config`. Once all packages in this application have been setup, any other package can call a function in one its dependent packages and voila -- it all magically works! Assuming all the configuration has been sourced correctly.
 
 Here's a contrived example for a bit more clarity:
 
@@ -68,7 +70,15 @@ func Do() error {
 }
 ```
 
-Now, this `Config` isn't necessarily a bad thing. Like all engineering decisions, there are tradeoffs. In the example above, any package can call a function in `bar.Do` after it has been setup without having to consider what `bar.Do` is dependent on. Below, I cover some more detailed issues with this pattern.
+In this example, its assumed that:
+
+* The `Config` passed into `Setup` holds the necessary key-value pair to use in the call to `appcfg.Database`.
+* That a developer writing code using the `bar` package realizes that the package itself must have `Setup` called prior to use (otherwise you'd get a nil pointer on the `db` variable.
+* Packages that need to use the `bar` package when performing their own `Setup` could be reliant on the call to `bar.Setup` being performed first.
+
+  Now, this `Config` isn't necessarily a bad thing. Like all engineering decisions, there are tradeoffs. In the example above, any package can call a function in `bar.Do` once it has been setup without having to consider what `bar.Do` is dependent on. 
+
+  Here are some more detailed issues and advantages of this pattern:
 
 ### Pros
 
