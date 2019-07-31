@@ -18,7 +18,7 @@ fields:
   name: slug
   label: slug
 pages:
-- content/archives/abstraction-antipatterns-in-go.md
-- content/archives/dependency-patterns-in-go.md
 - content/archives/estimates.md
 - content/archives/great-one-to-one-meetings.md
+- content/archives/abstraction-antipatterns-in-go.md
+- content/archives/dependency-patterns-in-go.md

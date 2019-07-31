@@ -35,7 +35,7 @@ At the end of this article is a list of principles that can prevent the mistakes
 
 Duplicated code violates the **DRY principle** (_Don’t Repeat Yourself_). Naturally, it follows that it must be a good idea to write code that is highly reusable.
 
-Virtually every non-trivial go program uses some form of configuration. Since the DRY principle is a good thing, and configuration is a necessity, it makes sense to make a reusable configuration object. 
+Virtually every non-trivial go program uses some form of configuration. Since the DRY principle is a good thing, and configuration is a necessity, it makes sense to make a reusable configuration object.
 
 Here’s an example of a very flexible configuration pattern, based on the project my team was refactoring:
 
@@ -47,9 +47,9 @@ type Config interface {
 
 If this looks familiar, don’t be surprised. It’s the same pattern as `context.Context.`
 
-The application my team was refactoring has all of its dependencies use and accept this interface. The `Config` is passed into a package into a `Setup` function, which is used to either pass dependencies into the package or load new values into the `Config`. Each dependency has predefined keys that get loaded into the `Config` via a signature of `func (foo.Config) foo.Config`. 
+The application my team was refactoring has all of its dependencies use and accept this interface. The `Config` is passed into a package into a `Setup` function, which is used to either pass dependencies into the package or load new values into the `Config`. Each dependency has predefined keys that get loaded into the `Config` via a signature of `func (foo.Config) foo.Config`.
 
-Once all packages in this application have been setup, any other package can call a function in one its dependent packages and voila -- it all magically works! Assuming all the configuration has been sourced correctly.
+Once all packages in this application have been setup, any other package can call a function in one its dependent packages and voila — it all works, without having to pass along any dependencies as function parameters!
 
 Here's a contrived example for a bit more clarity:
 
@@ -95,7 +95,7 @@ Here are some more detailed issues and advantages of this pattern:
 ### Cons
 
 * Using this pattern, finding the actual key of an environment variable is not an easy task. This interface is so abstract that it takes minutes of detective work to find where and how a configuration value is set. In the example above, you can't directly answer the following questions without digging into the code for a specific project:
-  * Which package initially set the database within the `Config`? 
+  * Which package initially set the database within the `Config`?
   * Did any package overwrite the initial setting for the database?
   * What key is used to access the database via the method `Config.Value`?
 * Configuration does not belong to the application -- it is shared custody between the application and its dependencies. There’s no knowing whether modifying a key will have cascading effects within other packages using the `Config`.
@@ -108,59 +108,59 @@ Instead of using an `interface`, configuration can be loaded into a concrete typ
 
 Code reusability will probably be reduced, at least initially. As time goes on, configuration can be injected into dependent packages, so code reuse could recover or even improve.
 
-## The Interface Chain of Doom
+## Chaining Interfaces
 
 > Everyone knows that debugging is twice as hard as writing a program in the first place. So if you're as clever as you can be when you write it, how will you ever debug it?
 >
 > _--Brian Kernighan, Elements of Programming Style_
 
-It’s always a red-flag when two patterns are mixed together for no apparent reason. For example, the application being targeted for refactoring, combines packages with a factory pattern that return various `interface` types. After a factory creates an interface, the alarm bells really go off. The interface chain doesn’t stop -- like the Energizer bunny, it keeps going, and going. The example below illustrates this antipattern.
+It’s always a red-flag when two patterns are mixed together for no apparent reason. For example, the application being targeted for refactoring, combines packages with a factory pattern that return various `interface` types. After a factory creates an `interface`, the alarm bells start to go off. The interface chain doesn’t stop — like the Energizer bunny, it keeps going, and going, and going. The example below illustrates this antipattern.
 
-This is the **Interface Chain on Doom**. Here’s an example of one that’s loosely based on a package from the aforementioned application:  
+I like to call this one interface chaining . Here’s an example of one that’s loosely based on a package from the aforementioned application:  
 ![Interface Chain of Doom](/uploads/interface-chain-of-doom.svg "Interface Chain of Doom")
 
-While each implementation of this pattern is slightly different, the problem is apparent in all of them: it is virtually impossible to tell what is actually happening under the hood.
+While each implementation of this pattern is slightly different, the problem is apparent in all of them: it is virtually impossible to tell what is actually happening when any method of these interfaces is called.
 
-There is no way to know what actually occurs in this application through visual inspection of the code. The majority of interfaces return interfaces via their methods. To top it all off -- any component may be dependent on the configuration `interface` that is sourced via the environment. There are potentially unlimited paths through any one chain of functionality that starts from one of these factories.
+This makes it incredibly difficult to know what actually occurs in this application through visual inspection of the code. The majority of interfaces return interfaces via their methods. To top it all off -- any component may be dependent on the configuration `interface` that is sourced via the environment. There are potentially unlimited paths through any one chain of functionality that starts from one of these factories.
 
-However, in this application, **the design above is used to handle two cases**: a mock, and a ‘real-world’ implementation. Files upon files of boilerplate and indirection -- just to swap between the real deal implementation and a test suite.
+However, in this application, **the interfaces are used to handle two cases**: a mock, and a ‘real-world’ implementation. Files upon files of boilerplate, application glue, and indirection -- just to swap between a real implementation and mock used in test suites.
 
 ### Pros
 
 * Test coverage goes through the roof, it's simple to write passing tests for all of the mock code.
-* Very easy to swap in new implementations of virtually anything. Since everything is an interface, anything can be swapped out with a minor code change.
+* Very easy to swap in new implementations of virtually anything. Since almost everything is an `interface`, any component can be swapped out with a minor code change.
 
 ### Cons
 
-* Determining where anything actually occurs is a nightmare. Every attempt at debugging results in digging through large swaths of the codebase while trying to keep mental context of the many moving parts.
-* Breaks tooling. Modern editors make heavy use of code hints which make Software Engineers more productive. Since virtually everything in this codebase is an interface -- it’s on the individual debugging the code to track down the actual implementation.
-* This code is not human friendly. It’s important to recognize that engineers are human too. Humans get hungover, sick, sad, hungry, and wake up on the wrong side of the bed. Trying to debug or extend this code in any of those states is going to be a no-good, very bad day.
+* Determining where anything procedure is called is a nightmare. Debugging attempts result in digging through large swaths of the codebase while trying to keep mental context of the many moving parts.
+* Breaks tooling. Modern editors make heavy use of code hinting which make Software Engineers more productive. Since virtually everything in this codebase is an interface, code hinting can only reveal the interface definition — not the implementation. The responsibility is on the individual debugging the code to track down the actual implementation. You can use tools like [guru](https://github.com/golang/tools/tree/master/cmd/guru) to aid in finding implementations, but this is significantly more time-consuming than reading through a concrete type definition.
+* This code is not human friendly. It’s important to recognize that engineers are human too. Humans experience sickness, depression, hunger, and sleep deprivation. Trying to debug or extend this code in any of those states is going to be a no-good, very bad day.
 
 ### How to Fix It
 
-Follow this popular Go practice:
+Follow the popular Go practice:
 
 > Accept interfaces return structs.
 >
 > _—Jack Lindamood,_ [_Preemptive Interface Anti-Pattern in Go_](https://medium.com/@cep21/preemptive-interface-anti-pattern-in-go-54c18ac0668a)
 
-**_NOTE_**_: Though the quote above claims interfaces should return structs, any concrete type serves the same purpose._
+**_NOTE_**_: Though the quote above claims interfaces should return structs, any concrete type can serve the same purpose._
 
-Even though `io.Reader` is accepted by many functions in the standard library -- there aren’t any that return an `io.Reader`, at least not directly. This prevents passing some formless contract from function to function. Instead, concrete implementations of such as `bytes.Buffer` can be used as an `io.Reader.`
+Even though `io.Reader` is accepted by many functions in the standard library — there aren’t any function that return an `io.Reader`, at least not directly. This prevents passing a formless contract between functions. Instead, concrete implementations of such as `bytes.Buffer` can be used as an `io.Reader.`
 
-Additionally, architecture should be as complex as it needs to be -- but no more. If there are only two implementations, an `if statement` works just as well as a factory. If booleans aren’t in fashion, accept an `interface`, or a function signature, just be sure to pass around explicit implementations instead of abstract types.
+Additionally, architecture should be as complex as it needs to be — but no more. If there are only two implementations, standard control flow such as an `if` statement works just as well as a factory. If booleans are seen as  primitive at your workplace, accept an `interface`, or a function signature, but return a concrete type.
 
-## 
+Just be sure to pass around explicit implementations instead of abstract types.
 
-The Vogon Registry
+## The Vogon Registry
 
 > Wherever there is modularity there is the potential for misunderstanding: Hiding information implies a need to check communication.
 >
-> _--Alan J. Perlis, Epigrams on Programming_
+> _—Alan J. Perlis,_ [_Epigrams on Programming_](http://www.cs.yale.edu/homes/perlis-alan/quotes.html)
 
 > _...You wanted a banana but what you got was a gorilla holding the banana and the entire jungle..._
 >
-> _-- Joe Armstrong, Coders At Work_
+> _—Joe Armstrong,_ [_Coders At Work_](http://www.codersatwork.com/)
 
 For those who never read, or don’t remember _The Hitchhiker's Guide to the Galaxy_, Vogons are described as:
 
@@ -205,7 +205,7 @@ type Context struct {
 
     manager Manager
 
-    poems   map\[string\]*Poem
+    poems   map[string]*Poem
 
 }
 
@@ -217,7 +217,7 @@ func NewContext(m Manager) *Context {
 
         manager: m,
 
-        poems:   map\[string\]*Poem{},
+        poems:   map[string]*Poem{},
 
     }
 
@@ -229,7 +229,7 @@ type Factory interface {
 
     // Poems returns the list of Poem implementations the factory can generate.
 
-    Poems() \[\]string
+    Poems() []string
 
     // NewPoem returns an interface which could be cast into a specific Poem
 
@@ -263,7 +263,7 @@ type Manager interface {
 
 type DefaultManager struct {
 
-    Factories map\[string\]Factory
+    Factories map[string]Factory
 
 }
 
@@ -271,7 +271,7 @@ type DefaultManager struct {
 
 func (m *DefaultManager) CreatePoem(ctx *Context, name string) (interface{}, error) {
 
-    factory, ok := m.Factories\[name\]
+    factory, ok := m.Factories[name]
 
     if !ok {
 
@@ -291,7 +291,7 @@ func (m *DefaultManager) RegisterFactory(f Factory) {
 
     for _, name := range f.Poems() {
 
-        m.Factories\[name\] = f
+        m.Factories[name] = f
 
     }
 
@@ -303,7 +303,7 @@ func NewDefaultManager() *DefaultManager {
 
     return &DefaultManager{
 
-        Factories: make(map\[string\]Factory),
+        Factories: make(map[string]Factory),
 
     }
 
@@ -332,37 +332,38 @@ func Process(m Manager, f TransactionFunc) (err error) {
 
 In order to make use of the `vogon` package, the client must:
 
-* Provide an implementation that meets the Factory type
-* Provide an implementation that meets the FactoryFunc type for each Poem they wish to access. Note that the FactoryFunc type doesn’t actually return a Poem, but instead an interface{} which is allegedly a Poem.
-* Tie the Factory implementation to all the various FactoryFunc implementations so that it can be registered via the Manager type
-* Provide an implementation that meets the Manager interface, use the DefaultManager, or wrap the DefaultManager
-* Register the Factory implementation via the RegisterFactory method on a Manager.
-* Provide one or more TransactionFunc that actually do some task related to a Poem
-* Tie all the above together whenever access to a Poem is needed
+* Provide an implementation that meets the `Factory` type
+* Provide an implementation that meets the `FactoryFunc` type for each `Poem` they wish to access. Note that the `FactoryFunc` type doesn’t actually return a `Poem`, but instead an `interface{}` which is _allegedly_ a `Poem`
+* Glue the `Factory` implementation to all the various `FactoryFunc` implementations so that it can be registered via the `Manager` type
+* Provide an implementation that meets the `Manager` interface, use the `DefaultManager`, or wrap the `DefaultManager` ins some other type.
+* Register the `Factory` implementation via the `RegisterFactory` method on a `Manager`
+* Provide one or more `TransactionFunc` that actually do some task related to a `Poem`
+* Glue all the above together whenever access to a `Poem` is needed
 
 The `vogon` package successfully hides the implementation of one of the most basic data structures. Going through a codebase that uses `vogon` would require stepping through a spiderweb of interfaces, factories, and runtime configured maps.
 
-#### But this isn’t real!
+#### But this isn’t real code!
 
-No, `vogon` isn’t real -- but it’s based on real code being refactored. Jon Bodner used a very similar pattern in his satirical Go web framework [Fall](https://github.com/evil-go/fall/blob/master/fall.go), so this isn’t even the first instance of this pattern recorded in the wild.
+No, `vogon` isn’t real -- but it’s based on real production code. Jon Bodner used a very similar pattern in his satirical Go web framework [Fall](https://github.com/evil-go/fall/blob/master/fall.go), so this goofy example isn’t even the first instance of this pattern recorded in the wild.
 
 ### Pros
 
-* Powerful abstraction. If there was a database operating under the hood virtually none of that implementation would leak.
-* Highly modular. Whatever a **Vogon Registry** actually does can be swapped out with ease.
-* Excellent for code reuse. Every dependency is dynamically tucked into place at runtime. Whatever it is used for, it does a great job of limiting access to resources, which makes client code consistent with the DRY principle.
+* Powerful abstraction. This pattern could be used to register virtually any type whether it's `Poems` or `DAO`s without the client package needing to know anything about how those types are implemented or stored. 
+* Excellent for code reuse. Every dependency is dynamically tucked into place at runtime. Whatever it is used for, this registry does a great job of limiting access to resources, which makes client code consistent with the DRY principle.
 
 ### Cons
 
 * Breaks compile time tooling. Since virtually every part of a **Vogon Registry** is dynamic, there is almost no way to verify that it is being used properly by the compiler.
-* Rigid structure. Adding anything new requires going through a great deal of code bureaucracy. There are many interfaces and types that need implementations, registrations, and proper licensing before anything can happen. If an engineer forgets to implement any one of these details the application slaps them with a runtime error.
+* Rigid structure. Adding anything new requires going through a great deal of bureaucracy. There are many interfaces and types that need implementations, registrations, and proper licensing before anything can happen. If an engineer forgets to implement any one of these details the application slaps them with a runtime error.
 * Obfuscates important details. The kind of things that engineers want to limit access to are typically critical elements of a production application, such as: a database, an AWS S3 bucket, a hard disk. However, in the quest to protect a critical asset, this is the “nuclear option”. Whatever happens inside this package is going to require complex mental modeling, graph paper, and a lot of patience to track down.
 
 ### How to Fix It
 
 If there is truly need for dynamic access to all kinds of functions, `map[string]func() error` would be preferable.
 
-Instead, each business object can expose an interface implementation dedicated to a specific type of access. These differing implementations can be passed around via their interface, allowing for dependencies to be managed when an object is instantiated. See the example below:
+Instead, each business object can expose an `interface` implementation dedicated to a specific type of access. These differing implementations can be passed around via their `interface`, allowing for dependencies to be managed when an object is instantiated. 
+
+See the example below:
 
 ```go  
 type (
@@ -387,7 +388,7 @@ type (
 
     UserMock struct {
 
-        db map\[string\]User
+        db map[string]User
 
     }
 
@@ -401,7 +402,7 @@ var (
 
 func (m UserModel) Get(id string) (u User, err error) {
 
-    query := \`SELECT first_name, last_name, email FROM users WHERE id = ? LIMIT 1\`
+    query := `SELECT first_name, last_name, email FROM users WHERE id = ? LIMIT 1`
 
     err := m.db.QueryRow(query, id).Scan(&u.FirstName, &u.LastName, &u.Email)
 
@@ -417,7 +418,7 @@ func (m UserModel) Get(id string) (u User, err error) {
 
 func (m UserMock) Get(id string) (u User, err error) {
 
-    u, ok := m.db\[id\]
+    u, ok := m.db[id]
 
     if ok {
 
@@ -430,26 +431,18 @@ func (m UserMock) Get(id string) (u User, err error) {
 }
 ```
 
-The nice part of an approach like this is that there should always be a trail of breadcrumbs to follow. Wherever a function needing a `UserService` from the code above is called, the exact implementation used can be found with ease. This means debugging is easier than using a dynamic approach. Very human-friendly.
+The nice part of an approach like this is that there should always be a trail of breadcrumbs to follow. Wherever a function needing a `UserService` from the code above is called, the exact implementation can be found with relative ease. This means debugging is easier than using a dynamic approach. Very human-friendly.
 
-Tearing out SQL queries and replacing them with MongoDB queries will be significantly more tedious using this approach. Realistically, that’s a rare requirement. Time saved NOT dealing with a dynamic web of interfaces and factories should pay the time cost of a database replacement several times over.
+Tearing out SQL queries and replacing them with MongoDB queries will be significantly more tedious using this approach. Realistically, that’s a rare requirement. Developer time saved by NOT dealing with a cobweb of interfaces and factories should offset the time cost of a database replacement several times over.
 
 ## Conclusion: How to Prevent Abstraction Antipatterns
 
-The **How to Fix It** sections above are remarkably similar, so this seems like an opportunity to extract a simple system to prevent abstraction antipatterns from cropping up in Go code. The main reason for putting a system in place is to prevent technical debt from crippling applications.
+The **How to Fix It** sections above are remarkably similar, so this seems like an opportunity to extract a few lessons to help prevent abstraction antipatterns from cropping up in Go code. The main reason for putting a system in place is to prevent technical debt from crippling applications.
 
-The following questions are `true/false` and can be used as a checklist and can act as a guide for code review:
+The following questions can help identify if your application code suffers from over-abstraction. If you can answer yes to three or more questions, your code is in pretty good shape. Anything less than that, and you may want to plan a refactor of your own.
 
-* Does the code return only concrete types?
+* Do functions and methods return only concrete types?
 * Is the ratio of concrete types to abstract types at least 1:1?
-* Could a mid-level engineer debug or extend this code even with a migraine?
+* Could a mid-level engineer debug or extend this code while tired, hungry, or hungover?
 * Are all abstractions well-documented and clear in their purpose and usage?
-* Do abstractions effectively defend the application from runtime errors?
-
-### Scoring
-
-The most dangerous part of a highly abstract system is that a lot of knowledge about the system is implied -- meaning contained in an engineer's head. A high score means that losing key engineers could lead to major delays when fixes or changes are needed. To score, tally each question answered `false` above, then consult the following score ranges.
-
-* **4-5:** Black box. Losing a key engineer could turn this into legacy code. Documentation and refactoring should be prioritized over non-critical features / bugs.
-* **2-3:** Dangerous. Losing the program author(s) could cause major problems. Create a long-term refactoring roadmap for over-abstraction hot spots and make progress during normal sprint work.
-* **<2:** Generally safe. Document any issues with abstractions and continue with normal development.
+* Do abstractions effectively defend the application from runtime errors and panics?
