@@ -4,16 +4,16 @@ draft = true
 featured_img = ""
 slug = "abstraction-antipatterns-go"
 tags = ["design-patterns", "golang"]
-title = "Design Antipatterns in Go"
+title = "Abstraction Antipatterns in Go"
 
 +++
-As software systems grow in total users, traffic, and integration partners, there is a continuous need to maintain and expand the system's ability to scale. One of the big challenges in scaling a software project is keeping the project's codebases well-maintained. Poorly factored code provides a fertile breeding ground for bugs, performance issues, decreases an engineering team's ability to deliver new features, and slows down the onboarding of new hires. 
+As software systems grow in total users, traffic, and integration partners, there is a continuous need to maintain and expand the system's ability to scale. One of the big challenges in scaling a software project is keeping the project's codebases well-maintained. Poorly factored code provides a fertile breeding ground for bugs, performance issues, decreases an engineering team's ability to deliver new features, and slows down the onboarding of new hires.
 
 During a recent project I worked on, my team and I spent a few weeks identifying key areas to refactor in one of our internal services. We found the same type of issue cropping up again and again — abstraction. Or rather, _over-abstraction_.
 
-**Over-abstraction** is when code has unnecessary abstractions, the result of which is a decrease in code quality and an increase in cyclomatic complexity. 
+**Over-abstraction** is when code contains unnecessary abstractions, the result of which is a decrease in code quality and an increase in [cyclomatic complexity](https://en.wikipedia.org/wiki/Cyclomatic_complexity).
 
-To be clear, abstraction has merit. There are clear benefits to using abstractions in software development. **The primary job of a software engineer is to create useful abstractions**. Software exists so that the average person doesn’t need to understand how the large circuit-filled box under their desk pushes electrons around — they only need to know that it can be used to send email, manage banking accounts online, and visit their preferred social media platform.
+To be clear, abstraction has merit. There are great benefits to using abstractions in software development. **The primary job of a software engineer is to create useful abstractions**. Software exists so that the average person doesn’t need to understand how the circuit-filled box under their desk pushes electrons around — they only need to know that it can be used to send email, manage banking accounts online, and visit their preferred social media platform.
 
 However, even software greats have stated that too much abstraction can land engineers in hot water:
 
@@ -21,19 +21,23 @@ However, even software greats have stated that too much abstraction can land eng
 >
 > _—Joel Spolsky,_ [_Don’t Let Architecture Astronauts Scare You_](https://www.joelonsoftware.com/2001/04/21/dont-let-architecture-astronauts-scare-you/)
 
-Many abstractions are quite useful, some...not so much. The less useful ones can be called **Abstraction Antipatterns.** By discussing the pros and cons of these patterns, hopefully, you can spot these antipatterns in your own code and avoid making the same kinds of mistakes. 
+Many abstractions are quite useful, some...not so much. I call the worst offenders **Abstraction Antipatterns.**
+
+It's important to remember that professional software engineers rarely choose a specific pattern completely by accident.  Even antipatterns are likely to provide some benefit. I try to give the antipatterns mentioned a fair cost-benefit analysis.
 
 At the end of this article is a list of principles that can prevent the mistakes shown in these examples and turn them into an actionable tests that anyone can apply when reviewing Go code.
 
-## Magical Configuration
+## Opaque Configuration
 
 > Explicit is better than implicit.
 >
 > _—Tim Peters,_ [_The Zen of Python_](https://www.python.org/dev/peps/pep-0020/)
 
-Repeating code violates the **DRY principle** (_Don’t Repeat Yourself_). Naturally, it follows that it must be a good idea to make code that is highly reusable. 
+Duplicated code violates the **DRY principle** (_Don’t Repeat Yourself_). Naturally, it follows that it must be a good idea to write code that is highly reusable.
 
-Virtually every non-trivial package uses configuration. Since DRY is a good thing, and configuration is a necessity, it makes sense to make a reusable configuration object. Here’s an example of a very flexible Configuration pattern:
+Virtually every non-trivial go program uses some form of configuration. Since the DRY principle is a good thing, and configuration is a necessity, it makes sense to make a reusable configuration object. 
+
+Here’s an example of a very flexible configuration pattern, based on the project my team was refactoring:
 
 ```go
 type Config interface {
@@ -43,7 +47,9 @@ type Config interface {
 
 If this looks familiar, don’t be surprised. It’s the same pattern as `context.Context.`
 
-The application my team was refactoring has all of its dependencies use and accept this interface. Once the `Config` is passed into a package -- each dependency is setup in its own specific way. Each dependency has predefined keys that get loaded into the `Config` via a signature of `func (foo.Config) foo.Config`. Once all packages in this application have been setup, any other package can call a function in one its dependent packages and voila -- it all magically works! Assuming all the configuration has been sourced correctly.
+The application my team was refactoring has all of its dependencies use and accept this interface. The `Config` is passed into a package into a `Setup` function, which is used to either pass dependencies into the package or load new values into the `Config`. Each dependency has predefined keys that get loaded into the `Config` via a signature of `func (foo.Config) foo.Config`. 
+
+Once all packages in this application have been setup, any other package can call a function in one its dependent packages and voila -- it all magically works! Assuming all the configuration has been sourced correctly.
 
 Here's a contrived example for a bit more clarity:
 
@@ -52,8 +58,8 @@ package bar
    
 import (
 	"github.com/jmoiron/sqlx"
-    "github.com/some-namespace/foo" // not a real package!
-    "github.com/some-namespace/appcfg" // not a real package!
+    "github.com/some-namespace/foo" 
+    "github.com/some-namespace/appcfg"
 )
    
 var (
@@ -73,37 +79,36 @@ func Do() error {
 In this example, its assumed that:
 
 * The `Config` passed into `Setup` holds the necessary key-value pair to use in the call to `appcfg.Database`.
-* That a developer writing code using the `bar` package realizes that the package itself must have `Setup` called prior to use (otherwise you'd get a nil pointer on the `db` variable.
-* Packages that need to use the `bar` package when performing their own `Setup` could be reliant on the call to `bar.Setup` being performed first.
+* That a developer writing code using the `bar` package realizes that the package itself must have `Setup` called prior to use, otherwise `db` will be a nil pointer causing runtime panics.
+* Packages that use the `bar` package when performing their own `Setup` could be reliant on the call to `bar.Setup` being performed first.
 
-  Now, this `Config` isn't necessarily a bad thing. Like all engineering decisions, there are tradeoffs. In the example above, any package can call a function in `bar.Do` once it has been setup without having to consider what `bar.Do` is dependent on. 
+Now, this `Config` isn't necessarily a bad thing. Like all engineering decisions, there are tradeoffs. In the example above, any package can call a function in `bar.Do` once it has been setup without having to consider what `bar.Do` is dependent on.
 
-  Here are some more detailed issues and advantages of this pattern:
+Here are some more detailed issues and advantages of this pattern:
 
 ### Pros
 
-* Thoroughly abstracted. No external package knows how this **Magical Configuration** works -- only that it works. A package external to `foo.Config` doesn't know what data is stored in it, or how the internals of that storage are implemented.
-* Configuration is highly reusable for multiple projects -- meaning environment variable keys are de-facto standardized.
+* Thoroughly abstracted. A package external to `foo.Config` doesn't know what data is stored in it, or how the internals of that storage are implemented.
+* Configuration is highly reusable for multiple projects -- meaning configuration variable keys (such as environment variables) can be de-facto standardized.
+* Memory usage can be more efficient, since dependencies could be loaded as pointers and shared between various packages. Compared with creating and sharing instances of a struct, common sense dictates the memory usage should be lower using a single pointer per dependency.
 
 ### Cons
 
-* Finding the actual key of an environment variable is not an easy task. This interface is so abstract that it takes minutes of detective work to find where configuration actually occurs. In the example above, you can't directly answer the following questions without digging into the code for a specific project:
-  * Which package initially set the database within the `Config`
+* Using this pattern, finding the actual key of an environment variable is not an easy task. This interface is so abstract that it takes minutes of detective work to find where and how a configuration value is set. In the example above, you can't directly answer the following questions without digging into the code for a specific project:
+  * Which package initially set the database within the `Config`? 
   * Did any package overwrite the initial setting for the database?
   * What key is used to access the database via the method `Config.Value`?
-* Configuration does not belong to the application -- it is shared custody between the application and its dependencies. There’s no knowing whether modifying an environment variable key will have cascading effects with other applications using the `foo` library.
-* Adding new keys is painful, since the interface obfuscates how things work under the hood -- instead of just using the standard library.
+* Configuration does not belong to the application -- it is shared custody between the application and its dependencies. There’s no knowing whether modifying a key will have cascading effects within other packages using the `Config`.
+* Adding new keys is painful, since the interface obfuscates how things work under the hood.
 * Loss of type safety. Since configuration is an `interface`, there is no check at compile-time verifying the correct type of configuration was used. Only a runtime error will reveal the issue.
 
 ### How to Fix It
 
-Instead of using an interface, configuration can be loaded into a concrete type such as a `struct`. Configuration can be read from environment variables into a `struct` in one pass, as specific concrete types. This can be handled via a single package and provide centralized access from a single package. This makes configuration easy to track down,  access, and repair.
+Instead of using an `interface`, configuration can be loaded into a concrete type such as a `struct`. Configuration can be read from environment variables, command-line arguments, or a file into a `struct` in one pass, as specific concrete types. This can be handled via a single package and provide centralized access from a single package. This makes configuration easy to track down,  access, and repair.
 
-Code reusability will probably be lessened, at least initially. As time goes on, configuration can be injected into dependent packages, so code reuse could recover or even improve.
+Code reusability will probably be reduced, at least initially. As time goes on, configuration can be injected into dependent packages, so code reuse could recover or even improve.
 
-## 
-
-The Interface Chain of Doom
+## The Interface Chain of Doom
 
 > Everyone knows that debugging is twice as hard as writing a program in the first place. So if you're as clever as you can be when you write it, how will you ever debug it?
 >
