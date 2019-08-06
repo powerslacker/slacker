@@ -348,7 +348,7 @@ No, `vogon` isn’t real -- but it’s based on real production code. Jon Bodner
 
 ### Pros
 
-* Powerful abstraction. This pattern could be used to register virtually any type whether it's `Poems` or `DAO`s without the client package needing to know anything about how those types are implemented or stored. 
+* Powerful abstraction. This pattern could be used to register virtually any type whether it's `Poems` or `DAO`s without the client package needing to know anything about how those types are implemented or stored.
 * Excellent for code reuse. Every dependency is dynamically tucked into place at runtime. Whatever it is used for, this registry does a great job of limiting access to resources, which makes client code consistent with the DRY principle.
 
 ### Cons
@@ -361,7 +361,7 @@ No, `vogon` isn’t real -- but it’s based on real production code. Jon Bodner
 
 If there is truly need for dynamic access to all kinds of functions, `map[string]func() error` would be preferable.
 
-Instead, each business object can expose an `interface` implementation dedicated to a specific type of access. These differing implementations can be passed around via their `interface`, allowing for dependencies to be managed when an object is instantiated. 
+Instead, each business object can expose an `interface` implementation dedicated to a specific type of access. These differing implementations can be passed around via their `interface`, allowing for dependencies to be managed when an object is instantiated.
 
 See the example below:
 
