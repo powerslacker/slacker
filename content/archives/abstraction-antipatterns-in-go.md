@@ -35,7 +35,7 @@ type Config interface {
 }
 ```
 
-If this looks familiar, don’t be surprised. It’s the same pattern as `context.Context.`
+If this looks familiar, don’t be surprised. It’s the same pattern as `context.Context`.
 
 The application my team was refactoring has all of its dependencies use and accept this `interface`. The `Config` is passed into a package via a function typically called `Setup` , which is used to either pass dependencies into the package or load new values into the `Config`. Each dependency has predefined keys that get loaded into the `Config` via a signature of `func (Config) Config`. For example:
 
@@ -87,7 +87,7 @@ Here are some more detailed issues and advantages of this pattern:
 
 ### Cons
 
-* Configuration is order dependent, and the order can’t be figured out by looking at individual packages since the purpose of the `Config` is dynamic. This could lead to developers attempting to use unconfigured packages.
+* Configuration is order dependent, and the order can’t be figured out by looking at individual packages since the purpose of the `Config` is dynamic. This could lead to developers attempting to use packages that have no been configured.
 * Using this pattern, finding the actual key of an environment variable is not an easy task. This `interface` is so abstract that it takes minutes of detective work to find where and how a configuration value is set. In the example above, you can’t directly answer the following questions without digging into the code for a specific project:
   * Which package initially set the database within the `Config`?
   * Did any package overwrite the initial setting for the database?
