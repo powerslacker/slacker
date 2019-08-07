@@ -161,8 +161,6 @@ Even though `io.Reader` is accepted by many functions in the standard library �
 
 Additionally, an application’s architecture should be as complex as it needs to be — but no more. If there are only two implementations, standard control flow such as an `if` statement works just as well as an `interface`. If booleans are seen as primitive at your workplace, accept an `interface`, or a function signature, but return a concrete type.
 
-Just be sure to pass around explicit implementations instead of abstract types.
-
 ## Big Centralized Interfaces & Implementations
 
 The vast majority of `interface` usage I’ve seen in the wild is used to make code easier to test. By accepting an `interface`, as opposed to a concrete type a function or methods dependencies can be easily mocked. Building an `interface`, an implementation of that `interface`, and a mock implementation can become tedious when done for multiple types.
@@ -272,10 +270,9 @@ func (s UserServiceImpl) Delete(int) error {
 
 ### How to Fix It
 
-A publicly exposed `interface` should be considered a shared, and as such should be as lightweight and generic as possible. For good examples in the standard library check out io.Reader, io.Writer, and runtime.Error.
+A publicly exposed `interface` should be considered shared, and as such should be as lightweight and generic as possible. For good examples in the standard library check out `io.Reader`, `io.Writer`, and `runtime.Error`
 
-There are times when using a large `interface` is appropriate, and can result in a clearer abstraction than many small interaces.
-In this case, Go offers the ability to compose small interfaces into a new definition. Typically, in this case the comprehensive definition is needed in certain locations. This means that we can easily provide access to both a comprehensive definition or very specific definitions, depending on the needs of varied clients.
+There are times when using a large `interface` is appropriate, and can result in a clearer abstraction than many small interfaces. In this case, Go offers the ability to compose small interfaces into a new definition. Typically, in this case the comprehensive definition is needed in certain locations. This means that we can easily provide access to both a comprehensive definition or very specific definitions, depending on the needs of varied clients.
 
 Here's an example of interface composition:
 
@@ -305,7 +302,7 @@ This example demonstrates a refactor of the previous example, with each `interfa
 package handlers
 
 import (
- // ...
+   // ...
 )
 
 type UserGetter interface {
@@ -330,7 +327,6 @@ func (h Public) Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h Admin) DeleteUser(w http.ResponseWriter, r *http.Request) {
-    // ...
     err := h.userDeleter.Delete(userID)
     // ...
 }
@@ -342,10 +338,10 @@ As a sidebar, when slicing this small, an `interface` may not even be prudent �
 package handlers
 
 import (
- // ...
+    // ...
 )
 
-// these function definitions are not neccessary, anonymous signatures work
+// these function definitions are unneccessary, anonymous signatures work
 // just as well — this style can be more convenient for developers
 type GetUsers func() []User
 
@@ -388,7 +384,7 @@ func (h Root) DeleteAll(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-While the end result is many small interfaces (or function signatures) dispersed throughout the codebase, tests and mocks are easier to produce. Mocks can individually support the needs of the tests where they are used, as opposed to sharing common functionality. While it is more difficult to keep these smaller, bespoke `interface`s organized — it is much easier to refactor individual components, since functionality is no longer coupled to a shared contract.
+While the end result is many small interfaces (or function signatures) dispersed throughout the codebase, tests and mocks are easier to produce. Mocks can individually support the needs of the tests where they are used, as opposed to sharing common functionality. While it is more difficult to keep each bespoke `interface` organized — there is less need to as functionality is no longer coupled to a shared contract.
 
 ## Conclusion: How to Prevent Abstraction Antipatterns
 
