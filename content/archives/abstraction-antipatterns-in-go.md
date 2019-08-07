@@ -9,7 +9,7 @@ title = "Abstraction Antipatterns in Go"
 +++
 # Abstraction Antipatterns in Go
 
-As software systems grow in total users, traffic, and integration partners, there is a continuous need to maintain and expand the system’s ability to scale. One of the most difficult challenges in scaling a software project is keeping the project’s codebases well-maintained. Poorly factored code increases bugs and performance issues, decreases the ability to deliver new features, and slows down onboarding of new hires.
+As software systems grow in total users, traffic, and integration partners, there is a continuous need to maintain and expand the system’s ability to scale. One of the most difficult challenges in scaling a software project is keeping well-maintained code. Poorly factored code increases bugs and performance issues, decreases the ability to deliver new features, and slows down onboarding of new hires.
 
 During a recent project I worked on, my team and I spent a few weeks identifying key areas to refactor in one of our internal services. We found the same type of issue cropping up again and again — abstraction. Or rather, _over-abstraction_.
 
@@ -37,7 +37,13 @@ type Config interface {
 
 If this looks familiar, don’t be surprised. It’s the same pattern as `context.Context.`
 
-The application my team was refactoring has all of its dependencies use and accept this `interface`. The `Config` is passed into a package via a function typically called `Setup` , which is used to either pass dependencies into the package or load new values into the `Config`. Each dependency has predefined keys that get loaded into the `Config` via a signature of `func (foo.Config) foo.Config`.
+The application my team was refactoring has all of its dependencies use and accept this `interface`. The `Config` is passed into a package via a function typically called `Setup` , which is used to either pass dependencies into the package or load new values into the `Config`. Each dependency has predefined keys that get loaded into the `Config` via a signature of `func (foo.Config) foo.Config`. For example:
+
+```go
+func WithDatabase(c Config) Config {
+	// database loaded into new config...
+}
+```
 
 Once all packages in this application have been setup, any other package can call a function in one its dependent packages and voila — it all works, without having to pass along any dependencies as function parameters!
 
