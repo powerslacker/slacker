@@ -37,7 +37,7 @@ type Config interface {
 
 If this looks familiar, don’t be surprised. It’s the same pattern as `context.Context.`
 
-The application my team was refactoring has all of its dependencies use and accept this `interface`. The `Config` is passed into a package via a function typically called `Setup` , which is used to either pass dependencies into the package or load new values into the `Config`. Each dependency has predefined keys that get loaded into the `Config` via a signature of `func (foo.Config) foo.Config`. For example:
+The application my team was refactoring has all of its dependencies use and accept this `interface`. The `Config` is passed into a package via a function typically called `Setup` , which is used to either pass dependencies into the package or load new values into the `Config`. Each dependency has predefined keys that get loaded into the `Config` via a signature of `func (Config) Config`. For example:
 
 ```go
 func WithDatabase(c Config) Config {
@@ -106,7 +106,7 @@ Code reusability will probably be reduced, at least initially. As time goes on, 
 
 It’s always a red-flag when two patterns are mixed together for no apparent reason. For example, the application being refactored made use of a factory pattern that returns various `interface` types. After a factory creates an `interface`, the alarm bells start to go off. The `interface` chain doesn’t stop — like the Energizer bunny, it keeps going, and going, and going.
 
-I like to call this one `interface` chaining. This is a bit difficult to understand using only prose, so here’s a diagram and code example loosely based on a package from the aforementioned application. These examples show chaining interfaces, note how each `interface` has methods that return an `interface` rather than a concrete type:
+I like to call this one `interface` chaining. This is a bit difficult to understand using only prose, so here’s a diagram and code example loosely based on a package from the aforementioned application. Note how each `interface` has methods that return an `interface` rather than a concrete type:
 
 ![](/uploads/interface-chain-of-doom.svg)
 
@@ -133,15 +133,13 @@ func NewFooFactory() FooFactory {
 }
 ```
 
-While each implementation of this pattern is slightly different, the problem is apparent in all of them: it is virtually impossible to track down what is actually happening when a method belonging to any of them is called.
-
-This makes it incredibly difficult to know what actually occurs in this application through visual inspection of the code. The majority of interfaces return an `interface` via their methods. To top it all off – any component may be dependent on the configuration `interface` that is sourced via the environment. There are potentially unlimited paths through any one chain of functionality that starts from one of these factories.
+This makes it incredibly difficult to know what actually occurs in this application through visual inspection of the code. The majority of interfaces return an `interface` via their methods. There are potentially unlimited paths through any one chain of functionality that starts from one of these factories.
 
 However, in the application being refactored, **the interfaces are used to handle two cases**: a mock, and a ‘real-world’ implementation. Files upon files of boilerplate, glue code, and indirection — just to swap between a real implementation and mock used in test suites.
 
 ### Pros
 
-* If mocks are included in your compilable packages, test coverage goes through the roof. It’s simple to write passing tests for mock code. If your employer has some extreme requirements around test coverage this can be an easy way to inflate your score.
+* If mocks are included in your compilable packages, test coverage goes through the roof. It’s simple to write passing tests for mock code. If your employer has some extreme requirements around test coverage this can be an easy way to inflate your coverage metrics.
 * Very easy to swap in new implementations of virtually anything. Since almost everything is an `interface`, any component can be swapped out with a minor code change.
 
 ### Cons
@@ -153,11 +151,11 @@ However, in the application being refactored, **the interfaces are used to handl
 
 Follow the popular Go practice:
 
-Accept interfaces return structs.
+> Accept interfaces return structs.
+>
+> _—Jack Lindamood,_ [_Preemptive Interface Anti-Pattern in Go_](https://medium.com/@cep21/preemptive-\`interface\`-anti-pattern-in-go-54c18ac0668a)
 
-_—Jack Lindamood,_ [_Preemptive Interface Anti-Pattern in Go_](https://medium.com/@cep21/preemptive-\`interface\`-anti-pattern-in-go-54c18ac0668a)
-
-**_NOTE_**: Though the quote above claims your functions should return structs, any concrete type can serve the same purpose.
+**NOTE: Though the quote above claims your functions should return structs, any concrete type can serve the same purpose.**
 
 Even though `io.Reader` is accepted by many functions in the standard library — there isn’t any function that returns an `io.Reader`, at least not directly. This prevents passing a formless contract between functions. Instead, concrete implementations of such as `bytes.Buffer` can be used as an `io.Reader.`
 
