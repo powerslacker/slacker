@@ -13,7 +13,7 @@ As software systems grow in total users, traffic, and integration partners, ther
 
 During a recent project I worked on, my team and I spent a few weeks identifying key areas to refactor in one of our internal services. We found the same type of issue cropping up again and again — abstraction. Or rather, _over-abstraction_.
 
-**Over-abstraction** is when code contains unnecessary abstractions, the result of which is a decrease in code quality, greater [cyclomatic complexity](https://en.wikipedia.org/wiki/Cyclomatic_complexity), and a codebase bloated with adapters (aka [glue](https://en.wikipedia.org/wiki/Glue_code)) to conenct components.
+**Over-abstraction** is when code contains unnecessary abstractions, the result of which is a decrease in code quality, greater [cyclomatic complexity](https://en.wikipedia.org/wiki/Cyclomatic_complexity), and a codebase bloated with adapters (aka [glue](https://en.wikipedia.org/wiki/Glue_code)) to connect components.
 
 To be clear, abstraction has great merit. **The primary job of a software engineer is to create useful abstractions**. Software exists so that the average person doesn’t need to understand how the circuit-filled box under their desk pushes electrons around — they only need to know that it can be used to send emails, manage their banking accounts, and visit their preferred social media platform.
 
@@ -21,11 +21,11 @@ Many abstractions are quite useful, some…not so much. I call the worst offende
 
 It’s important to remember that professional software engineers rarely choose a specific pattern completely by accident. Even antipatterns are likely to provide some benefit. I try to give the antipatterns mentioned a fair cost-benefit analysis.
 
-At the end of this I've provided a list of checks that can help prevent mistakes similar to the examples in this article.
+At the end of this article I've provided a list of checks that can help prevent mistakes similar to the examples shown.
 
 ## Opaque Configuration
 
-Duplicated code violates the **DRY principle** (_Don’t Repeat Yourself_). Naturally, it follows that it must be a good idea to write code that is highly reusable. Virtually every non-trivial go program uses some form of configuration. Since the DRY principle is a good thing, and configuration is a necessity, it makes sense to make a reusable configuration object.
+Duplicated code violates the **DRY principle** (_Don’t Repeat Yourself_). Naturally, it follows that it must be a good idea to write code that is highly reusable. Virtually every non-trivial Go program uses some form of configuration. Since the DRY principle is a good thing, and configuration is a necessity, it makes sense to make a reusable configuration object.
 
 Here’s an example of a very flexible configuration pattern, based on the project my team was refactoring:
 
@@ -37,7 +37,7 @@ type Config interface {
 
 If this looks familiar, don’t be surprised. It’s the same pattern as `context.Context.`
 
-The application my team was refactoring has all of its dependencies use and accept this `interface`. The `Config` is passed into a package into a `Setup` function, which is used to either pass dependencies into the package or load new values into the `Config`. Each dependency has predefined keys that get loaded into the `Config` via a signature of `func (foo.Config) foo.Config`.
+The application my team was refactoring has all of its dependencies use and accept this `interface`. The `Config` is passed into a package via a function typically called `Setup` , which is used to either pass dependencies into the package or load new values into the `Config`. Each dependency has predefined keys that get loaded into the `Config` via a signature of `func (foo.Config) foo.Config`.
 
 Once all packages in this application have been setup, any other package can call a function in one its dependent packages and voila — it all works, without having to pass along any dependencies as function parameters!
 
@@ -47,9 +47,7 @@ Here’s a contrived example for a bit more clarity:
 package bar
 
 import (
-    "github.com/jmoiron/sqlx"
-    "github.com/some-namespace/foo"
-    "github.com/some-namespace/appcfg"
+   // ...
 )
 
 var (
@@ -78,19 +76,19 @@ Here are some more detailed issues and advantages of this pattern:
 ### Pros
 
 * Thoroughly abstracted. A package external to `foo.Config` doesn’t know what data is stored in it, or how the internals of that storage are implemented.
-* Configuration is highly reusable between multiple projects – meaning configuration variable keys (such as environment variables) can be de-facto standardized.
+* Configuration is highly reusable between multiple projects — meaning configuration variable keys (such as environment variables) can be de-facto standardized.
 * Memory usage can be more efficient, since dependencies could be loaded as pointers and shared between various packages. Compared with creating and sharing instances of a struct, common sense dictates the memory usage should be lower using a single pointer per dependency.
 
 ### Cons
 
-* Configuration is order dependent, and the order can’t be figured out by looking at individual packages since the purpose of the Config is dynamic. This could lead to developers attempting to use unconfigured packages.
+* Configuration is order dependent, and the order can’t be figured out by looking at individual packages since the purpose of the `Config` is dynamic. This could lead to developers attempting to use unconfigured packages.
 * Using this pattern, finding the actual key of an environment variable is not an easy task. This `interface` is so abstract that it takes minutes of detective work to find where and how a configuration value is set. In the example above, you can’t directly answer the following questions without digging into the code for a specific project:
   * Which package initially set the database within the `Config`?
   * Did any package overwrite the initial setting for the database?
   * What key is used to access the database via the method `Config.Value`?
-* Configuration does not belong to the application – it is shared custody between the application and its dependencies. There’s no knowing whether modifying a key will have cascading effects within other packages using the `Config`.
+* Configuration does not belong to the application — it is shared custody between the application and its dependencies. There’s no knowing whether modifying a key will have cascading effects within other packages using the `Config`.
 * Adding new keys is painful, since the `interface` obfuscates how things work under the hood.
-* Loss of type safety. Since configuration is an ``interface``, there is no check at compile-time verifying the expected type of configuration was used. Only a runtime error will reveal the issue.
+* Loss of type safety. Since configuration is an `interface`, there is no check at compile-time verifying the expected type of configuration was used. Only a runtime error will reveal the issue.
 
 ### How to Fix It
 
@@ -100,25 +98,27 @@ Code reusability will probably be reduced, at least initially. As time goes on, 
 
 ## Chaining Interfaces
 
-It’s always a red-flag when two patterns are mixed together for no apparent reason. For example, the application being targeted for refactoring, combines packages with a factory pattern that return various `interface` types. After a factory creates an `interface`, the alarm bells start to go off. The `interface` chain doesn’t stop — like the Energizer bunny, it keeps going, and going, and going. The example below illustrates this antipattern.
+It’s always a red-flag when two patterns are mixed together for no apparent reason. For example, the application being refactored made use of a factory pattern that returns various `interface` types. After a factory creates an `interface`, the alarm bells start to go off. The `interface` chain doesn’t stop — like the Energizer bunny, it keeps going, and going, and going.
 
-I like to call this one `interface` chaining. Here’s an example of one that’s loosely based on a package from the aforementioned application:
+I like to call this one `interface` chaining. This is a bit difficult to understand using only prose, so here’s a diagram and code example loosely based on a package from the aforementioned application. These examples show chaining interfaces, note how each `interface` has methods that return an `interface` rather than a concrete type:
 
-![`interface` chaining diagram](images/abstraction-antipatterns0.jpg "`interface` chaining example")
-
-Below is a code example of chaining interfaces, note how each `interface` has methods that return an `interface` rather than a
-concrete type:
+![](/uploads/interface-chain-of-doom.svg)
 
 ```go
-type Bar `interface` {
-    Baz() error
+type FooParser interface {
+   // ...
 }
 
-type Foo `interface`{
-    FooBar() Bar
+type FooClient interface {
+   // ...
 }
 
-type FooFactory `interface` {
+type Foo interface {
+    Parser() FooParser
+    Client() FooClient
+}
+
+type FooFactory interface {
     NewFoo() Foo
 }
 
@@ -136,7 +136,7 @@ However, in the application being refactored, **the interfaces are used to handl
 ### Pros
 
 * If mocks are included in your compilable packages, test coverage goes through the roof. It’s simple to write passing tests for mock code. If your employer has some extreme requirements around test coverage this can be an easy way to inflate your score.
-* Very easy to swap in new implementations of virtually anything. Since almost everything is an ``interface``, any component can be swapped out with a minor code change.
+* Very easy to swap in new implementations of virtually anything. Since almost everything is an `interface`, any component can be swapped out with a minor code change.
 
 ### Cons
 
@@ -149,13 +149,13 @@ Follow the popular Go practice:
 
 Accept interfaces return structs.
 
-_—Jack Lindamood,_ _[Preemptive Interface Anti-Pattern in Go](https://medium.com/@cep21/preemptive-`interface`-anti-pattern-in-go-54c18ac0668a)_
+_—Jack Lindamood,_ [_Preemptive Interface Anti-Pattern in Go_](https://medium.com/@cep21/preemptive-\`interface\`-anti-pattern-in-go-54c18ac0668a)
 
 **_NOTE_**: Though the quote above claims your functions should return structs, any concrete type can serve the same purpose.
 
 Even though `io.Reader` is accepted by many functions in the standard library — there isn’t any function that returns an `io.Reader`, at least not directly. This prevents passing a formless contract between functions. Instead, concrete implementations of such as `bytes.Buffer` can be used as an `io.Reader.`
 
-Additionally, an application’s architecture should be as complex as it needs to be — but no more. If there are only two implementations, standard control flow such as an `if` statement works just as well as an `interface`. If booleans are seen as primitive at your workplace, accept an ``interface``, or a function signature, but return a concrete type.
+Additionally, an application’s architecture should be as complex as it needs to be — but no more. If there are only two implementations, standard control flow such as an `if` statement works just as well as an `interface`. If booleans are seen as primitive at your workplace, accept an `interface`, or a function signature, but return a concrete type.
 
 Just be sure to pass around explicit implementations instead of abstract types.
 
@@ -292,7 +292,6 @@ type UserService interface {
     // additional interfaces ...
 }
 ```
-
 
 Typically, an `interface` should be declared within the package where it is used. This means each package can declare the functionality it cares about, and decouples the `interface` from implementation.
 
