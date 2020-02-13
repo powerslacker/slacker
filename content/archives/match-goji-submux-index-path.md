@@ -4,7 +4,7 @@ draft = true
 featured_img = ""
 slug = "match-goji-submux-index"
 tags = ["programming", "go", "golang"]
-title = "Match Goji SubMux Index Path"
+title = "Troubleshooting Goji & Pat"
 
 +++
 The other day I was using [goji](https://pkg.go.dev/goji.io@v1.1.0?tab=doc) for a project at work. I saw very little use of the `SubMux` function, which caused common middleware to be specified on each endpoint. A bit ugly and repetitive. So, being the [pragmatic programmer](https://www.powerslacker.cc/pragmatic-programmer/) that I am, I decided to do a small refactor where common paths would be separated into individual `SubMux` and common middleware would be applied to each.
