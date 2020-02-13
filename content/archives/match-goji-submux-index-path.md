@@ -88,6 +88,6 @@ func main() {
 }
 ```
 
-Because `root` has two patterns to follow, it checks each pattern using a first-in first-out approach. So when a request for `/v1` or `/v1/` is matched, it goes to the first entry on line 13, which routes to `sub`. This pattern doesn't include wildcards so it matches the only possible option, the handler specified on line 5. In every other case, e.g. `/v1/hi` matches to `sub` on line 14. Any request via this pattern to `sub` will end up going to another endpoints, in this case the second handler specified on line 9.
+Because `root` has two patterns to follow, it checks each pattern using a first-in first-out approach. So when a request for `/v1` or `/v1/` is matched, it goes to the first entry on line 13, which routes to `sub`. This pattern doesn't include wildcards so it matches the only possible option, the handler specified on line 5. In every other case, e.g. `/v1/hi` matches to `sub` on line 14. Any request via this pattern to `sub` will end up going to another endpoint, in this case the second handler specified on line 9.
 
 I wrote this article primarily for myself so I can go back and reference this fix in future projects. Hopefully this helps someone else out there struggling with the strange interactions between older versions of Goji & Pat.
