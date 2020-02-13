@@ -14,7 +14,7 @@ The other day I was using [goji](https://pkg.go.dev/goji.io@v1.1.0?tab=doc) for 
 Here's an example of the change with middleware omitted for brevity:
 
 **Before**
-
+```go
     // ...
     func main() {
     	root := goji.NewMux()
@@ -29,9 +29,9 @@ Here's an example of the change with middleware omitted for brevity:
     	})
         // ...
     }
-
+```
 **After**
-
+```go
     // ...
     func main() {
     	root := goji.NewMux()
@@ -48,7 +48,7 @@ Here's an example of the change with middleware omitted for brevity:
     
     	// ...
     }
-
+```
 I quickly ran into issues. All of my endpoints used the exact same values for the paths as before — but many of the endpoints were now returning status codes of `404 Not Found`. Odd behavior, indeed...
 
 ## The Solution
