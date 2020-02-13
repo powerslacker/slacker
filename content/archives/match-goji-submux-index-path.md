@@ -62,7 +62,7 @@ The docs for [pat](https://pkg.go.dev/goji.io@v1.1.0/pat?tab=doc) state:
 >
 > The unmatched suffix, including the leading slash ("/"), are placed into the request context, which allows subsequent routing (e.g., a subrouter) to continue from where this pattern left off. For instance, in the "/user/*" pattern from above, a request for "/user/carl/photos" will consume the "/user" prefix, leaving the path "/carl/photos" for subsequent patterns to handle. A subrouter pattern for "/:name/photos" would match this remaining path segment, for instance.
 
-After reading this, I sent an HTTP request to the server to test out a hypothesis. The path for the request was: `/v1//`. Hypothesis confirmed: The double usage responded with a status of 200 OK and a response body of Hello. Now we're getting somewhere! I assumed that the `/*` would be removed, but only the `*` was.
+After reading this, I sent an HTTP request to the server to test out a hypothesis. The path for the request was: `/v1//`. Hypothesis confirmed: The double usage responded with a status of `200 OK` and a response body of `Hello!`. Now we're getting somewhere! I assumed that the `/*` would be removed, but only the `*` was.
 
 But how could I accomplish the same routing when the pattern match explicitly states that `/` would NOT be removed from the request?
 
