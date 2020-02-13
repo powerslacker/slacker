@@ -1,6 +1,5 @@
 +++
-date = 2020-02-13T01:00:00Z
-draft = true
+date = 2020-02-13T01:20:00Z
 featured_img = ""
 slug = "strange-routing-goji-pat"
 tags = ["programming", "go", "golang"]
