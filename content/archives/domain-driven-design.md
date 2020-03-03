@@ -4,7 +4,7 @@ draft = true
 featured_img = ""
 slug = "ddd-article"
 tags = ["ddd", "architecture"]
-title = "Domain Driven Design"
+title = "Building Blocks of Domain Driven Design"
 
 +++
 ### Entities
