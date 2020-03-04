@@ -23,7 +23,9 @@ Bounded Context
 
 ### Value Object
 
-A value object is an object that is defined by its attributes rather than it's identity. Value objects are typically data containers that describe other objects. In a software system many objects can be shared safely, so long as they are treated as immutable. By removing the need to track identity for every object in a software system, you can focus on the core logic of the domain instead of needless bookkeeping. Anonymity and immutability are useful properties for dealing with change management and certain performance tweaks that would not otherwise be possible.
+A value object is an object that is defined by its attributes rather than it's identity. Value objects are typically data containers that describe other objects. In a software system many objects can be shared safely, so long as they are treated as immutable. By removing the need to track identity for every object in a software system, you can focus on the core logic of the domain instead of needless bookkeeping. 
+
+Anonymity and immutability are useful properties for dealing with change management and certain performance tweaks that would not otherwise be possible. ......
 
 Domain Event
 
