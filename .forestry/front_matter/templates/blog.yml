@@ -19,6 +19,7 @@ fields:
   label: slug
 pages:
 - content/archives/abstraction-antipatterns-in-go.md
+- content/archives/cadence-workflow-engine.md
 - content/archives/dependency-patterns-in-go.md
 - content/archives/domain-driven-design.md
 - content/archives/estimates.md
