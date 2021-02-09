@@ -37,3 +37,32 @@ title = "Christian Standard Bible vs. King James Version"
 * 2 Corinthians 4:14
 * Ephesians 3:9
 * Luke 23:42
+* Romans 6:11
+* 1 Corinthians 15:47
+* 2 Corinthians 4:10
+* Galatians 6:17
+* 2 John 1:3
+* John 6:69
+* John 9:35
+* Acts 8:37
+* Ephesians 3:14
+* Colossians 1:2
+* Revelations 22:19
+* Hebrews 10:34
+* Revelations 16:17
+* Revelations 21:24
+* Peter 2:2
+* James 5:16
+* 1 Timothy 6:19
+* Luke 23:45
+* 1 John 1:17
+* Romans 1:16
+* Galatians 3:17
+* Galatians 4:7
+* Galatians 6:15
+* John 3:13
+* 1 Corinthians 11:24
+* 1 Corinthians 11:29
+* 1 Timothy 3:16
+* 1 John 4:3
+* Luke 2:22
