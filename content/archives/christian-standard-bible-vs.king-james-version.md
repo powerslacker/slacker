@@ -25,7 +25,7 @@ title = "Christian Standard Bible vs. King James Version"
 
 _The CSB references the KJV reading of 1 John 5:7 in a footnote._ 
 
-This is not an "easier reading" in my eyes; it's an omission. These are not equivalent passages when read side-by-side, as the CSB reading simply does not have the same content as the KJV. The CSB removes the qualifying statements of "in heaven" and "in earth".  This is important because the Father, the Word, and the Holy Ghost are all "in heaven". Additionally, the CSB removes a reference to The Trinity. The first verse in the KJV is both a record of The Trinity (aka Triune God/Godhead) in the early church, as well as a fundamental element of Christian Theology.  The CSB has effectively omitted 1 John 5:7.
+This is not an "easier reading" in my eyes; it's an omission. These are not equivalent passages when read side-by-side, as the CSB reading does not contain the same content as the KJV. The CSB removes the qualifying statements of "in heaven" and "in earth".  This is important because the Father, the Word, and the Holy Ghost are all "in heaven". Additionally, the CSB removes a reference to The Trinity. The first verse in the KJV is both a record of The Trinity (aka Triune God/Godhead) in the early church, as well as a fundamental element of Christian Theology.  The CSB has effectively omitted 1 John 5:7.
 
 * Revelations 2:15
 * Mark 16
