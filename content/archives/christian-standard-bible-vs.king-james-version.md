@@ -36,4 +36,4 @@ title = "Christian Standard Bible vs. King James Version"
 * Philippians 4:13
 * 2 Corinthians 4:14
 * Ephesians 3:9
-* 
+* Luke 23:42
