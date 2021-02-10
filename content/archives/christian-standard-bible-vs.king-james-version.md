@@ -23,12 +23,14 @@ title = "Christian Standard Bible vs. King James Version"
 >
 > **1 John 5:8** - the Spirit, the water, and the blood ​— ​and these three are in agreement.
 
-_The CSB references the KJV reading of 1 John 5:7 in a footnote._ 
+_The CSB references the KJV reading of 1 John 5:7 in a footnote._
 
 This is not an "easier reading" in my eyes; it's an omission. These are not equivalent passages when read side-by-side, as the CSB reading does not contain the same content as the KJV. The CSB removes the qualifying statements of "in heaven" and "in earth".  Additionally, the CSB removes a reference to The Trinity. The first verse in the KJV is both a record of The Trinity (aka Triune God/Godhead) in the early church, as well as a reference to heaven.  The latter verse in the KJV makes a clear distinction between the temporal (earthly) witnesses in contrast to heavenly witnesses. The separation between heaven and earth is a doctrinal concern. The Trinity is a doctrinal concern.  The CSB has effectively omitted 1 John 5:7 and partially omitted 1 John 5:8 thus affecting doctrine.
 
-* Revelations 2:15
-* Mark 16
+### Mark 16
+
+This chapter is omitted in it's entirety. This is common in modern bibles as some translators hold the opinion  
+
 * John 7:53
 * Mark 13:14
 * 2 Peter 3:2
