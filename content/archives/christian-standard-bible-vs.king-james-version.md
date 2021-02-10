@@ -29,11 +29,22 @@ This is not an "easier reading" in my eyes; it's an omission. These are not equi
 
 ### Mark 16
 
-This chapter is omitted in it's entirety. This is common in modern bibles, but an omission nonetheless.
+This chapter is omitted in it's entirety. This is common in modern bibles as the method of translation and manuscripts used greatly differ.
 
-* John 7:53
-* Mark 13:14
-* 2 Peter 3:2
+### Mark 13:14
+
+#### KJV
+
+> But when ye shall see the abomination of desolation, spoken of by Daniel the prophet, standing where it ought not, (let him that readeth understand,) then let them that be in Judaea flee to the mountains:
+
+#### CSB
+
+> When you see **the abomination of desolation** standing where it should not be (let the reader understand), then those in Judea must flee to the mountains.
+
+The CSB removes an internal cross-reference to Daniel. This reference also affirms that Daniel is considered a prophet. It is not the same reading, and is an omission.
+
+### 2 Peter 3:2
+
 * Matthew 27:34-35
 * Luke 4:4
 * Mark 1:2
