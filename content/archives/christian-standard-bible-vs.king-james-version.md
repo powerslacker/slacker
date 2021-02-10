@@ -43,6 +43,8 @@ This chapter is omitted in it's entirety. This is common in modern bibles as the
 
 The CSB removes an explicit affirmation of Daniel's  status as a prophet. 
 
+## Modifications
+
 ### Matthew 27:34-35
 
 #### KJV
