@@ -41,11 +41,22 @@ This chapter is omitted in it's entirety. This is common in modern bibles as the
 
 > When you see **the abomination of desolation** standing where it should not be (let the reader understand), then those in Judea must flee to the mountains.
 
-The CSB removes an internal cross-reference to Daniel. This reference also affirms that Daniel is considered a prophet. It is not the same reading, and is an omission.
+The CSB removes an explicit affirmation of Daniel's  status as a prophet. 
 
-### 2 Peter 3:2
+### Matthew 27:34-35
 
-* Matthew 27:34-35
+#### KJV
+
+> **Mat 27:34** - They gave him vinegar to drink mingled with gall: and when he had tasted _thereof_, he would not drink.
+>
+> **Mat 27:35** - And they crucified him, and parted his garments, casting lots: that it might be fulfilled which was spoken by the prophet, They parted my garments among them, and upon my vesture did they cast lots.
+
+#### CSB
+
+> **Mat 27:34** - they gave him wine mixed with gall to drink. But when he tasted it, he refused to drink it.
+>
+> **Mat 27:35** - After crucifying him, they divided his clothes by casting lots.
+
 * Luke 4:4
 * Mark 1:2
 * Mark 15:28
