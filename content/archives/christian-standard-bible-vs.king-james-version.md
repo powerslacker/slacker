@@ -29,7 +29,7 @@ This is not an "easier reading" in my eyes; it's an omission. These are not equi
 
 ### Mark 16
 
-This chapter is omitted in it's entirety. This is common in modern bibles as some translators hold the opinion  
+This chapter is omitted in it's entirety. This is common in modern bibles, but an omission nonetheless.
 
 * John 7:53
 * Mark 13:14
