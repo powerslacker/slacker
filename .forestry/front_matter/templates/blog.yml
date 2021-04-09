@@ -18,7 +18,6 @@ fields:
   name: slug
   label: slug
 pages:
-- content/archives/abstraction-antipatterns-in-go.md
 - content/archives/cadence-workflow-engine.md
 - content/archives/christian-standard-bible-vs.king-james-version.md
 - content/archives/dependency-patterns-in-go.md
