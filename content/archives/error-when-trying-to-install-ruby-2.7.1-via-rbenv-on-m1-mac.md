@@ -26,9 +26,9 @@ Providentially, my team at work includes someone who is passionate about languag
 * Homebrew 3.3.7
 
 ## Executed Command
-
+```bash
     rbenv install 2.7.1
-
+```
 ## Error
 ```bash
     Downloading openssl-1.1.1l.tar.gz...
