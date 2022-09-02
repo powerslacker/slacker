@@ -11,7 +11,7 @@ The IT department at my work sent my coworker a new M1 MacBook Pro to work on. H
 We tried a number of other potential solutions before stumbling across the one that worked on his machine. I'll link those below in case this doesn't work for you:
 
 * [How to install older Ruby versions(2.x) on Mac M1 without using arch x86_64](https://dollardhingra.com/blog/install-ruby-old-versions-macm1/)
-* [How to Install Ruby 2.7.3 on M1 Mac]()
+* [How to Install Ruby 2.7.3 on M1 Mac](https://nickymarino.com/2021/12/17/install-ruby-273-on-m1/)
 
 My coworker finally found a working solution on a Japanese site that appears to be similar to StackOverflow:
 
@@ -30,7 +30,7 @@ Providentially, my team at work includes someone who is passionate about languag
     rbenv install 2.7.1
 
 ## Error
-
+```bash
     Downloading openssl-1.1.1l.tar.gz...
     -> https://dqw8nmjcqpjn7.cloudfront.net/0b7a3e5e59c34827fe0c3a74b7ec8baef302b98fa80088d7f9153aa16fa76bd1
     Installing openssl-1.1.1l...
@@ -57,13 +57,13 @@ Providentially, my team at work includes someone who is passionate about languag
     422 warnings generated.
     linking shared-object date_core.bundle
     make: *** [build-ext] Error 2
-
+```
 ## Executed Command
-
+```bash
     arch -arm64 rbenv install 2.7.1
-
+```
 ## Error
-
+```bash
     Downloading openssl-1.1.1l.tar.gz...
     -> https://dqw8nmjcqpjn7.cloudfront.net/0b7a3e5e59c34827fe0c3a74b7ec8baef302b98fa80088d7f9153aa16fa76bd1
     Installing openssl-1.1.1l...
@@ -90,13 +90,13 @@ Providentially, my team at work includes someone who is passionate about languag
     422 warnings generated.
     linking shared-object date_core.bundle
     make: *** [build-ext] Error 2
-
+```
 ## Executed Command
-
+```bash
     RUBY_CFLAGS=-DUSE_FFI_CLOSURE_ALLOC arch -arm64 rbenv install 2.7.1
-
+```
 ## Success!
-
+```bash
     Downloading openssl-1.1.1l.tar.gz...
     -> https://dqw8nmjcqpjn7.cloudfront.net/0b7a3e5e59c34827fe0c3a74b7ec8baef302b98fa80088d7f9153aa16fa76bd1
     Installing openssl-1.1.1l...
@@ -107,7 +107,7 @@ Providentially, my team at work includes someone who is passionate about languag
     Installing ruby-2.7.1...
     ruby-build: using readline from homebrew
     Installed ruby-2.7.1 to /Users/kawabataharuki/.rbenv/versions/2.7.1
-
+```
 ## References
 
 * [https://github.com/ffi/ffi/issues/869](https://github.com/ffi/ffi/issues/869 "https://github.com/ffi/ffi/issues/869")
